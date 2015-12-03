@@ -1,0 +1,186 @@
+<resources>
+    <string name="app_name">Youth Volunteer</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="parse_app_id">PARSE_APP_ID</string>
+    <string name="parse_client_key">PARSE_CLIENT_KEY</string>
+    <string name="fb_app_id">FB_APP_ID</string>
+    <string name="google_api_key">GOOGLE_API_KEY</string>
+
+    <string name="internet_connection_unavailable"><b>Please check your Internet Connection</b></string>
+    <string name="verify_email_error_title"><b>Please confirm your email address!</b></string>
+    <string name="verify_email_error_message">Thank you for signing up. Please take a moment to activate your account.</string>
+    <string name="verify_email_error_message2">An email with confirmation link was sent to </string>
+    <string name="verify_email_error_message3">Click on the link in the message to complete your sign up.</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="profile_title_logged_in">Signed in as</string>
+    <string name="profile_logout_button_label">Sign out</string>
+    <string name="profile_title_logged_out">You must be signed in to view your profile</string>
+    <string name="profile_login_button_label">Sign in</string>
+    <string name="nav_title_edit_profile">Edit Profile</string>
+    <string name="nav_title_achievements">History</string>
+    <string name="nav_title_ranking">View Leaderboard</string>
+    <string name="nav_title_volunteer">Volunteer</string>
+    <string name="nav_title_search">Search Opportunites</string>
+    <string name="nav_title_places">Places</string>
+    <string name="menu_item_communicate">Communicate</string>
+    <string name="nav_about">About</string>
+    <string name="nav_manage_label">Manage</string>
+    <string name="nav_spl_user">Special Users</string>
+    <string name="nav_category">Categories</string>
+    <string name="nav_opportunity">Volunteer Opportunities</string>
+    <string name="nav_interests">Interests</string>
+    <string name="nav_skills">Skills</string>
+    <string name="nav_schools">Schools</string>
+    <string name="nav_groups">Interest Groups</string>
+    <string name="nav_organization">Organizations</string>
+    <string name="nav_communicate_label">Communicate</string>
+    <string name="msg_save_sucess">Saved successfully</string>
+    <string name="msg_delete_sucess">Deleted successfully</string>
+    <string name="msg_progress_wait">Please wait…</string>
+    <string name="msg_no_current_location">No search location specified</string>
+    <string name="msg_no_results_found">No results found</string>
+    <string name="search_hint">Search</string>
+    <string name="add_item">Add</string>
+    <string name="view_edit_item">Edit</string>
+    <string name="switch_view">Switch between List </string>
+
+    <string name="ok">OK</string>
+    <string name="dialog_title_error">Error</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email Id</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Sign In</string>
+    <string name="action_fb_sign_in">Sign In with Facebook</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="prompt_forgot_password">Forgot password?</string>
+    <string name="error_invalid_credentials">You email and/or password is not correct</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Strings related to profile -->
+    <string name="help_us_know_you">Help us know you better…</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="error_mismatch_password">Passwords do not match</string>
+    <string name="profile_select_image">Select Profile Image</string>
+    <string name="prompt_school_name">School Name</string>
+    <string name="prompt_phone_number">Phone Number</string>
+    <string name="action_register_user">Register</string>
+    <string name="action_submit_register_user">Submit Registration</string>
+    <string name="msg_user_register_sucess">Registration successful</string>
+    <string name="msg_data_sucess">Record saved successfully</string>
+    <string name="msg_user_register_failed">Registration failure</string>
+    <string name="prompt_rotate">Rotate</string>
+    <string name="prompt_crop_done">Done</string>
+    <string name="prompt_select_source">Select source</string>
+    <string name="skills_title">Skills</string>
+    <string name="interests_title">Interests</string>
+    <string name="personal_details_title">Details</string>
+    <string name="ranked">Top 3</string>
+    <string name="select">Select</string>
+    <string name="selected">Selected</string>
+
+
+    <!-- Strings related to Main activity -->
+    <string name="main_message">VOLUNTEER on the GO!!</string>
+    <string name="main_goodness">INCREASE your Goodness Factor</string>
+    <string name="main_month_stat_title">Your volunteering statistics for this month:</string>
+    <string name="main_month_points_title">Your volunteering statistics for this month:</string>
+    <string name="main_points">EARN Points</string>
+    <string name="main_points_rank">Overall with points you are ranked  out of  volunteers.</string>
+    <string name="main_this_month_title">This month\'s statistics:</string>
+    <string name="main_month_points">Your monthly target: hrs. Hours done: .</string>
+    <string name="main_recognised">ACHIEVE Recognition</string>
+    <string name="main_recognised_level">Your Level</string>
+    <string name="main_recognised_title">Your Title</string>
+    <string name="main_line_trophies">WIN Trophies</string>
+    <string name="main_latest_trophy">Your Latest Trophy</string>
+
+    <!-- Maps activity -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Log activity -->
+    <string name="prompt_date">Date (dd/MM/yyyy)</string>
+    <string name="prompt_duration">Duration (hh:mm)</string>
+    <string name="activity_category">Category</string>
+    <string name="clock">Clock</string>
+    <string name="comments_max_150">Comments (max 150 chars)</string>
+    <string name="activity_rating">Rating </string>
+
+
+    <!-- Achievements activity -->
+    <string name="achievement_trophies">My Trophies</string>
+    <string name="achievement_badges">My Badges</string>
+    <string name="achievement_recent_activity">Recent Activity</string>
+    <string name="achievement_level">My Level</string>
+    <string name="achievement_points">Points</string>
+    <string name="achievement_title">My Title</string>
+    <string name="achievement_rank">My Rank</string>
+    <string name="achievement_rank_of"> / </string>
+
+    <string name="title_activity_home">Volunteer</string>
+    <string name="prompt_add">Add</string>
+    <string name="prompt_save">Save</string>
+    <string name="action_name">Title</string>
+    <string name="log_activity_to_wall_prompt">Would you like to post this activity to the wall?</string>
+
+    <string name="category_prompt">Select Category</string>
+    <string name="action_prompt">Select Action</string>
+
+    <string name="nav_title_broadcast">Broadcast</string>
+    <string name="nav_title_publish">Publish</string>
+    <string name="msg_current_location">Current Location:</string>
+    <string name="msg_welcome">Welcome </string>
+    <string name="error_msg_user_not_entitled">You do not have necessary permissions for this action</string>
+
+    <string name="msg_publish_success">Published message successfully</string>
+    <string name="msg_publish_failed">Could not publish message</string>
+    <string name="title_activity_main">Volunteer Home</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_volunteer">Volunteer</string>
+    <string name="activity_submit_button_label">Volunteer</string>
+
+    <string name="view_details">View Details</string>
+    <string name="category_header">Category</string>
+    <string name="title_activity_display_place_details">Place Details</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_map">Nearby</string>
+    <string name="title_activity_list_places">List Places</string>
+
+    <string name="pref_title_connection_timeout">Connection Timeout:</string>
+    <string name="pref_title_response_timeout">Response Timeout</string>
+    <string name="pref_title_search_radius">Search Radius</string>
+    <string name="pref_header_general">General</string>
+    <string name="title_activity_ranking">Ranking</string>
+    <string name="title_achievement">My Achievements</string>
+    <string name="title_activity_log">Activity History</string>
+    <string name="title_profile">My Profile</string>
+    <string name="log_activity">Log Volunteer Activity</string>
+    <string name="title_activity_nav_drawer">NavDrawerActivity</string>
+    <string name="date_input_hint">Date (dd/MM/yyyy)</string>
+
+    <string name="okay_text">OK</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="dialog_icon">Icon</string>
+    <string name="title_activity_about_new">AboutNew</string>
+    <string name="title_activity_manage_resources">Manage Resources</string>
+    <string name="title_activity_list_resources">ListResourcesActivity</string>
+    <string name="title_opportunity_list">Opportunities</string>
+    <string name="title_opportunity_detail">Opportunity Detail</string>
+    <string name="title_activity_profile">Manage Profile</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+
+</resources>

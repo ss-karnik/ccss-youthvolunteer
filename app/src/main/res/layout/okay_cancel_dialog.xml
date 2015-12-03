@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/dialog_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_help"
+        android:background="@drawable/whitecircle"
+        android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+        android:contentDescription="@string/dialog_icon" />
+
+    <TextView
+        android:id="@+id/dialog_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.TextView.Title"
+        android:textColor="#000"
+        android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+        android:text="Somt text asds sda sd as"
+        android:layout_toRightOf="@+id/dialog_icon"
+        android:layout_toEndOf="@+id/dialog_icon" />
+
+    <LinearLayout
+        android:id="@+id/dialog_buttons"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_icon"
+        android:layout_margin="@dimen/com_parse_ui_large_vertical_spacing">
+
+        <Button
+            android:id="@+id/dialog_okay"
+            style="@style/ParseLoginUI.Button"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:text="@string/okay_text"
+            android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"
+            android:layout_marginEnd="@dimen/com_parse_ui_small_vertical_spacing"  />
+
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.Button"
+            android:layout_weight="0.5"
+            android:layout_marginStart="@dimen/com_parse_ui_small_horizontal_spacing"
+            android:layout_marginLeft="@dimen/com_parse_ui_small_horizontal_spacing"
+            android:text="@string/cancel_text" />
+
+    </LinearLayout>
+</RelativeLayout>

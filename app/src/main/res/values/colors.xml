@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#44cbe4</color>
+    <color name="colorPrimaryLight">#469dc8</color>
+    <color name="colorPrimaryLighter">#44cbe4</color>
+
+    <color name="colorGreenPrimary">#38a338</color>
+    <color name="colorGreenPrimaryDark">#165622</color>
+    <color name="colorGreenPrimaryLight">#9cc947</color>
+    <color name="colorGreenPrimaryLighter2">#f946bf42</color>
+    <color name="colorGreenPrimaryLighter">#f94ce444</color>
+
+    <color name="colorBlackPrimary">#8c8888</color>
+    <color name="colorBlackPrimaryDark">#736b6b</color>
+    <color name="colorBlackPrimaryLight">#86898b</color>
+    <color name="colorBlackPrimaryLighter">#b9bdbe</color>
+
+    <color name="colorRedPrimary">#d93455</color>
+    <color name="colorRedPrimaryDark">#c1121e</color>
+    <color name="colorRedPrimaryLight">#cc3830</color>
+    <color name="colorRedPrimaryLighter">#e44449</color>
+
+    <color name="colorNavRedPrimary">#B72402</color>
+    <color name="colorNavRedPrimaryDark">#DF2205</color>
+    <color name="colorNavRedPrimaryLight">#D41E02</color>
+    <color name="colorNavRedPrimaryLighter">#FF2200</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="background_body">#2b2b2b</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="highlight">#99BEFF</color>
+
+    <color name="do_good_action">#CC6B30</color>
+    <color name="green_action">#99B433</color>
+    <color name="advocacy_action">#4EABBF</color>
+</resources>

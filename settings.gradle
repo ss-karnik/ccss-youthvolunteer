@@ -1,0 +1,3 @@
+include ':app'
+include ':ParseUI-Login'
+include ':ParseUI-Widget'

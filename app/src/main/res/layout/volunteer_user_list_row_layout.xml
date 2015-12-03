@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/action_view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="@dimen/image_size_large"
+                android:maxHeight="@dimen/image_size_large"
+                android:id="@+id/person_photo"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/default_avatar_small_50"
+                android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_name"
+                android:layout_toRightOf="@id/person_photo"
+                android:layout_toEndOf="@id/person_photo"
+                android:text="Volunteer Number 1"
+                android:layout_alignParentTop="true"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_school"
+                android:paddingTop="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:layout_toRightOf="@id/person_photo"
+                android:layout_toEndOf="@id/person_photo"
+                android:layout_below="@id/person_name"
+                android:text="Person School"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_title"
+                android:paddingTop="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:layout_toRightOf="@id/person_photo"
+                android:layout_toEndOf="@id/person_photo"
+                android:layout_below="@id/person_school"
+                android:text="Person Title"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/person_points_and_rank"
+                android:paddingTop="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/person_school"
+                android:text="#1 with 135 points"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/img_medal"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/btn_star_big_on"
+                android:contentDescription="@string/ranked" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

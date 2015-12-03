@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.ccss.youthvolunteer.activity.PublishActivity">
+
+    <ProgressBar
+        android:id="@+id/publish_progress" style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:visibility="gone" />
+
+    <RelativeLayout android:id="@+id/main_publish_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_title_publish"
+            android:id="@+id/btnPublish"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/txtMessage"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/btnPublish"
+            android:gravity="top" />
+
+    </RelativeLayout>
+
+</LinearLayout>

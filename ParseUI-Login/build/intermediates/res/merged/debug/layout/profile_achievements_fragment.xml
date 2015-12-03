@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/com_parse_ui_vertical_margin"
+    android:paddingLeft="@dimen/com_parse_ui_horizontal_margin"
+    android:paddingRight="@dimen/com_parse_ui_horizontal_margin"
+    android:paddingBottom="@dimen/com_parse_ui_vertical_margin"
+    android:gravity="center" >
+
+
+
+</LinearLayout><!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/src/main/res/layout/profile_achievements_fragment.xml -->

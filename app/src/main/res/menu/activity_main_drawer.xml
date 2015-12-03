@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_view_volunteer" android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/nav_title_search" />
+        <item android:id="@+id/nav_view_ranking" android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="@string/nav_title_ranking" />
+        <item android:id="@+id/nav_view_log" android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="@string/nav_title_achievements" />
+        <item android:id="@+id/nav_edit_profile" android:icon="@drawable/ic_account"
+            android:title="@string/nav_title_edit_profile" />
+        <item android:id="@+id/nav_about" android:icon="@android:drawable/ic_menu_info_details"
+            android:title="@string/nav_about" />
+    </group>
+
+    <group android:title="@string/nav_manage_label" android:id="@+id/admin_manage" android:visible="false">
+        <item android:id="@+id/nav_manage_category" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_category" />
+        <item android:id="@+id/nav_manage_interests" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_interests" />
+        <item android:id="@+id/nav_manage_skills" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_skills" />
+        <item android:id="@+id/nav_manage_spl_user" android:icon="@drawable/manage_users"
+            android:title="@string/nav_spl_user" />
+        <item android:id="@+id/nav_manage_schools" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_schools" />
+        <item android:id="@+id/nav_manage_groups" android:icon="@drawable/manage_users"
+            android:title="@string/nav_groups" />
+        <item android:id="@+id/nav_manage_organization" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_organization" />
+        <item android:id="@+id/nav_manage_opportunity" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_opportunity" />
+    </group>
+
+    <group android:title="@string/nav_manage_label" android:id="@+id/organizer_manage" android:visible="false">
+        <item android:id="@+id/nav_manage_organizer_opportunity" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_opportunity" />
+    </group>
+
+    <!--<item android:title="@string/nav_communicate_label">-->
+        <!--<menu>-->
+            <!--<item android:id="@+id/nav_share" android:icon="@android:drawable/ic_menu_share"-->
+                <!--android:title="@string/nav_title_broadcast" />-->
+            <!--<item android:id="@+id/nav_send" android:icon="@android:drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

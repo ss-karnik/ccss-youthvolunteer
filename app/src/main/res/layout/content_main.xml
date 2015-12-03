@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_main"
+    tools:context="com.ccss.youthvolunteer.activity.MainActivity">
+
+    <TextView
+        android:id="@+id/main_line_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.TextView.Title"
+        android:gravity="center"
+        android:text="@string/main_message"
+        android:shadowColor="@color/com_parse_ui_facebook_login_button_push"
+        android:singleLine="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:id="@+id/main_goodness"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_below="@+id/main_line_one"
+        style="@style/ParseLoginUI.TextView.Normal"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:text="@string/main_goodness" />
+
+    <TextView
+        android:id="@+id/main_points_accrued"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="@string/main_points_rank"
+        android:layout_below="@id/main_goodness"
+        android:layout_centerHorizontal="true"
+        style="@style/ParseLoginUI.TextView.Normal"
+        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing" />
+
+    <View
+        android:id="@+id/sep_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/main_points_accrued"
+        android:background="@color/com_parse_ui_twitter_login_button"/>
+
+    <TextView
+        android:id="@+id/main_month_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.TextView.Normal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/sep_1"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:text="@string/main_this_month_title" />
+    <View
+        android:id="@+id/sep_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/main_points_accrued"
+        android:background="@color/com_parse_ui_twitter_login_button"/>
+
+    <TextView
+        android:id="@+id/main_month_points"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.TextView.Normal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/main_month_title"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
+        android:text="@string/main_month_points" />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/deco_card"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        card_view:cardBackgroundColor="#ECF0F1"
+        android:layout_below="@id/main_month_points"
+        card_view:cardCornerRadius="4dp">
+
+        <RelativeLayout
+            android:id="@+id/deco_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/deco_chart_main"
+                android:layout_width="200dp"
+                android:layout_height="200dp">
+                <TextView
+                    android:id="@+id/textPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="aaa"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="40sp"/>
+
+                <TextView
+                    android:id="@+id/textRemaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textPercentage"
+                    android:layout_centerHorizontal="true"
+                    android:maxWidth="200dp"
+                    android:text="sss"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                <com.hookedonplay.decoviewlib.DecoView
+                    xmlns:custom="http://schemas.android.com/apk/res-auto"
+                    custom:dv_lineWidth="26dp"
+                    android:id="@+id/dynamicArcView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/deco_chart_legend"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/deco_chart_main"
+                android:layout_toEndOf="@id/deco_chart_main"
+                android:paddingLeft="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:paddingStart="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/cat_do_good"
+                    android:text="asasd"
+                    android:background="@drawable/category_dogood_indicator"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/cat_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:background="@drawable/category_green_indicator"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/cat_advocacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:background="@drawable/category_advocacy_indicator"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+            <!--<View-->
+                <!--android:id="@+id/chart_sep"-->
+                <!--android:layout_width="2dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/com_parse_ui_twitter_login_button"/>-->
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/bar_chart"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight=".40"-->
+                <!--android:layout_height="match_parent">-->
+
+                <!--<com.db.chart.view.HorizontalBarChartView-->
+                    <!--android:id="@+id/barchartSgCompare"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"-->
+                    <!--android:paddingRight="@dimen/com_parse_ui_small_vertical_spacing" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/barchart_value"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_toLeftOf="@+id/barchart_metric"-->
+                    <!--android:layout_toStartOf="@+id/barchart_metric"-->
+                    <!--android:layout_marginBottom="0dp"-->
+                    <!--android:textSize="50sp"-->
+                    <!--android:textColor="#FF8E8A84"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/barchart_metric"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentEnd="true"-->
+                    <!--android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"-->
+                    <!--android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"-->
+                    <!--android:layout_marginEnd="@dimen/com_parse_ui_vertical_spacing"-->
+                    <!--android:textSize="25sp"-->
+                    <!--android:textColor="#FF8E8A84"/>-->
+            <!--</RelativeLayout>-->
+
+
+</RelativeLayout>
+

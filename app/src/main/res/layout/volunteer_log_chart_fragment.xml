@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/refresh_charts"
+        android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_refresh"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"/>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        card_view:cardCornerRadius="@dimen/appbar_padding_top"
+        card_view:cardBackgroundColor="#ECF0F1">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/category_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/category_two"
+                    android:layout_toStartOf="@+id/category_two"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/stacked_category_do_good"
+                    android:drawableStart="@drawable/stacked_category_do_good"
+                    android:drawablePadding="4dp"
+                    android:text="Do Good"
+                    android:textSize="10sp"
+                    android:textColor="#ff2b2b2b"/>
+                <TextView
+                    android:id="@+id/category_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/stacked_category_green"
+                    android:drawableStart="@drawable/stacked_category_green"
+                    android:drawablePadding="4dp"
+                    android:text="Green"
+                    android:textSize="10sp"
+                    android:textColor="#ff2b2b2b"/>
+                <TextView
+                    android:id="@+id/category_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/category_two"
+                    android:layout_toEndOf="@+id/category_two"
+                    android:layout_margin="5dp"
+                    android:drawableLeft="@drawable/stacked_category_advocacy"
+                    android:drawableStart="@drawable/stacked_category_advocacy"
+                    android:drawablePadding="4dp"
+                    android:text="Advocacy"
+                    android:textSize="10sp"
+                    android:textColor="#ff2b2b2b"/>
+            </RelativeLayout>
+
+            <com.db.chart.view.StackBarChartView
+                xmlns:chart="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/stacked_category_log"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_below="@+id/legend"
+                android:layout_alignParentBottom="true"
+                chart:chart_labelColor="#929b88"
+                chart:chart_fontSize="7dp"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_linechart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/com_parse_ui_vertical_spacing"
+        card_view:cardBackgroundColor="#ECF0F1"
+        card_view:cardCornerRadius="4dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.db.chart.view.LineChartView
+                xmlns:chart="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/activity_log_linechart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                chart:chart_axisColor="#30547d99"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.ccss.youthvolunteer" >
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.ccss.geny.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.ccss.geny.permission.C2D_MESSAGE" />
+
+    <application
+        android:name=".YouthVolunteerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ccss_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="@bool/largeheap"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon" >
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".SearchableActivity" />
+
+        <activity
+            android:name=".activity.DispatchActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.parse.ui.ParseLoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+            <meta-data
+                android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
+                android:value="true" />
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".activity.VolunteerOpportunityActivity" >
+        </activity>
+        <activity
+            android:name=".activity.MapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".activity.VolunteerOpportunityActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.VolunteerOpportunityActivity" />
+        </activity>
+        <activity
+            android:name=".activity.ListPlacesActivity"
+            android:label="@string/title_activity_list_places"
+            android:parentActivityName=".activity.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MapActivity" />
+        </activity>
+        <activity android:name=".activity.PublishActivity" >
+        </activity>
+        <activity android:name=".activity.SettingsActivity" >
+        </activity>
+        <activity
+            android:name=".activity.DisplayPlaceDetailsActivity"
+            android:label="@string/title_activity_display_place_details"
+            android:parentActivityName=".activity.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MapActivity" />
+        </activity>
+        <activity
+            android:name=".activity.RankingActivity"
+            android:label="@string/title_activity_ranking"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.ProfileActivitySimple"
+            android:label="@string/title_profile" >
+        </activity>
+        <activity
+            android:name=".activity.VolunteerLogActivity"
+            android:label="@string/title_activity_log" >
+        </activity>
+
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="@string/parse_app_id" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="@string/parse_client_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fb_app_id" />
+
+        <activity
+            android:name=".activity.LogHoursActivity"
+            android:label="@string/log_activity" >
+        </activity>
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="@string/nav_about"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.ManageResourceActivity"
+            android:label="@string/title_activity_manage_resources"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.ListResourcesActivity"
+            android:label="@string/title_activity_list_resources"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activity.OpportunityListActivity"
+            android:label="@string/title_opportunity_list"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.OpportunityDetailActivity"
+            android:label="@string/title_opportunity_detail"
+            android:parentActivityName=".activity.OpportunityListActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.OpportunityListActivity" />
+        </activity>
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.SingleResourceActivity" >
+        </activity>
+        <activity android:name=".activity.ManageVolunteerOpportunityActivity" >
+        </activity>
+    </application>
+
+</manifest>

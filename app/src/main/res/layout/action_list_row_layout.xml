@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/com_parse_ui_small_vertical_spacing">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_card_size"
+        android:id="@+id/action_item_view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing">
+
+            <TextView
+                android:id="@+id/category_indicator"
+                android:layout_width="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorGreenPrimary"/>
+
+            <com.parse.ParseImageView
+                android:id="@+id/action_image"
+                android:layout_width="@dimen/image_size_large"
+                android:layout_height="@dimen/image_size_large"
+                android:background="@drawable/whitecircle"
+                android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_toRightOf="@id/category_indicator"
+                android:layout_toEndOf="@id/category_indicator"
+                android:layout_centerVertical="true"
+                android:layout_alignParentTop="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/action_title"
+                android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_toRightOf="@id/action_image"
+                android:layout_toEndOf="@id/action_image"
+                android:layout_alignParentTop="true"
+                android:textStyle="bold"
+                android:text="NParks gardening"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/action_organization"
+                android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingTop="@dimen/com_parse_ui_smallest_vertical_spacing"
+                android:layout_toRightOf="@id/action_image"
+                android:layout_toEndOf="@id/action_image"
+                android:layout_below="@id/action_title"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:fadingEdge="horizontal"
+                android:text="NParks for Singapore "
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/action_date"
+                android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_toRightOf="@id/action_image"
+                android:layout_toEndOf="@id/action_image"
+                android:layout_below="@id/action_organization"
+                android:text="13/02/2016"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/action_location"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:text="Ang Mo Kio"
+                android:textSize="14sp"
+                android:layout_below="@id/action_title"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_like"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/btn_view_details"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/btn_star"
+                android:contentDescription="@string/view_details" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_view_details"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/transparent"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:src="@android:drawable/ic_menu_info_details"
+                android:contentDescription="@string/view_details" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:id="@+id/log_hours_form"
+    tools:context="com.ccs.youthvolunteer.activity.LogHoursActivity">
+
+    <Spinner
+        android:id="@+id/activity_log_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/action_prompt"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+    <TextView
+        android:id="@+id/activity_log_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:hint="@string/activity_category"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/activity_log_date"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.EditText"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:hint="@string/prompt_date"
+            android:inputType= "none|date"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_log_cal_button"
+            android:layout_alignTop="@id/activity_log_date"
+            android:layout_toEndOf="@id/activity_log_date"
+            android:layout_toRightOf="@id/activity_log_date"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/calendar_icon"
+            android:contentDescription="@string/calendar" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/activity_log_duration"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.EditText"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:hint="@string/prompt_duration"
+            android:inputType= "none|date"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_log_time_button"
+            android:layout_alignTop="@id/activity_log_duration"
+            android:layout_toEndOf="@id/activity_log_duration"
+            android:layout_toRightOf="@id/activity_log_duration"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/clock"
+            android:contentDescription="@string/clock" />
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/activity_log_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLength="150"
+        android:maxLines="4"
+        style="@style/ParseLoginUI.EditText"
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:hint="@string/comments_max_150"
+        android:inputType="textMultiLine" />
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/activity_log_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:text="@string/activity_rating"/>
+
+        <RatingBar
+            android:id="@+id/activity_log_ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/activity_log_rating"
+            android:layout_toEndOf="@id/activity_log_rating"
+            style="?android:attr/ratingBarStyleIndicator"
+            android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:rating="5.0" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/activity_log_points_allocated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        style="@style/ParseLoginUI.TextView.Title"
+        android:layout_marginTop="@dimen/com_parse_ui_vertical_spacing"
+        android:text="Points allocatated: XX"/>
+
+    <Button
+        android:id="@+id/activity_log_submit"
+        style="@style/ParseLoginUI.Button"
+        android:enabled="false"
+        android:layout_marginTop="@dimen/com_parse_ui_vertical_spacing"
+        android:text="@string/com_parse_ui_login_help_submit_button_label" />
+</LinearLayout>
