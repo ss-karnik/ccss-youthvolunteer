@@ -124,6 +124,16 @@
     <string name="activity_rating">Rating </string>
 
 
+    <string name="special_feature_hint">Special feature</string>
+    <string name="impact_hint">Social impact</string>
+    <string name="location_hint">Location</string>
+    <string name="virtual_text">Is Virtual?</string>
+    <string name="category_input_hint">Category</string>
+    <string name="org_input_hint">Organization</string>
+
+
+
+
     <!-- Achievements activity -->
     <string name="achievement_trophies">My Trophies</string>
     <string name="achievement_badges">My Badges</string>

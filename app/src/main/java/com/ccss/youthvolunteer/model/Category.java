@@ -18,7 +18,11 @@ import java.util.List;
 public class Category extends ParseObject {
 
     public String getCategoryName(){
-        return getString("categoryName");
+        String name = getString("categoryName");
+        if (name == null) {
+            name = "";
+        }
+        return name;
     }
 
     public void setCategoryName(String value){
@@ -38,7 +42,11 @@ public class Category extends ParseObject {
     }
 
     public String getCategoryColor(){
-        return getString("categoryColor");
+        String color = getString("categoryColor");
+        if (color == null) {
+            color = "#FFFFFF";
+        }
+        return color;
     }
 
     public void setCategoryColor(String value){

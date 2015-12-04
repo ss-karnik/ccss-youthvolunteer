@@ -7,7 +7,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
         android:src="@android:drawable/ic_menu_help"
-        android:background="@drawable/whitecircle"
         android:padding="@dimen/com_parse_ui_small_vertical_spacing"
         android:contentDescription="@string/dialog_icon" />
 
@@ -28,13 +27,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_icon"
-        android:layout_margin="@dimen/com_parse_ui_large_vertical_spacing">
+        android:layout_margin="@dimen/com_parse_ui_smallest_vertical_spacing">
 
         <Button
             android:id="@+id/dialog_okay"
             style="@style/ParseLoginUI.Button"
             android:layout_weight="0.5"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/okay_text"
             android:padding="@dimen/com_parse_ui_small_vertical_spacing"
             android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"
@@ -42,7 +41,7 @@
 
         <Button
             android:id="@+id/dialog_cancel"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             style="@style/ParseLoginUI.Button"
             android:layout_weight="0.5"
             android:layout_marginStart="@dimen/com_parse_ui_small_horizontal_spacing"

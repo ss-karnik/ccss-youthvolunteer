@@ -52,9 +52,10 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void startManageActivityWithIntent(Class<? extends Activity> targetActivity, String extraIntent) {
+    protected void startManageActivityWithIdentifiers(Class<? extends Activity> targetActivity, String resourceType, String resourceObjectId) {
         Intent intent = new Intent(this, targetActivity);
-        intent.putExtra(Constants.MANAGE_ITEM_KEY, extraIntent);
+        intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
+        intent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
         startActivity(intent);
     }
 

@@ -56,7 +56,8 @@
             android:layout_height="wrap_content"
             android:text="@string/com_parse_ui_parse_new_user_label"
             android:fontFamily="sans-serif"
-            style="@style/ParseLoginUI.TextView.Title" />
+            android:textStyle="bold"
+            style="@style/ParseLoginUI.TextView.Normal" />
 
         <Button
             android:id="@+id/parse_signup_button"

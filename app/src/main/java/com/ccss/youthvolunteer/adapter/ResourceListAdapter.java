@@ -1,5 +1,7 @@
 package com.ccss.youthvolunteer.adapter;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,8 +15,9 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ccss.youthvolunteer.R;
+import com.ccss.youthvolunteer.activity.ManageSingleResourceActivity;
 import com.ccss.youthvolunteer.activity.ManageVolunteerOpportunityActivity;
-import com.ccss.youthvolunteer.activity.SingleResourceActivity;
+import com.ccss.youthvolunteer.activity.ResourcesFragment;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Strings;
@@ -23,10 +26,11 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 
-public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapter.ResourceViewHolder> {
+public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapter.ResourceViewHolder>  {
     private static final String TAG = "ResourceListAdapter";
     private List<ResourceModel> mResources;
     private Map<String, Boolean> mSelectedPositions = Maps.newHashMap();
+    private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
 
     /**
      * Initialize the list of the Adapter.
@@ -47,15 +51,25 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         return new ResourceViewHolder(v);
     }
 
+    public Map<String,Boolean> getSelectedItems(){
+        return mSelectedPositions;
+    }
+
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ResourceViewHolder viewHolder, final int position) {
         // Get element from list at this position and replace the contents of the view with that element
         final ResourceModel currentResource = mResources.get(position);
+        viewHolder.getResourceType().setText(currentResource.getResourceType());
 
         viewHolder.getTitleTextView().setText(currentResource.getTitle());
         viewHolder.getDescriptionTextView().setText(currentResource.getDescription());
-        viewHolder.getExtraInfoTextView().setText(currentResource.getExtraInformation());
+        if(Constants.CATEGORY_RESOURCE.equalsIgnoreCase(currentResource.getResourceType())){
+            viewHolder.getExtraInfoTextView().setBackgroundColor(Color.parseColor(currentResource.getExtraInformation()));
+            viewHolder.getExtraInfoTextView().setText(currentResource.getExtraInformation());
+        } else {
+            viewHolder.getExtraInfoTextView().setText(currentResource.getExtraInformation());
+        }
         viewHolder.getObjectIdTextView().setText(currentResource.getObjectId());
         // provide support for selected state
         updateCheckedState(viewHolder, currentResource);
@@ -76,7 +90,9 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         }
         String firstChar = item.getTitle().substring(0, 1).toUpperCase();
         ColorGenerator generator = ColorGenerator.MATERIAL;
-        int alphabetColor = generator.getColor(firstChar);
+        int alphabetColor = Constants.CATEGORY_RESOURCE.equalsIgnoreCase(item.getResourceType())
+                                    ? Color.parseColor(item.getExtraInformation())
+                                    : generator.getColor(firstChar);
         final TextDrawable drawable = TextDrawable.builder().buildRound(firstChar, alphabetColor);
 
         if(!Strings.isNullOrEmpty(resourceImageUri)){
@@ -102,11 +118,14 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         return mResources.size();
     }
 
+    public void setOnItemClickListener(ResourcesFragment.RecyclerItemClickListener clickListener) {
+        mItemClickListener = clickListener;
+    }
 
     /**
      * Provide a reference to the type of views that are being used per row
      */
-    public static class ResourceViewHolder extends RecyclerView.ViewHolder {
+    public static class ResourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final FrameLayout mResourceImageItem;
         private final ImageView mResourceImage;
         private final ImageView mSelectedImage;
@@ -115,6 +134,8 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         private final TextView mExtraInfo;
         private final TextView mObjectId;
         private final ImageView mEditResource;
+        private final TextView mResourceType;
+        private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
 
 
         public ResourceViewHolder(View v) {
@@ -135,15 +156,23 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             mExtraInfo = (TextView) v.findViewById(R.id.resource_info_extra);
             mObjectId = (TextView) v.findViewById(R.id.resource_object_id);
             mEditResource = (ImageView) v.findViewById(R.id.btn_edit_resource);
+            mResourceType = (TextView) v.findViewById(R.id.resource_object_type);
+            final String[] resourceType = {""};
 
             mEditResource.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " clicked for edit.");
-//                    if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceValue)){
-//                        startManageActivityWithIntent(ManageVolunteerOpportunityActivity.class, userOrganization);
+
+//                    resourceType[0] = mResourceType.getText().toString();
+//                    if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceType[0])){
+//                        Intent intent = new Intent(v.getContext(), ManageVolunteerOpportunityActivity.class);
+//                        intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType[0]);
+//                        intent.putExtra(Constants.OBJECT_ID_KEY, getObjectIdTextView().getText());
+//                        startActivity(intent);
+////                        startManageActivityWithIntent(, userOrganization);
 //                    } else {
-//                        startManageActivityWithIntent(SingleResourceActivity.class, resourceValue);
+//                        startManageActivityWithIntent(ManageSingleResourceActivity.class, mResourceType);
 //                    }
                 }
             });
@@ -186,6 +215,15 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
         public ImageView getEditImageView() {
             return mEditResource;
+        }
+
+        public TextView getResourceType() {
+            return mResourceType;
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
 
     }

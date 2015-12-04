@@ -21,48 +21,52 @@ public class ManageResourceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_resources_list_view);
 
-        switch (resourceValue){
-            case Constants.CATEGORY_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.INTEREST_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.SKILL_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.USER_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.SCHOOL_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.GROUP_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.ORGANIZATION_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
-                        .commit();
-                break;
-            case Constants.OPPORTUNITY_RESOURCE:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue, userOrganization))
-                        .commit();
-                break;
-        }
+        getSupportFragmentManager().beginTransaction()
+            .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+            .commit();
+
+//        switch (resourceValue){
+//            case Constants.CATEGORY_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.INTEREST_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.SKILL_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.USER_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.SCHOOL_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.GROUP_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.ORGANIZATION_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue))
+//                        .commit();
+//                break;
+//            case Constants.OPPORTUNITY_RESOURCE:
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue, userOrganization))
+//                        .commit();
+//                break;
+//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.manage_res_toolbar);
         setSupportActionBar(toolbar);
@@ -72,9 +76,9 @@ public class ManageResourceActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceValue)){
-                    startManageActivityWithIntent(ManageVolunteerOpportunityActivity.class, userOrganization);
+                    startManageActivityWithIdentifiers(ManageVolunteerOpportunityActivity.class, userOrganization, "");
                 } else {
-                    startManageActivityWithIntent(SingleResourceActivity.class, resourceValue);
+                    startManageActivityWithIdentifiers(ManageSingleResourceActivity.class, resourceValue, "");
                 }
             }
         });

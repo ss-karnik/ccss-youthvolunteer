@@ -206,7 +206,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         View navDrawerHeader = LayoutInflater.from(this).inflate(R.layout.nav_drawer_header, null);
         NavigationView navigationView = (NavigationView) findViewById(R.id.main_nav_view);
-        navigationView.removeHeaderView(navDrawerHeader);
         navigationView.addHeaderView(navDrawerHeader);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -464,14 +463,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             super.onBackPressed();
         }
     }
-//    @Override
-//    protected void onPostResume() {
-//        super.onPostResume();
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        boolean authenticated = !ParseAnonymousUtils.isLinked(currentUser) && currentUser.isAuthenticated();
-//        mNavigationView.getMenu().findItem(R.id.nav_logout).setVisible(authenticated);
-//        mNavigationView.getMenu().findItem(R.id.nav_edit_profile).setVisible(authenticated);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

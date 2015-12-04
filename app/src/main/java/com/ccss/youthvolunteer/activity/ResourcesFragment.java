@@ -1,11 +1,16 @@
 package com.ccss.youthvolunteer.activity;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -222,7 +227,33 @@ public class ResourcesFragment extends Fragment {
         mAdapter = new ResourceListAdapter(mResources);
         mRecyclerView.setAdapter(mAdapter);
 
+//        mAdapter.setOnItemClickListener(new RecyclerViewClickListener() {
+//            @Override
+//            public void onItemClick(int position, View v) {
+//                Log.d(TAG, "onItemClick position: " + position);
+//            }
+//
+//            @Override
+//            public void onItemLongClick(int position, View v) {
+//                Log.d(TAG, "onItemLongClick pos = " +
+//            }
+//        });
 
+       //mAdapter.setOnClickListener(new View.OnItemClickListener())
+
+//        mRecyclerView.addOnItemTouchListener(
+//                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putInt("id", position);
+//
+//                        Intent i = new Intent(getActivity(), MainViewPager.class);
+//                        i.putExtras(bundle);
+//                        startActivity(i);
+//                    }
+//                })
+//        );
         return layout;
     }
 
@@ -250,5 +281,46 @@ public class ResourcesFragment extends Fragment {
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
     }
+
+
+    public interface RecyclerItemClickListener{
+        void onItemClick(View view, String resourceType, String objectId);
+        void onItemLongClick(int position, View v);
+    }
+
+//    public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
+//        private OnItemClickListener mListener;
+//
+//        public interface OnItemClickListener {
+//            void onItemClick(View view, int position);
+//        }
+//
+//        GestureDetector mGestureDetector;
+//
+//        public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+//            mListener = listener;
+//            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+//                @Override public boolean onSingleTapUp(MotionEvent e) {
+//                    return true;
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//        }
+//
+//        @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+//            View childView = view.findChildViewUnder(e.getX(), e.getY());
+//            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
+//                mListener.onItemClick(childView, view.getChildPosition(childView));
+//                return true;
+//            }
+//            return false;
+//        }
+//
+//        @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
+//    }
 
 }

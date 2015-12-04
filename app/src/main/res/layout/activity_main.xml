@@ -41,7 +41,7 @@
             android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
             android:layout_marginRight="@dimen/image_size_large"
             android:layout_marginEnd="@dimen/image_size_large"
-            android:src="@android:drawable/ic_menu_add" />
+            android:src="@drawable/ic_add_white" />
 
     </android.support.design.widget.CoordinatorLayout>
 

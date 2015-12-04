@@ -162,6 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:prompt="@string/com_parse_ui_schoolname_input_hint"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
         <EditText

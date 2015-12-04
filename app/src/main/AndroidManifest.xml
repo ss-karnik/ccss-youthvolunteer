@@ -179,7 +179,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.SingleResourceActivity"
+        <activity android:name=".activity.ManageSingleResourceActivity"
             android:parentActivityName=".activity.ManageResourceActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

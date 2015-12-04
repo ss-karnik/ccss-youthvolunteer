@@ -171,7 +171,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
                 if (e == null) {
                     mInterests = objects;
                     setupInterestsView();
-                    mInterestsAdapter.notifyDataSetChanged();
+                    //mInterestsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -182,7 +182,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
                 if (e == null) {
                     mSkills = objects;
                     setupSkillsView();
-                    mSkillsAdapter.notifyDataSetChanged();
+                    //mSkillsAdapter.notifyDataSetChanged();
                 }
             }
         });

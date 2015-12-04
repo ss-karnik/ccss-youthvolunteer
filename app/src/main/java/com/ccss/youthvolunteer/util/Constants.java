@@ -42,6 +42,7 @@ public class Constants {
     public static final String USER_ORGANIZATION_KEY = "UserOrganization";
 
     public static final String ERROR_ITEM_KEY = "ErrorItemKey";
+    public static final String OBJECT_ID_KEY = "objectId";
 
     public static final int COOLING_PERIOD_BETWEEN_ACTIONS_IN_MINS = 10;
 
