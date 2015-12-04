@@ -142,7 +142,7 @@
                 android:id="@+id/radioMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/ParseLoginUI.TextView.Permission"
+                style="@style/ParseLoginUI.TextView.Normal"
                 android:layout_marginStart="@dimen/com_parse_ui_small_vertical_spacing"
                 android:layout_marginLeft="@dimen/com_parse_ui_small_vertical_spacing"
                 android:text="@string/radio_male"
@@ -151,7 +151,7 @@
 
             <RadioButton
                 android:id="@+id/radioFemale"
-                style="@style/ParseLoginUI.TextView.Permission"
+                style="@style/ParseLoginUI.TextView.Normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/radio_female" />
@@ -186,7 +186,7 @@
         <CheckBox android:id="@+id/checkbox_fbPublish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ParseLoginUI.TextView.Permission"
+            style="@style/ParseLoginUI.TextView.Normal"
             android:checked="true"
             android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
             android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"

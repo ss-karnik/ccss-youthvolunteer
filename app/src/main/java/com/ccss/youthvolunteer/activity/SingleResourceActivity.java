@@ -1,12 +1,13 @@
 package com.ccss.youthvolunteer.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.util.Constants;
+
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class SingleResourceActivity extends BaseActivity implements View.OnClickListener {
 
@@ -21,6 +22,20 @@ public class SingleResourceActivity extends BaseActivity implements View.OnClick
         //Set control visibility
         switch (resourceValue){
             case Constants.CATEGORY_RESOURCE:
+
+                final AmbilWarnaDialog dialog = new AmbilWarnaDialog(this, 0xffffffff , new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                    @Override
+                    public void onOk(AmbilWarnaDialog dialog, int color) {
+                        // color is the color selected by the user.
+                    }
+
+                    @Override
+                    public void onCancel(AmbilWarnaDialog dialog) {
+                        // cancel was selected by the user
+                    }
+                });
+
+                dialog.show();
 
                 break;
             case Constants.INTEREST_RESOURCE:

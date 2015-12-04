@@ -5,6 +5,7 @@
         android:id="@+id/dialog_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
         android:src="@android:drawable/ic_menu_help"
         android:background="@drawable/whitecircle"
         android:padding="@dimen/com_parse_ui_small_vertical_spacing"
@@ -14,7 +15,7 @@
         android:id="@+id/dialog_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        style="@style/ParseLoginUI.TextView.Title"
+        style="@style/ParseLoginUI.TextView.Normal"
         android:textColor="#000"
         android:padding="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="Somt text asds sda sd as"
@@ -35,6 +36,7 @@
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:text="@string/okay_text"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
             android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"
             android:layout_marginEnd="@dimen/com_parse_ui_small_vertical_spacing"  />
 

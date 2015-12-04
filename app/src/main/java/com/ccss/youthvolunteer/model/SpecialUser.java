@@ -9,11 +9,12 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Collections;
 import java.util.List;
 
 @ParseClassName("SpecialUser")
 public class SpecialUser extends ParseObject {
-    static List<SpecialUser> specialUsers;
+    private static List<SpecialUser> specialUsers;
 
     public String getEmailId(){
         return getString("emailId");
@@ -38,6 +39,7 @@ public class SpecialUser extends ParseObject {
     public void setRole(String value){
         put("role", value);
     }
+
     public boolean isSiteAdmin(){
         return getBoolean("siteAdmin");
     }
@@ -54,6 +56,50 @@ public class SpecialUser extends ParseObject {
         put("isActive", value);
     }
 
+    /**
+     * Retrieves the set of all Interests, ordered by title. Uses the cache if possible.
+     */
+    public static void findInBackground(final FindCallback<SpecialUser> callback) {
+        ParseQuery<SpecialUser> query = new ParseQuery<>(SpecialUser.class);
+        query.orderByAscending("emailId");
+        query.findInBackground(new SpecialUserFindCallback() {
+            @Override
+            protected void doneOnce(List<SpecialUser> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
+    /**
+     * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
+     * policy, but only call the callback once, with the first data available.
+     */
+    private abstract static class SpecialUserFindCallback implements FindCallback<SpecialUser> {
+        private boolean isCachedResult = true;
+        private boolean calledCallback = false;
+
+        @Override
+        public void done(List<SpecialUser> objects, ParseException e) {
+            if (!calledCallback) {
+                if (objects != null) {
+                    // We got a result, use it.
+                    calledCallback = true;
+                    doneOnce(objects, null);
+                } else if (!isCachedResult) {
+                    // We got called back twice, but got a null result both
+                    // times. Pass on the latest error.
+                    doneOnce(null, e);
+                }
+            }
+            isCachedResult = false;
+        }
+
+        /**
+         * Override this method with the callback that should only be called once.
+         */
+        protected abstract void doneOnce(List<SpecialUser> objects, ParseException e);
+    }
+
     public static List<SpecialUser> getAllSpecialUsers() {
 
         ParseQuery<SpecialUser> specialUserQuery = ParseQuery.getQuery(SpecialUser.class);
@@ -66,13 +112,16 @@ public class SpecialUser extends ParseObject {
                     try {
                         pinAll("SpecialUsers", objects);
                     } catch (ParseException ex) {
+                        specialUsers = Lists.newArrayList();
                         ex.printStackTrace();
                     }
+                } else {
+                    specialUsers = Lists.newArrayList();
                 }
             }
         });
 
-        return Lists.newArrayList();
+        return specialUsers != null ? specialUsers : Collections.EMPTY_LIST;
     }
 
     @Override

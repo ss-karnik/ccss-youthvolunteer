@@ -1,6 +1,7 @@
 package com.ccss.youthvolunteer.activity;
 
 import android.animation.PropertyValuesHolder;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build;
@@ -68,6 +69,11 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         if(!CheckNetworkConnection.isInternetAvailable(this)){
             showToastLong(R.string.internet_connection_unavailable);
+
+            Intent errorIntent = new Intent(this, ErrorMessageActivity.class);
+            errorIntent.putExtra(Constants.ERROR_ITEM_KEY, getResources().getString(R.string.internet_connection_unavailable));
+            startActivity(errorIntent);
+            return;
         }
 
         //currentUser
@@ -81,12 +87,16 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         currentUser.pinInBackground();
 
         if(!currentUser.isEmailVerified()){
-            String errorMessage = getResources().getText(R.string.verify_email_error_title) + "\n"
+            Intent errorIntent = new Intent(this, ErrorMessageActivity.class);
+            String errorMessage = getResources().getText(R.string.verify_email_error_title) + "\n" + "\n"
                     + getResources().getText(R.string.verify_email_error_message) + "\n"
-                    + getResources().getText(R.string.verify_email_error_message2) + " " + currentUser.getEmail()
-                    + getResources().getText(R.string.verify_email_error_message3) ;
-            showToastLong(errorMessage);
-            startActivity(AboutActivity.class);
+                    + getResources().getText(R.string.verify_email_error_message2) + " " + currentUser.getEmail() + ".\n"
+                    + getResources().getText(R.string.verify_email_error_message3) + "\n" + "\n"
+                    + getResources().getText(R.string.verify_email_error_message4);
+            errorIntent.putExtra(Constants.ERROR_ITEM_KEY, errorMessage);
+            startActivity(errorIntent);
+
+            return;
         }
 
         if (!currentUser.isProfileComplete()) {
@@ -448,7 +458,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();

@@ -22,4 +22,9 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="list_row_title">16sp</dimen>
+    <dimen name="list_row_content">14sp</dimen>
+    <dimen name="list_row_extra">12sp</dimen>
+    <dimen name="list_row_smallest">10sp</dimen>
 </resources>

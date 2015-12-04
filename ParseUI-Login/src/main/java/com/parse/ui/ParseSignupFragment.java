@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -163,13 +164,13 @@ public class ParseSignupFragment extends ParseLoginFragmentBase implements OnCli
         } else if (!isEmailValid(email)) {
             showToast(R.string.com_parse_ui_no_email_toast);
         } else  {
-            ParseUser user = new ParseUser();
+            ParseUser user = ParseObject.create(ParseUser.class);
 
             // Set standard fields
             user.setUsername(username.toLowerCase());
             user.setPassword(password);
             user.setEmail(email.toLowerCase());
-            user.put("", false);
+            //user.put("", false);
 
             loadingStart();
             user.signUpInBackground(new SignUpCallback() {

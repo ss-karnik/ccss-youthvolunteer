@@ -179,9 +179,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.SingleResourceActivity" >
+        <activity android:name=".activity.SingleResourceActivity"
+            android:parentActivityName=".activity.ManageResourceActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.ManageResourceActivity" />
         </activity>
-        <activity android:name=".activity.ManageVolunteerOpportunityActivity" >
+        <activity android:name=".activity.ManageVolunteerOpportunityActivity"
+            android:parentActivityName=".activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.ErrorMessageActivity"
+            android:parentActivityName=".activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
     </application>
 

@@ -41,6 +41,8 @@ public class Constants {
     public static final String OPPORTUNITY_RESOURCE = "Opportunity";
     public static final String USER_ORGANIZATION_KEY = "UserOrganization";
 
+    public static final String ERROR_ITEM_KEY = "ErrorItemKey";
+
     public static final int COOLING_PERIOD_BETWEEN_ACTIONS_IN_MINS = 10;
 
     //Enter in lowercase only

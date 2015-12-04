@@ -34,7 +34,7 @@
                 android:layout_toEndOf="@id/person_photo"
                 android:text="Volunteer Number 1"
                 android:layout_alignParentTop="true"
-                android:textSize="18sp"/>
+                android:textSize="@dimen/list_row_title"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                 android:layout_toEndOf="@id/person_photo"
                 android:layout_below="@id/person_name"
                 android:text="Person School"
-                android:textSize="14sp" />
+                android:textSize="@dimen/list_row_content" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_toEndOf="@id/person_photo"
                 android:layout_below="@id/person_school"
                 android:text="Person Title"
-                android:textSize="14sp" />
+                android:textSize="@dimen/list_row_content" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/person_school"
                 android:text="#1 with 135 points"
-                android:textSize="14sp" />
+                android:textSize="@dimen/list_row_content" />
 
             <ImageView
                 android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.ccss.youthvolunteer.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -316,8 +317,35 @@ public class BaseActivity extends AppCompatActivity {
             }
 
             case R.id.action_logout: {
-                ParseUser.logOut();
-                finish();
+
+                final Dialog dialog = new Dialog(this);
+                dialog.setContentView(R.layout.okay_cancel_dialog);
+                dialog.setTitle(getResources().getText(R.string.logout_title));
+
+                // set the custom dialog components - text, image and button
+                TextView text = (TextView) dialog.findViewById(R.id.dialog_text);
+                text.setText(getResources().getText(R.string.logout_prompt));
+
+                Button dialogOkayButton = (Button) dialog.findViewById(R.id.dialog_okay);
+                dialogOkayButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        ParseUser.logOut();
+                        startActivity(DispatchActivity.class);
+                    }
+                });
+
+                Button dialogCancelButton = (Button) dialog.findViewById(R.id.dialog_cancel);
+                dialogCancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
                 break;
             }
 

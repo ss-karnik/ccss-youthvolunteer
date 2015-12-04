@@ -11,7 +11,9 @@
     <string name="verify_email_error_title"><b>Please confirm your email address!</b></string>
     <string name="verify_email_error_message">Thank you for signing up. Please take a moment to activate your account.</string>
     <string name="verify_email_error_message2">An email with confirmation link was sent to </string>
-    <string name="verify_email_error_message3">Click on the link in the message to complete your sign up.</string>
+    <string name="verify_email_error_message3">Follow instructions in the message to complete your sign up.</string>
+    <string name="verify_email_error_message4">We look forward to see you contribute to the society!!</string>
+
     <string name="title_activity_login">Sign in</string>
     <string name="profile_title_logged_in">Signed in as</string>
     <string name="profile_logout_button_label">Sign out</string>
@@ -137,6 +139,9 @@
     <string name="prompt_save">Save</string>
     <string name="action_name">Title</string>
     <string name="log_activity_to_wall_prompt">Would you like to post this activity to the wall?</string>
+
+    <string name="logout_title">Log out?</string>
+    <string name="logout_prompt">Are you sure you want to exit?</string>
 
     <string name="category_prompt">Select Category</string>
     <string name="action_prompt">Select Action</string>

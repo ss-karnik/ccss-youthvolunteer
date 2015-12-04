@@ -52,7 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:textStyle="bold"
                 android:text="Math Wiz"
-                android:textSize="18sp"/>
+                android:textSize="@dimen/list_row_title"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                 android:text="A+ in maths at O levels this is a long test to check if the text is going below the image"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/list_row_content"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 android:text="Ang Mo Kio"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/list_row_content"/>
 
             <TextView
                 android:id="@+id/resource_object_id"

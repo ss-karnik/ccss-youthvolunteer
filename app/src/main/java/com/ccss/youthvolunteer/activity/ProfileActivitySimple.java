@@ -99,7 +99,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     private InterestsExpandableAdapter mInterestsAdapter;
     private List<Interests> mInterests = Lists.newArrayList();
     private List<Skills> mSkills = Lists.newArrayList();
-    private List<SpecialUser> mSpecialUsers = Lists.newArrayList();
+    private List<SpecialUser> mSpecialUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,11 +129,10 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             }
         });
 
+        loadStaticData();
         setupSchoolSpinner();        
         //setupSkillsView();
         //setupInterestsView();
-
-        loadStaticData();
 
         ImageButton btnChangeDate = (ImageButton) findViewById(R.id.cal_button);
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +156,14 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     }
 
     private void loadStaticData() {
-        mSpecialUsers = SpecialUser.getAllSpecialUsers();
+        SpecialUser.findInBackground(new FindCallback<SpecialUser>() {
+            @Override
+            public void done(List<SpecialUser> objects, ParseException e) {
+                if(e == null) {
+                    mSpecialUsers = objects;
+                }
+            }
+        });
 
         Interests.findInBackground(new FindCallback<Interests>() {
             @Override
@@ -165,7 +171,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
                 if (e == null) {
                     mInterests = objects;
                     setupInterestsView();
-                    //mInterestsAdapter.notifyDataSetChanged();
+                    mInterestsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -176,7 +182,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
                 if (e == null) {
                     mSkills = objects;
                     setupSkillsView();
-                    //mSkillsAdapter.notifyDataSetChanged();
+                    mSkillsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -415,7 +421,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         }
 
         //if (Strings.isNullOrEmpty(volunteer.getOrganizationName())) {
-            final SpecialUser specialUser = Iterables.find(mSpecialUsers, isSpecialUser(volunteer.getEmail()));
+            final SpecialUser specialUser = Iterables.tryFind(mSpecialUsers, isSpecialUser(volunteer.getEmail())).orNull()  ;
             if (specialUser != null) {
                 assignRole(specialUser);
                 volunteer.setSpecialRole(specialUser.getRole());
