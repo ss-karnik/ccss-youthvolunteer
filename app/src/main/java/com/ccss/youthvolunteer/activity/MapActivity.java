@@ -39,7 +39,7 @@ public class MapActivity extends BaseActivity
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                startActivity(VolunteerOpportunityActivity.class);
+//                startManageActivityWithIntent(VolunteerOpportunityActivity.class);
 //            }
 //        });
 
@@ -115,14 +115,14 @@ public class MapActivity extends BaseActivity
         } else if (id == R.id.nav_view_volunteer) {
             startActivity(VolunteerOpportunityActivity.class);
         } else if (id == R.id.nav_view_ranking) {
-            //startActivity(RankingActivity.class);
+            //startManageActivityWithIntent(RankingActivity.class);
         } else if (id == R.id.nav_publish) {
             startActivity(PublishActivity.class);
         }  else if (id == R.id.nav_view_achievement) {
-            //startActivity(AchievementsActivity.class);
+            //startManageActivityWithIntent(AchievementsActivity.class);
         }
         else if (id == R.id.nav_edit_profile) {
-            //startActivity(ParseUI-Login..class);
+            //startManageActivityWithIntent(ParseUI-Login..class);
         }
         else if (id == R.id.nav_logout) {
             ParseUser.logOut();

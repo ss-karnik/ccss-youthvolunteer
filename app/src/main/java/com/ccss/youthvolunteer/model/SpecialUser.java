@@ -1,6 +1,7 @@
 package com.ccss.youthvolunteer.model;
 
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
@@ -91,7 +92,7 @@ public class SpecialUser extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(this.getEmailId(), this.getOrganizationName(), this.getRole(),
+        return new ResourceModel(Constants.USER_RESOURCE, this.getEmailId(), this.getOrganizationName(), this.getRole(),
                 this.getObjectId(), "", this.isActive());
     }
 }

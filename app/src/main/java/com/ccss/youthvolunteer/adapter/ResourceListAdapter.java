@@ -13,7 +13,10 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ccss.youthvolunteer.R;
+import com.ccss.youthvolunteer.activity.ManageVolunteerOpportunityActivity;
+import com.ccss.youthvolunteer.activity.SingleResourceActivity;
 import com.ccss.youthvolunteer.model.ResourceModel;
+import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
@@ -137,6 +140,11 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " clicked for edit.");
+//                    if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceValue)){
+//                        startManageActivityWithIntent(ManageVolunteerOpportunityActivity.class, userOrganization);
+//                    } else {
+//                        startManageActivityWithIntent(SingleResourceActivity.class, resourceValue);
+//                    }
                 }
             });
 

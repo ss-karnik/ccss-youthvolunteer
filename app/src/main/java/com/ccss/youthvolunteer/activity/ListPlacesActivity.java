@@ -167,7 +167,7 @@ public class ListPlacesActivity extends BaseActivity implements AdapterView.OnIt
                 startPlaceSearch();
                 break;
 //            case R.id.action_add:
-//                startActivity(EditPlaceActivity.class);
+//                startManageActivityWithIntent(EditPlaceActivity.class);
 //                break;
 
             default:

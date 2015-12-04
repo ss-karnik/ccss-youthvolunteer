@@ -478,7 +478,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
 //            public void run() {
-//                startActivity(MainActivity.class);
+//                startManageActivityWithIntent(MainActivity.class);
 //            }
 //        }, 2000);
     }

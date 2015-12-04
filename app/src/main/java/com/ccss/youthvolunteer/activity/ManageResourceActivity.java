@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.util.Constants;
-import com.parse.ParseUser;
 
 public class ManageResourceActivity extends BaseActivity {
 
@@ -75,9 +72,9 @@ public class ManageResourceActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceValue)){
-                    startActivity(ManageVolunteerOpportunityActivity.class, userOrganization);
+                    startManageActivityWithIntent(ManageVolunteerOpportunityActivity.class, userOrganization);
                 } else {
-                    startActivity(SingleResourceActivity.class, resourceValue);
+                    startManageActivityWithIntent(SingleResourceActivity.class, resourceValue);
                 }
             }
         });

@@ -51,7 +51,7 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void startActivity(Class<? extends Activity> targetActivity, String extraIntent) {
+    protected void startManageActivityWithIntent(Class<? extends Activity> targetActivity, String extraIntent) {
         Intent intent = new Intent(this, targetActivity);
         intent.putExtra(Constants.MANAGE_ITEM_KEY, extraIntent);
         startActivity(intent);

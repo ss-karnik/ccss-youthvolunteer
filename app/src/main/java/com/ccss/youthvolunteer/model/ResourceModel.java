@@ -6,6 +6,7 @@ public class ResourceModel {
     String extraInformation;
     String objectId;
     String imageUri;
+    String resourceType;
     boolean active;
     boolean selected;
 
@@ -41,6 +42,14 @@ public class ResourceModel {
         this.objectId = value;
     }
 
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
     public String getImageUri() {
         return imageUri.trim();
     }
@@ -65,7 +74,8 @@ public class ResourceModel {
         this.selected = value;
     }
 
-    public ResourceModel(String title, String description, String extraInformation, String objectId, String imageUri, boolean active) {
+    public ResourceModel(String resourceType, String title, String description, String extraInformation, String objectId, String imageUri, boolean active) {
+        this.resourceType = resourceType;
         this.title = title;
         this.description = description;
         this.extraInformation = extraInformation;

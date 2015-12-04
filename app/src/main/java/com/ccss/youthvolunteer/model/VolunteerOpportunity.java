@@ -2,6 +2,7 @@ package com.ccss.youthvolunteer.model;
 
 import android.support.annotation.NonNull;
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.VolunteerOpportunityByDateComparator;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -50,7 +51,7 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(this.getTitle(), this.getDescription(),
+        return new ResourceModel(Constants.OPPORTUNITY_RESOURCE, this.getTitle(), this.getDescription(),
                 this.getOrganizationName(), this.getObjectId(), "", this.isActive());
     }
 

@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
@@ -56,7 +57,7 @@ public class Organization extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(this.getOrganizationName(), "", "", this.getObjectId(),
+        return new ResourceModel(Constants.ORGANIZATION_RESOURCE, this.getOrganizationName(), "", "", this.getObjectId(),
                 this.getImage() == null ? "" : this.getImage().getUrl(), this.isActive());
     }
 

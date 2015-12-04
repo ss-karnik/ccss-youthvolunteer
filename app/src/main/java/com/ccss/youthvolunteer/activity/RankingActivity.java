@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.RankingViewAdapter;
@@ -19,24 +21,25 @@ public class RankingActivity extends BaseActivity {
 
     private List<RankingModel> mVolunteers = Lists.newArrayList();
     private RankingViewAdapter mAdapter;
-    private RecyclerView mVolunteerView;
-    private Context mContext;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ranking);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.ranking_progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
+
         initializeData();
 
-        mVolunteerView = (RecyclerView)findViewById(R.id.ranking_recycler_view);
+        RecyclerView mVolunteerView = (RecyclerView) findViewById(R.id.ranking_list_view);
         mVolunteerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mVolunteerView.setLayoutManager(layoutManager);
-        mAdapter = new RankingViewAdapter(mContext, mVolunteers);
+        mAdapter = new RankingViewAdapter(this, mVolunteers);
         mVolunteerView.setAdapter(mAdapter);
-        mContext = this;
     }
 
     private void initializeData(){
@@ -50,6 +53,7 @@ public class RankingActivity extends BaseActivity {
                             user.getSchoolName(), userPointsAndRank, user.getProfileImageUri()));
                 }
                 mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

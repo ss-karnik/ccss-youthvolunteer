@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -53,7 +54,7 @@ public class Skills extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(this.getSkillTitle(), this.getDescription(),
+        return new ResourceModel(Constants.SKILL_RESOURCE, this.getSkillTitle(), this.getDescription(),
                 "", this.getObjectId(), this.getImage() == null ? "" : this.getImage().getUrl(), true);
     }
 
