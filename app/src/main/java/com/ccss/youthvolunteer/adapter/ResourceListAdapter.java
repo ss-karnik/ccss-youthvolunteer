@@ -15,12 +15,15 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.google.common.base.Strings;
+import com.google.common.collect.Maps;
 
 import java.util.List;
+import java.util.Map;
 
 public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapter.ResourceViewHolder> {
     private static final String TAG = "ResourceListAdapter";
     private List<ResourceModel> mResources;
+    private Map<String, Boolean> mSelectedPositions = Maps.newHashMap();
 
     /**
      * Initialize the list of the Adapter.
@@ -79,6 +82,8 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             holder.getResourceImageView().setImageDrawable(drawable);
         }
 
+        mSelectedPositions.put(item.getObjectId(), item.isSelected());
+
         if(item.isSelected()) {
             holder.getResourceImageView().setVisibility(View.GONE);
             holder.getSelectedImage().setVisibility(View.VISIBLE);
@@ -131,14 +136,14 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             mEditResource.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element with id" + getObjectIdTextView().getText() + " clicked for edit.");
+                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " clicked for edit.");
                 }
             });
 
             mResourceImageItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element with id" + getObjectIdTextView().getText() + " checked.");
+                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " checked.");
                 }
             });
         }

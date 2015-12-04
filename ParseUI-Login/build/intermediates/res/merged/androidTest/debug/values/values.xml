@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <color name="com_parse_ui_facebook_login_button">#3B5998</color>
     <color name="com_parse_ui_facebook_login_button_focus">#304F8B</color>
@@ -131,15 +131,18 @@
         <item name="android:textSize">18sp</item>
     </style>
     <style name="ParseLoginUI.TextView.Normal" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-    <style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button</item>
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="ParseLoginUI.TextView.Title" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button_focus</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
+        <item name="android:textSize">24sp</item>
     </style>
 </resources>

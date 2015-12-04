@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="com_parse_ui_facebook_login_button">#3B5998</color>
     <color name="com_parse_ui_facebook_login_button_focus">#304F8B</color>
@@ -18,7 +18,7 @@
     <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
     <color name="gray">#737373</color>
     <color name="hyperlink">#0099CC</color>
-    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/src/main/res/values/dimens.xml -->
+    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="com_parse_ui_horizontal_margin">16dp</dimen>
     <dimen name="com_parse_ui_large_vertical_spacing">24dp</dimen>
@@ -29,7 +29,7 @@
     <dimen name="com_parse_ui_vertical_margin">16dp</dimen>
     <dimen name="com_parse_ui_vertical_spacing">16dp</dimen>
     <dimen name="com_parse_ui_xlarge_vertical_spacing">36dp</dimen>
-    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/src/main/res/values/strings.xml -->
+    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/src/main/res/values/strings.xml -->
     <eat-comment/>
     <plurals name="com_parse_ui_password_too_short_toast">
         <item quantity="one">Password must be at least %d character long</item>
@@ -102,7 +102,7 @@
     <string name="com_parse_ui_username_taken_toast">Username is already taken, please choose a different one</string>
     <string name="radio_female">Female</string>
     <string name="radio_male">Male</string>
-    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ParseUI-Login/src/main/res/values/styles.xml -->
+    <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="ParseLoginUI"/>
     <style name="ParseLoginUI.Button" parent="@android:style/Widget.Button">
@@ -137,15 +137,18 @@
         <item name="android:textSize">18sp</item>
     </style>
     <style name="ParseLoginUI.TextView.Normal" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-    <style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button</item>
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <style name="ParseLoginUI.TextView.Title" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@color/com_parse_ui_facebook_login_button_focus</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily"/>
+        <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
+        <item name="android:textSize">24sp</item>
     </style>
 </resources>

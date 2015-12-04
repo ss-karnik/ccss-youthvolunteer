@@ -34,6 +34,8 @@ public class RankingActivity extends BaseActivity {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mVolunteerView.setLayoutManager(layoutManager);
+        mAdapter = new RankingViewAdapter(mContext, mVolunteers);
+        mVolunteerView.setAdapter(mAdapter);
         mContext = this;
     }
 
@@ -47,9 +49,7 @@ public class RankingActivity extends BaseActivity {
                     mVolunteers.add(new RankingModel(user.getFullName(), user.getUserLevel().getTitle(),
                             user.getSchoolName(), userPointsAndRank, user.getProfileImageUri()));
                 }
-                //mAdapter.notifyDataSetChanged();
-                mAdapter = new RankingViewAdapter(mContext, mVolunteers);
-                mVolunteerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

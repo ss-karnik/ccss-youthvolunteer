@@ -16,12 +16,13 @@ public class ManageResourceActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_resources_list_view);
-
         Intent manageIntent = getIntent();
         final String resourceValue = manageIntent.getStringExtra(Constants.MANAGE_ITEM_KEY);
         final String userOrganization = manageIntent.getStringExtra(Constants.USER_ORGANIZATION_KEY);
+
+        setTitle(getResources().getText(R.string.manage_title) + " " + resourceValue);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.manage_resources_list_view);
 
         switch (resourceValue){
             case Constants.CATEGORY_RESOURCE:

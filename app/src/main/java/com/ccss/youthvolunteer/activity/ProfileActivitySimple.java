@@ -130,8 +130,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         });
 
         setupSchoolSpinner();        
-        setupSkillsView();
-        setupInterestsView();
+        //setupSkillsView();
+        //setupInterestsView();
 
         loadStaticData();
 
@@ -164,7 +164,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             public void done(List<Interests> objects, ParseException e) {
                 if (e == null) {
                     mInterests = objects;
-                    mInterestsAdapter.notifyDataSetChanged();
+                    setupInterestsView();
+                    //mInterestsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -174,7 +175,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             public void done(List<Skills> objects, ParseException e) {
                 if (e == null) {
                     mSkills = objects;
-                    mSkillsAdapter.notifyDataSetChanged();
+                    setupSkillsView();
+                    //mSkillsAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -229,8 +231,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mInterestsAdapter.onSaveInstanceState(outState);
-        mSkillsAdapter.onSaveInstanceState(outState);
+        //mInterestsAdapter.onSaveInstanceState(outState);
+        //mSkillsAdapter.onSaveInstanceState(outState);
         // Make sure you save the current image resource
         outState.putParcelable(PROFILE_IMAGE, ((BitmapDrawable)mProfileImageButton.getDrawable()).getBitmap());
         super.onSaveInstanceState(outState);
@@ -243,8 +245,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mInterestsAdapter.onRestoreInstanceState(savedInstanceState);
-        mSkillsAdapter.onRestoreInstanceState(savedInstanceState);
+        //mInterestsAdapter.onRestoreInstanceState(savedInstanceState);
+        //mSkillsAdapter.onRestoreInstanceState(savedInstanceState);
 
         Bitmap bmp = savedInstanceState.getParcelable(PROFILE_IMAGE);
         mProfileImageButton.setImageBitmap(bmp);

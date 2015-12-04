@@ -47,6 +47,7 @@ public class ResourcesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
     private ResourceListAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     /**
      * Use this factory method to create a new instance of
@@ -94,8 +95,9 @@ public class ResourcesFragment extends Fragment {
                                 for (Category category : objects) {
                                     mResources.add(category.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -108,8 +110,9 @@ public class ResourcesFragment extends Fragment {
                                 for (Interests interest : objects) {
                                     mResources.add(interest.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -121,8 +124,9 @@ public class ResourcesFragment extends Fragment {
                                 for (Skills skill : objects) {
                                     mResources.add(skill.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -132,6 +136,7 @@ public class ResourcesFragment extends Fragment {
                         mResources.add(specialUser.convertToResourceModel());
                     }
                     mAdapter.notifyDataSetChanged();
+                    mProgressBar.setVisibility(View.GONE);
                     break;
                 case Constants.SCHOOL_RESOURCE:
                     School.findInBackground(new FindCallback<School>() {
@@ -141,8 +146,9 @@ public class ResourcesFragment extends Fragment {
                                 for (School school : objects) {
                                     mResources.add(school.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -155,6 +161,8 @@ public class ResourcesFragment extends Fragment {
 //                                    mResources.add(specialUser.convertToResourceModel());
 //                                }
 //                            }
+//                    mAdapter.notifyDataSetChanged();
+//                    mProgressBar.setVisibility(View.GONE);
 //                        }
 //                    });
                     break;
@@ -166,8 +174,9 @@ public class ResourcesFragment extends Fragment {
                                 for (Organization org : objects) {
                                     mResources.add(org.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -179,8 +188,9 @@ public class ResourcesFragment extends Fragment {
                                 for (VolunteerOpportunity opportunity : objects) {
                                     mResources.add(opportunity.convertToResourceModel());
                                 }
-                                mAdapter.notifyDataSetChanged();
                             }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
                         }
                     });
                     break;
@@ -198,7 +208,7 @@ public class ResourcesFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        ProgressBar mProgressBar = (ProgressBar) layout.findViewById(R.id.resource_list_progress_bar);
+        mProgressBar = (ProgressBar) layout.findViewById(R.id.resource_list_progress_bar);
         mProgressBar.setVisibility(View.VISIBLE);
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -212,7 +222,7 @@ public class ResourcesFragment extends Fragment {
         mAdapter = new ResourceListAdapter(mResources);
         mRecyclerView.setAdapter(mAdapter);
 
-        mProgressBar.setVisibility(View.GONE);
+
         return layout;
     }
 

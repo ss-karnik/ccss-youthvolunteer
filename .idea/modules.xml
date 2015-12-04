@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ParseUI-Login/ParseUI-Login.iml" filepath="$PROJECT_DIR$/ParseUI-Login/ParseUI-Login.iml" />
       <module fileurl="file://$PROJECT_DIR$/ParseUI-Widget/ParseUI-Widget.iml" filepath="$PROJECT_DIR$/ParseUI-Widget/ParseUI-Widget.iml" />
-      <module fileurl="file://$PROJECT_DIR$/YouthVolunteer.iml" filepath="$PROJECT_DIR$/YouthVolunteer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ccss-youthvolunteer.iml" filepath="$PROJECT_DIR$/ccss-youthvolunteer.iml" />
     </modules>
   </component>
 </project>

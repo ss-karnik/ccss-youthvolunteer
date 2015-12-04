@@ -5,11 +5,11 @@ public class Constants {
     public static final String CCSS_URL = "http://www.carecom.org.sg/";
     public static final String CCSS_FACEBOOK_PAGE = "https://www.facebook.com/carecommunityservicessociety";
 
-    public static final String PARSE_APPLICATION_KEY = "PARSE_APP_ID";
-    public static final String PARSE_CLIENT_KEY = "PARSE_CLIENT_KEY";
+    public static final String PARSE_APPLICATION_KEY = "zgf2GHFb5OlcmPHhnqcByNdGickfavaWqopQhvGw";
+    public static final String PARSE_CLIENT_KEY = "4enb4bsmZrZywUjOeVCQWvyPxrCdKHQw8d9u03Sb";
 
-    public static final String FB_APP_ID = "FB_APP_ID";
-    public static final String GOOGLE_API_KEY = "GOOGLE_API_KEY-pJFH-oYcYD2tyXo9eXqWU9M";
+    public static final String FB_APP_ID = "985731814799032";
+    public static final String GOOGLE_API_KEY = "AIzaSyCewRzoZ23-pJFH-oYcYD2tyXo9eXqWU9M";
 
     public static final String POST_BROADCAST_CHANNEL = "broadcastPost";
     public static final String OPPORTUNITY_BROADCAST_CHANNEL = "broadcastOpportunity";

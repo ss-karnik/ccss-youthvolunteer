@@ -102,7 +102,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 DialogFragment timeFragment = new LogHoursActivity.DurationPickerFragment();
-                timeFragment.show(getFragmentManager(), "datePicker");
+                timeFragment.show(getFragmentManager(), "durationPicker");
             }
         });
     }

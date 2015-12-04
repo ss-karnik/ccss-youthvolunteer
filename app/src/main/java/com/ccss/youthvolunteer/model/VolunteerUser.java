@@ -262,7 +262,7 @@ public class VolunteerUser extends ParseUser {
      */
     private static ParseQuery<VolunteerUser> createQuery() {
         ParseQuery<VolunteerUser> query = new ParseQuery<VolunteerUser>(VolunteerUser.class);
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         return query;
     }
 

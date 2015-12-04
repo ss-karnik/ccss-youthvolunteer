@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     private float mSeries3Value;
 
     private HorizontalBarChartView mSgCompareChart;
-    private final String[] mLabelsSgChart= {"You", "SG"};
+    private final String[] mLabelsSgChart= {"You", "SG (avg.)"};
     private final float [] mValuesSgChart = {9.06f, 4.16f };
     private TextView mTextViewTwo;
     private TextView mTextViewMetricTwo;
@@ -100,11 +100,11 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
             setSupportActionBar(toolbar);
 
-            Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
-                    getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName(), Snackbar.LENGTH_LONG);
-            snackbar.show();
+//            Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
+//                    getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName(), Snackbar.LENGTH_LONG);
+//            snackbar.show();
 
-            //showToastLong(getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName());
+            showToastLong(getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName());
 
             //region Navigation drawer header section
             initializeNavigationDrawer(currentUser, toolbar);
@@ -112,10 +112,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
             //Get the userPoints and determine if the user is new
             TextView myPointsAndRank = (TextView) findViewById(R.id.main_points_accrued);
-            myPointsAndRank.setText("With 90 points you are ranked #1 out of 3 volunteers!!");
+            myPointsAndRank.setText("With 90 points you are ranked #1 out of 3 volunteers.");
 
             TextView monthStats = (TextView) findViewById(R.id.main_month_points);
-            monthStats.setText("Your monthly target: 20 hrs. Hours done: 9.00.");
+            monthStats.setText("Monthly target: 20 hrs. Achieved: 9.00.");
 
             mDecoViewChart = (DecoView) findViewById(R.id.dynamicArcView);
 
@@ -196,6 +196,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         View navDrawerHeader = LayoutInflater.from(this).inflate(R.layout.nav_drawer_header, null);
         NavigationView navigationView = (NavigationView) findViewById(R.id.main_nav_view);
+        navigationView.removeHeaderView(navDrawerHeader);
         navigationView.addHeaderView(navDrawerHeader);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -446,7 +447,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

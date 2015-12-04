@@ -20,77 +20,64 @@
         android:text="@string/main_message"
         android:shadowColor="@color/com_parse_ui_facebook_login_button_push"
         android:singleLine="true"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textIsSelectable="false" />
 
-    <TextView
-        android:id="@+id/main_goodness"
+    <!--<TextView-->
+        <!--android:id="@+id/main_goodness"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"-->
+        <!--android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"-->
+        <!--android:layout_below="@+id/main_line_one"-->
+        <!--style="@style/ParseLoginUI.TextView.Normal"-->
+        <!--android:gravity="center"-->
+        <!--android:textStyle="italic"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:text="@string/main_goodness" />-->
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/top_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
-        android:layout_below="@+id/main_line_one"
-        style="@style/ParseLoginUI.TextView.Normal"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:text="@string/main_goodness" />
+        card_view:contentPadding="@dimen/com_parse_ui_smallest_vertical_spacing"
+        card_view:cardBackgroundColor="#ECF0F1"
+        android:layout_below="@id/main_line_one"
+        card_view:cardCornerRadius="4dp">
 
-    <TextView
-        android:id="@+id/main_points_accrued"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="@string/main_points_rank"
-        android:layout_below="@id/main_goodness"
-        android:layout_centerHorizontal="true"
-        style="@style/ParseLoginUI.TextView.Normal"
-        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing" />
+            <TextView
+                android:id="@+id/main_points_accrued"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/main_points_rank"
+                android:layout_centerHorizontal="true"
+                style="@style/ParseLoginUI.TextView.Normal" />
 
-    <View
-        android:id="@+id/sep_1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/main_points_accrued"
-        android:background="@color/com_parse_ui_twitter_login_button"/>
+    </android.support.v7.widget.CardView>
 
     <TextView
         android:id="@+id/main_month_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/top_card"
         style="@style/ParseLoginUI.TextView.Normal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/sep_1"
+        android:textStyle="bold"
         android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="@string/main_this_month_title" />
-    <View
-        android:id="@+id/sep_2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/main_points_accrued"
-        android:background="@color/com_parse_ui_twitter_login_button"/>
-
-    <TextView
-        android:id="@+id/main_month_points"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/ParseLoginUI.TextView.Normal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/main_month_title"
-        android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-        android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
-        android:text="@string/main_month_points" />
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/deco_card"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="250dp"
         card_view:cardBackgroundColor="#ECF0F1"
-        android:layout_below="@id/main_month_points"
+        android:layout_below="@id/main_month_title"
         card_view:cardCornerRadius="4dp">
 
         <RelativeLayout
@@ -98,8 +85,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/main_month_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.TextView.Permission"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:layout_marginBottom="@dimen/com_parse_ui_small_vertical_spacing"
+                android:text="@string/main_month_points" />
+
             <RelativeLayout
                 android:id="@+id/deco_chart_main"
+                android:layout_below="@id/main_month_points"
                 android:layout_width="200dp"
                 android:layout_height="200dp">
                 <TextView
@@ -110,7 +110,7 @@
                     android:layout_centerVertical="true"
                     android:text="aaa"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="40sp"/>
+                    android:textSize="34sp"/>
 
                 <TextView
                     android:id="@+id/textRemaining"
@@ -136,6 +136,7 @@
                 android:orientation="vertical"
                 android:layout_toRightOf="@id/deco_chart_main"
                 android:layout_toEndOf="@id/deco_chart_main"
+                android:layout_alignParentBottom="true"
                 android:paddingLeft="@dimen/com_parse_ui_smallest_vertical_spacing"
                 android:paddingStart="@dimen/com_parse_ui_smallest_vertical_spacing"
                 android:layout_height="wrap_content" >
@@ -154,6 +155,7 @@
                     android:id="@+id/cat_green"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
                     android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
                     android:background="@drawable/category_green_indicator"
@@ -163,11 +165,23 @@
                     android:id="@+id/cat_advocacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/white"
                     android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
                     android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
                     android:background="@drawable/category_advocacy_indicator"
                     android:textSize="12sp" />
 
+                <TextView
+                    android:id="@+id/data_as_of"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlackPrimaryDark"
+                    android:layout_marginTop="@dimen/image_size_large"
+                    android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:textStyle="italic"
+                    android:text="*data as of 04/12/2016"
+                    android:textSize="10sp" />
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

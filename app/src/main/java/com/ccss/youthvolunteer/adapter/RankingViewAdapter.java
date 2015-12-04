@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.model.RankingModel;
-import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.CircleTransform;
 import com.squareup.picasso.Picasso;
 
