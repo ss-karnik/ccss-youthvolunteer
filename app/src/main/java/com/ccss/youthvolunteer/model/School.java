@@ -9,10 +9,9 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @ParseClassName("School")
@@ -26,6 +25,18 @@ public class School extends ParseObject {
         put("schoolName", value);
     }
 
+    public String getDescription() {
+        String description = getString("description");
+        if (description == null) {
+            description = "";
+        }
+        return description;
+    }
+
+    public void setDescription(String value){
+        put("description", value);
+    }
+
     public boolean isActive() {
         return getBoolean("isActive");
     }
@@ -34,11 +45,11 @@ public class School extends ParseObject {
         put("isActive", value);
     }
 
-    public ParseFile getImage() {
+    public ParseFile getLogo() {
         return getParseFile("logoImage");
     }
 
-    public void setImage(ParseFile value) {
+    public void setLogo(ParseFile value) {
         put("logoImage", value);
     }
 
@@ -60,7 +71,7 @@ public class School extends ParseObject {
 
     public ResourceModel convertToResourceModel() {
         return new ResourceModel(Constants.SCHOOL_RESOURCE, this.getSchoolName(), "", "", this.getObjectId(),
-                this.getImage() == null ? "" : this.getImage().getUrl(), this.isActive());
+                this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive());
     }
 
     /**
@@ -101,6 +112,15 @@ public class School extends ParseObject {
             @Override
             protected void doneOnce(List<School> objects, ParseException e) {
                 callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void saveSchool(School schoolData, final SaveCallback onSave){
+        schoolData.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                onSave.done(e);
             }
         });
     }

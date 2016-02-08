@@ -187,6 +187,27 @@ public class UserAction extends ParseObject {
         });
     }
 
+    public static void findUsersForAction(VolunteerOpportunity action, final FindCallback<UserAction> callback){
+        ParseQuery<UserAction> userActionsQuery = ParseQuery.getQuery(UserAction.class);
+        userActionsQuery.include("actionBy");
+        userActionsQuery.whereEqualTo("actionPerformed", action);
+
+        userActionsQuery.findInBackground(new VolunteerActionFindCallback() {
+            @Override
+            protected void doneOnce(List<UserAction> objects, ParseException e) {
+                if (objects != null) {
+                    Collections.sort(objects, new Comparator<UserAction>() {
+                        @Override
+                        public int compare(UserAction lhs, UserAction rhs) {
+                            return ((VolunteerUser.getVolunteerUser(lhs.getActionBy())).getLastName()
+                                    .compareTo((VolunteerUser.getVolunteerUser(rhs.getActionBy())).getLastName()));
+                        }
+                    });
+                }
+                callback.done(objects, e);
+            }
+        });
+    }
 
     @Override
     public boolean equals(Object obj) {

@@ -18,10 +18,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="com.ccss.geny.permission.C2D_MESSAGE"
+        android:name="com.ccss.youthvolunteer.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.ccss.geny.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.ccss.youthvolunteer.permission.C2D_MESSAGE" />
 
     <application
         android:name=".YouthVolunteerApplication"
@@ -48,7 +48,7 @@
         </activity>
         <activity
             android:name="com.parse.ui.ParseLoginActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_activity_login"
             android:launchMode="singleTop" >
             <meta-data
                 android:name="com.parse.ui.ParseLoginActivity.PARSE_LOGIN_ENABLED"
@@ -112,7 +112,11 @@
         </activity>
         <activity
             android:name=".activity.VolunteerLogActivity"
-            android:label="@string/title_activity_log" >
+            android:label="@string/title_activity_log"
+            android:parentActivityName=".activity.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
 
         <meta-data
@@ -124,6 +128,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCewRzoZ23-pJFH-oYcYD2tyXo9eXqWU9M" />
 
         <activity
             android:name=".activity.LogHoursActivity"
@@ -179,23 +186,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.ManageSingleResourceActivity"
-            android:parentActivityName=".activity.ManageResourceActivity">
+        <activity
+            android:name=".activity.ManageSingleResourceActivity"
+            android:parentActivityName=".activity.ManageResourceActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.ManageResourceActivity" />
         </activity>
-        <activity android:name=".activity.ManageVolunteerOpportunityActivity"
+        <activity
+            android:name=".activity.ManageVolunteerOpportunityActivity"
             android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.ErrorMessageActivity"
-            android:parentActivityName=".activity.MainActivity">
+        <activity
+            android:name=".activity.ErrorMessageActivity"
+            android:parentActivityName=".activity.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.IntroActivity" >
         </activity>
     </application>
 

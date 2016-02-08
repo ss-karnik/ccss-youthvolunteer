@@ -14,28 +14,28 @@
         android:text="@string/switch_view"
         android:id="@+id/list_indicator"
         android:paddingRight="@dimen/com_parse_ui_small_vertical_spacing"
-        android:paddingEnd="@dimen/com_parse_ui_small_vertical_spacing"
-        android:layout_toLeftOf="@+id/viewSwitch"
-        android:layout_toStartOf="@+id/viewSwitch" />
+        android:paddingEnd="@dimen/com_parse_ui_small_vertical_spacing" />
 
-    <android.support.v7.widget.SwitchCompat
+    <Switch
         android:id="@+id/viewSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/com_parse_ui_small_horizontal_spacing"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/list_indicator"
+        android:layout_toEndOf="@id/list_indicator"
         android:textOff=" "
-        android:textOn=" "
-        app:showText="true"/>
+        android:textOn=" " />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="20dp"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
         android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="Chart"
         android:id="@+id/chart_indicator"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/viewSwitch"
         android:layout_toEndOf="@+id/viewSwitch" />
 

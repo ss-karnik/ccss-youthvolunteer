@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,11 +23,8 @@ import android.widget.Toast;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.SelectorHintAdapter;
-import com.ccss.youthvolunteer.model.School;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.model.VolunteerUser;
-import com.ccss.youthvolunteer.util.Constants;
-import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
@@ -83,7 +78,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         actionSpinner.setPromptId(R.string.action_prompt);
-        actionSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.selector_hint_row, this));
+        actionSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.action_selector_hint_row, this));
 
         //TODO: on change activity- Fill relevant category, date, duration. Enable Submit
         addListenerOnActionItemSelection();
@@ -160,7 +155,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
         //Save UserAction + UserCategoryPoints
 
         View form = findViewById(R.id.log_hours_form);
-        Snackbar snackbar = Snackbar.make(form, R.string.msg_data_sucess, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(form, R.string.msg_data_success, Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 

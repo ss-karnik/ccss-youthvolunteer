@@ -61,7 +61,7 @@ public class Category extends ParseObject {
         put("isActive", value);
     }
 
-    public static List<String> getAllCategories(){
+    public static List<String> getAllCategoryNames(){
         ParseQuery<Category> categoryQuery = ParseQuery.getQuery(Category.class);
         categoryQuery.whereEqualTo("isActive", true);
         categoryQuery.selectKeys(Collections.singletonList("categoryName"));
@@ -78,7 +78,7 @@ public class Category extends ParseObject {
     }
 
     /**
-     * Creates a query for Interests with all the includes
+     * Creates a query for Interest with all the includes
      */
     private static ParseQuery<Category> createQuery() {
         ParseQuery<Category> query = new ParseQuery<>(Category.class);

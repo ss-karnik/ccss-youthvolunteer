@@ -12,7 +12,7 @@ public class DispatchActivity extends ParseLoginDispatchActivity {
 
     @Override
     protected Class<?> getTargetClass() {
-        return MainActivity.class;
+        return IntroActivity.class;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DispatchActivity extends ParseLoginDispatchActivity {
                 .setParseSignupSubmitButtonText(R.string.action_submit_register_user)
                 .setFacebookLoginEnabled(true)
                 .setFacebookLoginButtonText(R.string.action_fb_sign_in)
-                .setFacebookLoginPermissions(Arrays.asList("email", "public_profile"))
+                .setFacebookLoginPermissions(Arrays.asList("email", "public_profile", "name", "first_name", "last_name"))
                 .setTwitterLoginEnabled(false)
                 .setAppLogo(R.drawable.ccss_logo_trans)
                 .build();

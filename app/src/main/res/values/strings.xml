@@ -6,6 +6,8 @@
     <string name="parse_client_key">4enb4bsmZrZywUjOeVCQWvyPxrCdKHQw8d9u03Sb</string>
     <string name="fb_app_id">985731814799032</string>
     <string name="google_api_key">AIzaSyCewRzoZ23-pJFH-oYcYD2tyXo9eXqWU9M</string>
+    <string name="preference_file_key">com.ccss.youthvolunteer.nbksxlz</string>
+
 
     <string name="internet_connection_unavailable"><b>Please check your Internet Connection</b></string>
     <string name="verify_email_error_title"><b>Please confirm your email address!</b></string>
@@ -24,7 +26,7 @@
     <string name="nav_title_ranking">View Leaderboard</string>
     <string name="nav_title_volunteer">Volunteer</string>
     <string name="nav_title_search">Search Opportunites</string>
-    <string name="nav_title_places">Places</string>
+    <string name="nav_title_location">Location</string>
     <string name="menu_item_communicate">Communicate</string>
     <string name="nav_about">About</string>
     <string name="nav_manage_label">Manage</string>
@@ -32,6 +34,7 @@
     <string name="nav_spl_user">Special Users</string>
     <string name="nav_category">Categories</string>
     <string name="nav_opportunity">Volunteer Opportunities</string>
+    <string name="nav_recognition">Recognitions</string>
     <string name="nav_interests">Interests</string>
     <string name="nav_skills">Skills</string>
     <string name="nav_schools">Schools</string>
@@ -52,9 +55,11 @@
     <string name="category_color_hint">Category hex color (#XXXXXX)</string>
     <string name="color_picker">Color picker</string>
     <string name="active_text">Is Active?</string>
+    <string name="nav_title_volunteers">Volunteers</string>
 
     <string name="ok">OK</string>
     <string name="dialog_title_error">Error</string>
+    <string name="retry">Retry</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email Id</string>
@@ -82,19 +87,28 @@
     <string name="prompt_phone_number">Phone Number</string>
     <string name="action_register_user">Register</string>
     <string name="action_submit_register_user">Submit Registration</string>
-    <string name="msg_user_register_sucess">Registration successful</string>
-    <string name="msg_data_sucess">Record saved successfully</string>
+    <string name="msg_user_register_success">Registration successful</string>
+    <string name="msg_user_update_success">Details updated</string>
+    <string name="msg_data_success">Record saved successfully!</string>
+    <string name="msg_data_failure">Record could not be saved!</string>
     <string name="msg_user_register_failed">Registration failure</string>
     <string name="prompt_rotate">Rotate</string>
     <string name="prompt_crop_done">Done</string>
     <string name="prompt_select_source">Select source</string>
-    <string name="skills_title">Skills</string>
-    <string name="interests_title">Interests</string>
-    <string name="personal_details_title">Details</string>
+    <string name="skills_title">SKILLS</string>
+    <string name="skills_navigation_next">Skills &gt;</string>
+    <string name="skills_navigation_prev">&lt; Skills</string>
+    <string name="interests_title">INTERESTS</string>
+    <string name="interests_navigation">&lt; Interests</string>
+    <string name="personal_details_title">DETAILS</string>
+    <string name="personal_details_navigation">Details &gt;</string>
     <string name="ranked">Top 3</string>
     <string name="select">Select</string>
     <string name="selected">Selected</string>
-
+    <string name="select_interest_message">Select at least one Interest</string>
+    <string name="select_skills_message">Select at least one Skill</string>
+    <string name="nav_next"> &gt;</string>
+    <string name="nav_prev">&lt; </string>
 
     <!-- Strings related to Main activity -->
     <string name="main_message">VOLUNTEER on the GO!!</string>
@@ -102,7 +116,9 @@
     <string name="main_month_stat_title">Your volunteering statistics for this month:</string>
     <string name="main_month_points_title">Your volunteering statistics for this month:</string>
     <string name="main_points">EARN Points</string>
-    <string name="main_points_rank">Overall with points you are ranked  out of  volunteers.</string>
+    <string name="main_points_rank">Overall with 50 points and 4 hours you are ranked 2 out of 8 volunteers!</string>
+    <string name="total_sg_users_hours">Our 8 volunteers have put in 20 hours!</string>
+    <string name="upcoming_event">Upcoming activity: Green Corridor Run</string>
     <string name="main_this_month_title">This month\'s statistics:</string>
     <string name="main_month_points">Your monthly target: hrs. Hours done: .</string>
     <string name="main_recognised">ACHIEVE Recognition</string>
@@ -123,16 +139,21 @@
     <string name="comments_max_150">Comments (max 150 chars)</string>
     <string name="activity_rating">Rating </string>
 
-
+    <!-- Manage resource activity -->
     <string name="special_feature_hint">Special feature</string>
     <string name="impact_hint">Social impact</string>
     <string name="location_hint">Location</string>
     <string name="virtual_text">Is Virtual?</string>
     <string name="category_input_hint">Category</string>
     <string name="org_input_hint">Organization</string>
+    <string name="user_role_hint">User Role</string>
+    <string name="recognition_hours_required">Required Hours/Points</string>
+    <string name="recognition_max_units">Max available units</string>
+    <string name="recog_unit">Is hours based?</string>
+    <string name="recog_type_hint">Recognition Type</string>
 
-
-
+    <string name="action_rankby_volunteer">By Volunteer</string>
+    <string name="action_rankby_school">By School</string>
 
     <!-- Achievements activity -->
     <string name="achievement_trophies">My Trophies</string>
@@ -200,8 +221,10 @@
     <string name="title_activity_profile">Manage Profile</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_approve">Approve</string>
+    <string name="action_inactive">Remove</string>
+    <string name="action_redeem">Redeem</string>
+    <string name="selected_count">%1$s selected</string>
 
 
 

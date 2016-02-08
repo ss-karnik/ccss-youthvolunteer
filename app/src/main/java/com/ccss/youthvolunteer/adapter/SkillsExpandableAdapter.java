@@ -9,7 +9,7 @@ import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.model.ProfileVerticalParent;
-import com.ccss.youthvolunteer.model.Skills;
+import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.util.ExpandableParentViewHolder;
 import com.ccss.youthvolunteer.util.ExpandableProfileChildViewHolder;
 
@@ -18,10 +18,10 @@ import java.util.List;
 public class SkillsExpandableAdapter extends ExpandableRecyclerAdapter<ExpandableParentViewHolder, ExpandableProfileChildViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<String> mExistingSelections;
+    private List<Skill> mExistingSelections;
     private ExpandableAdapter.OnItemClickListener mOnItemClickListener;
 
-    public SkillsExpandableAdapter(Context context, List<? extends ParentListItem> itemList, List<String> existingSelections, ExpandableAdapter.OnItemClickListener itemClickListener) {
+    public SkillsExpandableAdapter(Context context, List<? extends ParentListItem> itemList, List<Skill> existingSelections, ExpandableAdapter.OnItemClickListener itemClickListener) {
         super(itemList);
         mInflater = LayoutInflater.from(context);
         mExistingSelections = existingSelections;
@@ -48,8 +48,8 @@ public class SkillsExpandableAdapter extends ExpandableRecyclerAdapter<Expandabl
 
     @Override
     public void onBindChildViewHolder(ExpandableProfileChildViewHolder childViewHolder, int position, Object childListItem) {
-        Skills skills = (Skills) childListItem;
-        childViewHolder.bind(skills.getSkillTitle(), skills.getDescription(), mExistingSelections.contains(skills.getSkillTitle()), mOnItemClickListener);
+        Skill skill = (Skill) childListItem;
+        childViewHolder.bind(skill.getSkillTitle(), skill.getDescription(), mExistingSelections.contains(skill), mOnItemClickListener);
     }
 
     public void setOnItemClickListener(ExpandableAdapter.OnItemClickListener listener) {

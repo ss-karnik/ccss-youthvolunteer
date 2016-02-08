@@ -1,10 +1,12 @@
 package com.ccss.youthvolunteer.adapter;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,30 +17,88 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ccss.youthvolunteer.R;
-import com.ccss.youthvolunteer.activity.ManageSingleResourceActivity;
-import com.ccss.youthvolunteer.activity.ManageVolunteerOpportunityActivity;
 import com.ccss.youthvolunteer.activity.ResourcesFragment;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.util.Constants;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
 
-public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapter.ResourceViewHolder>  {
+public class SelectableResourceListAdapter extends RecyclerView.Adapter<SelectableResourceListAdapter.ResourceViewHolder> implements View.OnClickListener  {
     private static final String TAG = "ResourceListAdapter";
     private List<ResourceModel> mResources;
-    private Map<String, Boolean> mSelectedPositions = Maps.newHashMap();
+    private Map<String, Boolean> mItemSelectionStates = Maps.newHashMap();
     private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
+    private SparseBooleanArray selectedItems;
 
     /**
      * Initialize the list of the Adapter.
      *
      * @param resources List containing the data to populate views to be used by RecyclerView.
      */
-    public ResourceListAdapter(List<ResourceModel> resources) {
+    public SelectableResourceListAdapter(List<ResourceModel> resources) {
         mResources = resources;
+        selectedItems = new SparseBooleanArray();
+    }
+
+    /**
+     * Adds and item into the underlying data set
+     * at the position passed into the method.
+     *
+     * @param newResourceData The item to add to the data set.
+     * @param position The index of the item to add.
+     */
+    public void addData(ResourceModel newResourceData, int position) {
+        mResources.add(position, newResourceData);
+        notifyItemInserted(position);
+    }
+
+    /**
+     * Removes the item that currently is at the passed in position from the
+     * underlying data set.
+     *
+     * @param position The index of the item to remove.
+     */
+    public void removeData(int position) {
+        mResources.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void toggleSelection(int pos) {
+        if (selectedItems.get(pos, false)) {
+            selectedItems.delete(pos);
+        } else {
+            selectedItems.put(pos, true);
+        }
+        notifyItemChanged(pos);
+    }
+
+    @Override
+    public void onClick(final View v) {
+        // Give some time to the ripple to finish the effect
+        if (mItemClickListener != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mItemClickListener.onItemClick(v,
+                            ((TextView) v.findViewById(R.id.resource_object_type)).getText().toString(),
+                            ((TextView) v.findViewById(R.id.resource_object_id)).getText().toString());
+                }
+            }, 0);
+        }
+    }
+
+    public void clearSelections() {
+        selectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public ResourceModel getItem(int position) {
+        return mResources.get(position);
     }
 
     // Create new views (invoked by the layout manager)
@@ -51,8 +111,14 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         return new ResourceViewHolder(v);
     }
 
-    public Map<String,Boolean> getSelectedItems(){
-        return mSelectedPositions;
+    public List<String> getSelectedItems(){
+        Map<String, Boolean> selectedItems = Maps.filterEntries(mItemSelectionStates, new Predicate<Map.Entry<String, Boolean>>() {
+            @Override
+            public boolean apply(Map.Entry<String, Boolean> input) {
+                return input.getValue();
+            }
+        });
+        return Lists.newArrayList(selectedItems.keySet());
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -81,6 +147,22 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
                 updateCheckedState(viewHolder, currentResource);
             }
         });
+
+        viewHolder.itemView.setActivated(selectedItems.get(position, false));
+
+//        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mFragment.onItemClicked(currentResource.getObjectId());
+//            }
+//        });
+//        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                mFragment.onItemLongClicked(position);
+//                return true;
+//            }
+//        });
     }
 
     private void updateCheckedState(ResourceViewHolder holder, ResourceModel item) {
@@ -101,7 +183,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             holder.getResourceImageView().setImageDrawable(drawable);
         }
 
-        mSelectedPositions.put(item.getObjectId(), item.isSelected());
+        mItemSelectionStates.put(item.getObjectId(), item.isSelected());
 
         if(item.isSelected()) {
             holder.getResourceImageView().setVisibility(View.GONE);
@@ -125,7 +207,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
     /**
      * Provide a reference to the type of views that are being used per row
      */
-    public static class ResourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ResourceViewHolder extends RecyclerView.ViewHolder {
         private final FrameLayout mResourceImageItem;
         private final ImageView mResourceImage;
         private final ImageView mSelectedImage;
@@ -133,20 +215,21 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         private final TextView mDescription;
         private final TextView mExtraInfo;
         private final TextView mObjectId;
-        private final ImageView mEditResource;
+        //private final ImageView mEditResource;
         private final TextView mResourceType;
         private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
 
-
         public ResourceViewHolder(View v) {
             super(v);
-            // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getLayoutPosition() + " clicked.");
-                }
-            });
+//            // Define click listener for the ViewHolder's View.
+//            v.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG, "Element " + getLayoutPosition() + " clicked.");
+//                }
+//            });
+
+            //v.setOnClickListener(this);
 
             mResourceImage = (ImageView) v.findViewById(R.id.row_item_image);
             mSelectedImage = (ImageView) v.findViewById(R.id.resource_selected_icon);
@@ -155,34 +238,40 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             mDescription = (TextView) v.findViewById(R.id.resource_description);
             mExtraInfo = (TextView) v.findViewById(R.id.resource_info_extra);
             mObjectId = (TextView) v.findViewById(R.id.resource_object_id);
-            mEditResource = (ImageView) v.findViewById(R.id.btn_edit_resource);
+            //mEditResource = (ImageView) v.findViewById(R.id.btn_edit_resource);
             mResourceType = (TextView) v.findViewById(R.id.resource_object_type);
             final String[] resourceType = {""};
 
-            mEditResource.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " clicked for edit.");
+//            mEditResource.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " clicked for edit.");
+//
+////                    resourceType[0] = mResourceType.getText().toString();
+////                    if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceType[0])){
+////                        Intent intent = new Intent(v.getContext(), ManageVolunteerOpportunityActivity.class);
+////                        intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType[0]);
+////                        intent.putExtra(Constants.OBJECT_ID_KEY, getObjectIdTextView().getText());
+////                        startActivity(intent);
+//////                        startManageActivityWithIntent(, userOrganization);
+////                    } else {
+////                        startManageActivityWithIntent(ManageSingleResourceActivity.class, mResourceType);
+////                    }
+//                }
+//            });
 
-//                    resourceType[0] = mResourceType.getText().toString();
-//                    if(Constants.OPPORTUNITY_RESOURCE.equalsIgnoreCase(resourceType[0])){
-//                        Intent intent = new Intent(v.getContext(), ManageVolunteerOpportunityActivity.class);
-//                        intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType[0]);
-//                        intent.putExtra(Constants.OBJECT_ID_KEY, getObjectIdTextView().getText());
-//                        startActivity(intent);
-////                        startManageActivityWithIntent(, userOrganization);
-//                    } else {
-//                        startManageActivityWithIntent(ManageSingleResourceActivity.class, mResourceType);
-//                    }
-                }
-            });
+//            mResourceImageItem.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " checked.");
+//                }
+//            });
+        }
 
-            mResourceImageItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element with id " + getObjectIdTextView().getText() + " checked.");
-                }
-            });
+        //listener passed to viewHolder
+        public interface ResourceClickListener {
+            void resourceItemOnClick(String resourceId);
         }
 
         public FrameLayout getResourceImageLayoutView() {
@@ -213,18 +302,18 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             return mObjectId;
         }
 
-        public ImageView getEditImageView() {
-            return mEditResource;
-        }
+//        public ImageView getEditImageView() {
+//            return mEditResource;
+//        }
 
         public TextView getResourceType() {
             return mResourceType;
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
+//        @Override
+//        public void onClick(View v) {
+//
+//        }
 
     }
 }

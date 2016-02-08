@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ccss.youthvolunteer.activity.RankingActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_volunteer_rank" android:title="@string/action_rankby_volunteer"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_school_rank" android:title="@string/action_rankby_school"
+        app:showAsAction="never" />
 </menu>

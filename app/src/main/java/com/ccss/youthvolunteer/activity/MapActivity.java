@@ -100,19 +100,21 @@ public class MapActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_places) {
-            try {
-                PlacePicker.IntentBuilder intentBuilder =
-                        new PlacePicker.IntentBuilder();
-                Intent intent = intentBuilder.build(this);
-                // Start the intent by requesting a result,
-                // identified by a request code.
-                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
-
-            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                // ...
-            }
-        } else if (id == R.id.nav_view_volunteer) {
+//
+//        if (id == R.id.nav_places) {
+//            try {
+//                PlacePicker.IntentBuilder intentBuilder =
+//                        new PlacePicker.IntentBuilder();
+//                Intent intent = intentBuilder.build(this);
+//                // Start the intent by requesting a result,
+//                // identified by a request code.
+//                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+//
+//            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+//                // ...
+//            }
+//        } else
+        if (id == R.id.nav_view_volunteer) {
             startActivity(VolunteerOpportunityActivity.class);
         } else if (id == R.id.nav_view_ranking) {
             //startManageActivityWithIntent(RankingActivity.class);

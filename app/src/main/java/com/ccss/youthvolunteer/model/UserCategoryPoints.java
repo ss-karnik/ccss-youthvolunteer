@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+import com.google.common.base.Strings;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -45,6 +46,21 @@ public class UserCategoryPoints extends ParseObject {
         put("user", ParseUser.getCurrentUser());
     }
 
+    public int getCategoryPoints(){
+        return getInt("points");
+    }
+
+    public void setCategoryPoints(int value){
+        put("points", value);
+    }
+
+    public int getCategoryHours(){
+        return getInt("hours");
+    }
+
+    public void setCategoryHours(int value){
+        put("hours", value);
+    }
 
     /**
      * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
@@ -103,9 +119,9 @@ public class UserCategoryPoints extends ParseObject {
         });
     }
 
-    public static void findAllUsersPointsForCurrentMonthYearInBackground(final FindCallback<UserCategoryPoints> callback){
+    public static void findAllUsersPointsForMonthYearInBackground(String monthYear, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
-        userPointsQuery.whereEqualTo("monthYear", DateTime.now().toString("MMyyyy"));
+        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString("MMyyyy") : monthYear);
         userPointsQuery.addDescendingOrder("createdAt");
         userPointsQuery.include("category.categoryName");
         userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {

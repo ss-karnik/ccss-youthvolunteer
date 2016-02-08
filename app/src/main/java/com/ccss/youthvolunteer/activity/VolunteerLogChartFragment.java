@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
+import com.ccss.youthvolunteer.model.Theme;
 import com.ccss.youthvolunteer.model.UserCategoryPoints;
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;

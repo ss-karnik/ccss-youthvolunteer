@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -52,6 +53,14 @@ public class UserRecognition extends ParseObject {
         put("recognition", value);
     }
 
+    public void setRedeemed(boolean value){
+        put("redeemed", value);
+    }
+
+    public boolean isRedeemed() {
+        return getBoolean("redeemed");
+    }
+
     public static void findLatestUserRecognitionInBackground(ParseUser user, final GetCallback<UserRecognition> callback) {
         ParseQuery<UserRecognition> userRecognitionQuery = ParseQuery.getQuery(UserRecognition.class);
         userRecognitionQuery.whereEqualTo("achievedBy", user);
@@ -66,5 +75,17 @@ public class UserRecognition extends ParseObject {
                 }
             }
         });
+    }
+
+    public static void findUsersWithRecognition(Recognition recognition, final FindCallback<UserRecognition> callback) {
+        ParseQuery<UserRecognition> userRecognitionQuery = ParseQuery.getQuery(UserRecognition.class);
+        userRecognitionQuery.whereEqualTo("recognition", recognition);
+        userRecognitionQuery.addDescendingOrder("dateAchieved");
+        userRecognitionQuery.findInBackground(new FindCallback<UserRecognition>() {
+            @Override
+            public void done(List<UserRecognition> objects, ParseException e) {
+                callback.done(objects, null);
+            }
+        } );
     }
 }

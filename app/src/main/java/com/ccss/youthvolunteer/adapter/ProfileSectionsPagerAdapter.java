@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,9 +16,11 @@ public class ProfileSectionsPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> mFragmentList = Lists.newArrayList();
     private final List<String> mFragmentTitleList = Lists.newArrayList();
+    private Context context;
 
-    public ProfileSectionsPagerAdapter(FragmentManager manager) {
+    public ProfileSectionsPagerAdapter(FragmentManager manager, Context context) {
         super(manager);
+        this.context = context;
     }
 
     @Override

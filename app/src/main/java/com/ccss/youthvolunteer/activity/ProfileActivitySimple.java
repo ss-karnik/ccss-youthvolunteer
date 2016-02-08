@@ -35,20 +35,20 @@ import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.InterestsExpandableAdapter;
 import com.ccss.youthvolunteer.adapter.SelectorHintAdapter;
 import com.ccss.youthvolunteer.adapter.SkillsExpandableAdapter;
-import com.ccss.youthvolunteer.model.Interests;
+import com.ccss.youthvolunteer.model.Interest;
 import com.ccss.youthvolunteer.model.ProfileVerticalParent;
 import com.ccss.youthvolunteer.model.School;
-import com.ccss.youthvolunteer.model.Skills;
+import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.SpecialUser;
 import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.adapter.ExpandableAdapter;
+import com.ccss.youthvolunteer.util.DateUtils;
 import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
@@ -58,7 +58,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -97,8 +96,8 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     private TextView mMobileNumberField;
     private SkillsExpandableAdapter mSkillsAdapter;
     private InterestsExpandableAdapter mInterestsAdapter;
-    private List<Interests> mInterests = Lists.newArrayList();
-    private List<Skills> mSkills = Lists.newArrayList();
+    private List<Interest> mInterests = Lists.newArrayList();
+    private List<Skill> mSkills = Lists.newArrayList();
     private List<SpecialUser> mSpecialUsers;
 
     @Override
@@ -134,12 +133,15 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         //setupSkillsView();
         //setupInterestsView();
 
-        ImageButton btnChangeDate = (ImageButton) findViewById(R.id.cal_button);
-        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnDobCalendar = (ImageButton) findViewById(R.id.cal_button);
+        btnDobCalendar.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
+//                Bundle dateBundle = new Bundle();
+//                dateBundle.putParcelable();
+//                newFragment.setArguments();
                 newFragment.show(getFragmentManager(), "datePicker");
             }
         });
@@ -165,9 +167,9 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             }
         });
 
-        Interests.findInBackground(new FindCallback<Interests>() {
+        Interest.findInBackground(new FindCallback<Interest>() {
             @Override
-            public void done(List<Interests> objects, ParseException e) {
+            public void done(List<Interest> objects, ParseException e) {
                 if (e == null) {
                     mInterests = objects;
                     setupInterestsView();
@@ -176,9 +178,9 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             }
         });
 
-        Skills.findInBackground(new FindCallback<Skills>() {
+        Skill.findInBackground(new FindCallback<Skill>() {
             @Override
-            public void done(List<Skills> objects, ParseException e) {
+            public void done(List<Skill> objects, ParseException e) {
                 if (e == null) {
                     mSkills = objects;
                     setupSkillsView();
@@ -197,7 +199,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         ExpandableAdapter.OnItemClickListener listener = new ExpandableAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String title) {
-                Log.d("Interests", "Selected title : " + title);
+                Log.d("Interest", "Selected title : " + title);
             }
         };
         mInterestsAdapter = new InterestsExpandableAdapter(this, interestsListItems, mVolunteerUser.getUserInterests(), listener);
@@ -221,7 +223,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         ExpandableAdapter.OnItemClickListener listener = new ExpandableAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String title) {
-                Log.d("Skills", "Selected title : " + title);
+                Log.d("Skill", "Selected title : " + title);
             }
         };
         mSkillsAdapter = new SkillsExpandableAdapter(this, skillsListItems, mVolunteerUser.getUserSkills(), listener);
@@ -263,9 +265,9 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
                 android.R.layout.simple_spinner_item, School.getAllActiveSchools());
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSchoolNameSpinner.setPromptId(R.string.com_parse_ui_schoolname_input_hint);
+        mSchoolNameSpinner.setPromptId(R.string.prompt_school_name);
         mSchoolNameSpinner.setAdapter(
-                new SelectorHintAdapter(dataAdapter, R.layout.selector_hint_row, this));
+                new SelectorHintAdapter(dataAdapter, R.layout.school_selector_hint_row, this));
     }
 
     private void loadPredefinedUserValues() {
@@ -393,7 +395,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         } else if (lastName != null && lastName.length() == 0) {
             validationMessage.append(getResources().getText(com.parse.ui.R.string.com_parse_ui_no_last_name_toast));
             validationMessage.append("\n");
-        } else if ((dateOfBirth != null && dateOfBirth.length() == 0) || !isValidDate(dateOfBirth)) {
+        } else if ((dateOfBirth != null && dateOfBirth.length() == 0) || !DateUtils.isValidDate(dateOfBirth, true)) {
             validationMessage.append(getResources().getText(com.parse.ui.R.string.com_parse_ui_no_dob_toast));
             validationMessage.append("\n");
         } else if (schoolName != null && schoolName.length() == 0) {
@@ -407,16 +409,16 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         }
 
         // Set additional custom fields only if the user filled it out
-        if (firstName.length() != 0) {
+        if (firstName.length() > 0) {
             volunteer.put(USER_FIRST_NAME_FIELD, firstName);
         }
-        if (lastName.length() != 0) {
+        if (lastName.length() > 0) {
             volunteer.put(USER_LAST_NAME_FIELD, lastName);
         }
-        if (schoolName.length() != 0) {
+        if (schoolName.length() > 0) {
             volunteer.put(USER_SCHOOL_NAME_FIELD, schoolName);
         }
-        if (dateOfBirth.length() != 0) {
+        if (dateOfBirth.length() > 0) {
             volunteer.put(USER_DOB_FIELD, DOB_FORMAT.parseDateTime(dateOfBirth).toDate());
         }
 
@@ -476,7 +478,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     }
 
     private void signUpCompleteSuccess() {
-        Snackbar snackbar = Snackbar.make(mProfileDetailsForm, R.string.msg_user_register_sucess, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mProfileDetailsForm, R.string.msg_user_update_success, Snackbar.LENGTH_LONG);
         snackbar.show();
 
 //        Toast.makeText(getBaseContext(), R.string.msg_user_register_sucess, Toast.LENGTH_LONG).show();
@@ -489,15 +491,15 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
 //        }, 2000);
     }
 
-    private static boolean isValidDate(String dateToValidate) {
-        try {
-            DateTime enteredDate = DOB_FORMAT.parseDateTime(dateToValidate);
-            return DateTime.now().getYear() - enteredDate.getYear() >= Constants.MINIMUM_AGE;
-        }
-        catch (IllegalArgumentException ex){
-            return false;
-        }
-    }
+//    private static boolean isValidDate(String dateToValidate) {
+//        try {
+//            DateTime enteredDate = DOB_FORMAT.parseDateTime(dateToValidate);
+//            return DateTime.now().getYear() - enteredDate.getYear() >= Constants.MINIMUM_AGE;
+//        }
+//        catch (IllegalArgumentException ex){
+//            return false;
+//        }
+//    }
 //endregion
 
     @Override
@@ -514,6 +516,16 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
      public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
+        private EditText mDateField;
+
+        public EditText getDateField() {
+            return mDateField;
+        }
+
+        public void setDateField(EditText dateField) {
+            this.mDateField = dateField;
+        }
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -523,7 +535,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
             LocalDate dobEntered = dateMax;
 
             String textDate = dateOfBirthField.getText().toString();
-            if(isValidDate(textDate)) {
+            if(DateUtils.isValidDate(textDate, true)) {
                 DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
                 dobEntered = dtf.parseDateTime(textDate).toLocalDate();
             }

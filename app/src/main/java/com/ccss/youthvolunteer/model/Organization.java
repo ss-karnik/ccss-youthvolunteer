@@ -9,6 +9,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,18 @@ public class Organization extends ParseObject {
         put("name", value);
     }
 
+    public String getDescription() {
+        String description = getString("description");
+        if (description == null) {
+            description = "";
+        }
+        return description;
+    }
+
+    public void setDescription(String value){
+        put("description", value);
+    }
+
     public boolean isActive() {
         return getBoolean("isActive");
     }
@@ -32,15 +45,15 @@ public class Organization extends ParseObject {
         put("isActive", value);
     }
 
-    public ParseFile getImage() {
+    public ParseFile getLogo() {
         return getParseFile("logoImage");
     }
 
-    public void setImage(ParseFile value) {
+    public void setLogo(ParseFile value) {
         put("logoImage", value);
     }
 
-    public static List<String> getAllActiveOrganizations(){
+    public static List<String> getAllActiveOrganizationNames(){
         ParseQuery<Organization> orgQuery = ParseQuery.getQuery(Organization.class);
         orgQuery.whereEqualTo("isActive", true);
         orgQuery.selectKeys(Collections.singletonList("name"));
@@ -58,7 +71,7 @@ public class Organization extends ParseObject {
 
     public ResourceModel convertToResourceModel() {
         return new ResourceModel(Constants.ORGANIZATION_RESOURCE, this.getOrganizationName(), "", "", this.getObjectId(),
-                this.getImage() == null ? "" : this.getImage().getUrl(), this.isActive());
+                this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive());
     }
 
     /**
@@ -99,6 +112,15 @@ public class Organization extends ParseObject {
             @Override
             protected void doneOnce(List<Organization> objects, ParseException e) {
                 callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void saveOrganization(Organization organizationData, final SaveCallback onSave){
+        organizationData.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                onSave.done(e);
             }
         });
     }

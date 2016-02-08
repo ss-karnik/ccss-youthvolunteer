@@ -15,6 +15,8 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,15 +24,38 @@ import java.util.Date;
 import java.util.List;
 
 @ParseClassName("_User")
-public class VolunteerUser extends ParseUser {
+public class VolunteerUser extends ParseUser implements Serializable {
 
     public static VolunteerUser getCurrentUser() {
         return ParseUser.getCurrentUser() != null ? (VolunteerUser)(ParseUser.getCurrentUser()) : null;
     }
 
     public static VolunteerUser getCurrentUserInformation(ParseUser currUser) {
-    ParseQuery<VolunteerUser> userQuery = ParseQuery.getQuery(VolunteerUser.class);
+        ParseQuery<VolunteerUser> userQuery = ParseQuery.getQuery(VolunteerUser.class);
+        userQuery.include("skills");
+        userQuery.include("interests");
         userQuery.whereEqualTo("email", currUser.getEmail());
+        try {
+            return userQuery.getFirst();
+        } catch (ParseException e) {
+            return getCurrentUser();
+        }
+    }
+
+    public static VolunteerUser getVolunteerUser(ParseUser currUser) {
+        ParseQuery<VolunteerUser> userQuery = ParseQuery.getQuery(VolunteerUser.class);
+        userQuery.whereEqualTo("email", currUser.getEmail());
+        try {
+            return userQuery.getFirst();
+        } catch (ParseException e) {
+            return getCurrentUser();
+        }
+    }
+
+    public static VolunteerUser getCurrentUserInformationFromLocalStore() {
+        ParseQuery<VolunteerUser> userQuery = ParseQuery.getQuery(VolunteerUser.class).fromLocalDatastore();
+        userQuery.include("skills");
+        userQuery.include("interests");
         try {
             return userQuery.getFirst();
         } catch (ParseException e) {
@@ -163,27 +188,29 @@ public class VolunteerUser extends ParseUser {
         put("userlevel", value);
     }
 
-    public List<String> getUserSkills() {
-        String skills = getString("skills");
-        if(!Strings.isNullOrEmpty(skills)){
-            return (Arrays.asList(skills.split("\\s*,\\s*")));
+    public List<Skill> getUserSkills() {
+        ArrayList<Skill> userSkills =  (ArrayList<Skill>) get("skills");
+        if(userSkills == null || userSkills.isEmpty()){
+            return Lists.newArrayList();
         }
-        return Lists.newArrayList();
+
+        return userSkills;
     }
 
-    public void setUserSkills(String value){
+    public void setUserSkills(List<Skill> value){
         put("skills", value);
     }
 
-    public List<String> getUserInterests() {
-        String interests = getString("interests");
-        if(!Strings.isNullOrEmpty(interests)){
-            return (Arrays.asList(interests.split("\\s*,\\s*")));
+    public List<Interest> getUserInterests() {
+        ArrayList<Interest> userInterests =  (ArrayList<Interest>) get("interests");
+        if(userInterests == null || userInterests.isEmpty()){
+            return Lists.newArrayList();
         }
-        return Lists.newArrayList();
+
+        return userInterests;
     }
 
-    public void setUserInterests(String value){
+    public void setUserInterests(List<Interest> value){
         put("interests", value);
     }
 
@@ -279,6 +306,65 @@ public class VolunteerUser extends ParseUser {
 //            }
 //        });
 //    }
+
+    public static void findUsersWithAllSkills(List<Skill> requiredSkills, final FindCallback<VolunteerUser> callback){
+//        ParseQuery<VolunteerUser> userQuery = createQuery();
+//        userQuery.whereEqualTo()
+    }
+
+    public static void findUsersWithAnySkills(List<Skill> requiredSkills, final FindCallback<VolunteerUser> callback){
+//        ParseQuery<VolunteerUser> userQuery = createQuery();
+//        userQuery.whereEqualTo()
+    }
+
+    public static void findUsersWithSkill(Skill requiredSkill, final FindCallback<VolunteerUser> callback){
+        ParseQuery<VolunteerUser> userQuery = createQuery();
+        userQuery.whereEqualTo("skills", requiredSkill);
+
+        userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerUser> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void findUsersWithInterest(Interest requiredInterest, final FindCallback<VolunteerUser> callback){
+        ParseQuery<VolunteerUser> userQuery = createQuery();
+        userQuery.whereEqualTo("interests", requiredInterest);
+
+        userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerUser> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void findUsersFromSchool(String schoolName, final FindCallback<VolunteerUser> callback){
+        ParseQuery<VolunteerUser> userQuery = createQuery();
+        userQuery.whereEqualTo("schoolName", schoolName);
+
+        userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerUser> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void findUsersFromOrganization(String orgName, final FindCallback<VolunteerUser> callback){
+        ParseQuery<VolunteerUser> userQuery = createQuery();
+        userQuery.whereEqualTo("organizationName", orgName);
+
+        userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerUser> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
     public static void findUsersRanked(final FindCallback<VolunteerUser> callback){
         ParseQuery<VolunteerUser> userQuery = createQuery();
         userQuery.include("lastName");
@@ -287,12 +373,12 @@ public class VolunteerUser extends ParseUser {
         userQuery.include("profileImage");
         userQuery.include("schoolName");
         userQuery.include("userLevel");
+        userQuery.whereEqualTo("specialRole", null);
 
         userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
             @Override
             protected void doneOnce(List<VolunteerUser> objects, ParseException e) {
                 if (objects != null) {
-
                     Collections.sort(objects, new Comparator<VolunteerUser>() {
                         @Override
                         public int compare(VolunteerUser lhs, VolunteerUser rhs) {

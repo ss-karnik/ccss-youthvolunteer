@@ -8,6 +8,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,18 @@ public class SpecialUser extends ParseObject {
 
     public void setEmailId(String value){
         put("emailId", value);
+    }
+
+    public String getDescription() {
+        String description = getString("description");
+        if (description == null) {
+            description = "";
+        }
+        return description;
+    }
+
+    public void setDescription(String value){
+        put("description", value);
     }
 
     public String getOrganizationName(){
@@ -57,7 +70,7 @@ public class SpecialUser extends ParseObject {
     }
 
     /**
-     * Retrieves the set of all Interests, ordered by title. Uses the cache if possible.
+     * Retrieves the set of all Interest, ordered by title. Uses the cache if possible.
      */
     public static void findInBackground(final FindCallback<SpecialUser> callback) {
         ParseQuery<SpecialUser> query = new ParseQuery<>(SpecialUser.class);
@@ -65,7 +78,13 @@ public class SpecialUser extends ParseObject {
         query.findInBackground(new SpecialUserFindCallback() {
             @Override
             protected void doneOnce(List<SpecialUser> objects, ParseException e) {
-                callback.done(objects, e);
+                try {
+                    pinAll("SpecialUsers", objects);
+                    callback.done(objects, e);
+                } catch (ParseException ex) {
+                    specialUsers = Lists.newArrayList();
+                    ex.printStackTrace();
+                }
             }
         });
     }
@@ -143,5 +162,14 @@ public class SpecialUser extends ParseObject {
     public ResourceModel convertToResourceModel() {
         return new ResourceModel(Constants.USER_RESOURCE, this.getEmailId(), this.getOrganizationName(), this.getRole(),
                 this.getObjectId(), "", this.isActive());
+    }
+
+    public static void saveSpecialUser(SpecialUser userData, final SaveCallback onSave){
+        userData.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                onSave.done(e);
+            }
+        });
     }
 }

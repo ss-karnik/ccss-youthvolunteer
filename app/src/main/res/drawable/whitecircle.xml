@@ -4,7 +4,7 @@
     <stroke android:width="2dp" android:color="#fff" />
     <solid android:color="@color/colorBlackPrimaryLighter"/>
     <size
-        android:width="64dp"
-        android:height="64dp" />
+        android:width="96dp"
+        android:height="96dp" />
 </shape>
 

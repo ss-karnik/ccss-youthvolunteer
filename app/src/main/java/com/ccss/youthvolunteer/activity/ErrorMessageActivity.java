@@ -2,6 +2,8 @@ package com.ccss.youthvolunteer.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
@@ -20,5 +22,12 @@ public class ErrorMessageActivity extends BaseActivity {
         TextView errorMessageText = (TextView) findViewById(R.id.error_message_text);
         errorMessageText.setText(errorMessage);
 
+        Button retry = (Button) findViewById(R.id.retry);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(MainActivity.class);
+            }
+        });
     }
 }

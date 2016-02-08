@@ -1,31 +1,41 @@
 package com.ccss.youthvolunteer.activity;
 
-
-import android.content.Context;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.ccss.youthvolunteer.R;
-import com.ccss.youthvolunteer.adapter.ResourceListAdapter;
+import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
 import com.ccss.youthvolunteer.model.Category;
-import com.ccss.youthvolunteer.model.Interests;
+import com.ccss.youthvolunteer.model.Interest;
+import com.ccss.youthvolunteer.model.InterestGroup;
 import com.ccss.youthvolunteer.model.Organization;
+import com.ccss.youthvolunteer.model.Recognition;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.School;
-import com.ccss.youthvolunteer.model.Skills;
+import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.SpecialUser;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.util.Constants;
+import com.ccss.youthvolunteer.util.DividerItemDecoration;
+import com.ccss.youthvolunteer.util.HeaderDecoration;
+import com.ccss.youthvolunteer.util.RecyclerItemClickSupport;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -33,26 +43,93 @@ import com.parse.ParseException;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ResourcesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This lists the Resource for management screen
  */
-public class ResourcesFragment extends Fragment {
+public class ResourcesFragment extends Fragment
+        implements RecyclerView.OnItemTouchListener, View.OnClickListener, ActionMode.Callback{
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final String TAG = "ResourcesListFragment";
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
     protected LayoutManagerType mCurrentLayoutManagerType;
 
     private List<ResourceModel> mResources = Lists.newArrayList();
     private RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
-    private ResourceListAdapter mAdapter;
+    private SelectableResourceListAdapter mAdapter;
     private ProgressBar mProgressBar;
+    int itemCount;
+    GestureDetectorCompat gestureDetector;
+    ActionMode actionMode;
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.resources_container) {
+            // item click
+            int idx = mRecyclerView.getChildAdapterPosition(view);
+            if (actionMode != null) {
+                myToggleSelection(idx);
+                return;
+            }
+//            ResourceModel data = mAdapter.getItem(idx);
+//            View innerContainer = view.findViewById(R.id.container_inner_item);
+//            innerContainer.setTransitionName(Constants.NAME_INNER_CONTAINER + "_" + data.getObjectId());
+//            Intent startIntent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+//            startIntent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
+//            startIntent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
+//            startIntent.putExtra(Constants.USER_ORGANIZATION_KEY, userOrganization);
+//            ActivityOptions options = ActivityOptions
+//                    .makeSceneTransitionAnimation(this, innerContainer, Constants.NAME_INNER_CONTAINER);
+//            this.startActivity(startIntent);
+        }
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+    }
+
+    private void myToggleSelection(int idx) {
+        mAdapter.toggleSelection(idx);
+        String title = getString(R.string.selected_count, mAdapter.getSelectedItems().size());
+        actionMode.setTitle(title);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
+    }
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -83,13 +160,35 @@ public class ResourcesFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void onItemClicked(String objectId){
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
-        String resourceType = getArguments().getString(Constants.MANAGE_ITEM_KEY);
-        String userOrganization = getArguments().getString(Constants.USER_ORGANIZATION_KEY);
+        final String resourceType = getArguments().getString(Constants.MANAGE_ITEM_KEY);
+        final String userOrganization = getArguments().getString(Constants.USER_ORGANIZATION_KEY);
 
+        mAdapter = new SelectableResourceListAdapter(mResources);
+        mAdapter.setOnItemClickListener(new RecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, String resourceItemType, String resourceObjectId) {
+                Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+                intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
+                intent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
+                intent.putExtra(Constants.USER_ORGANIZATION_KEY, userOrganization);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(int position, View v) {
+
+            }
+        });
+        gestureDetector = new GestureDetectorCompat(getActivity(), new RecyclerViewGestureListener());
         if(resourceType != null) {
             switch (resourceType) {
                 case Constants.CATEGORY_RESOURCE:
@@ -107,12 +206,27 @@ public class ResourcesFragment extends Fragment {
                     });
                     break;
 
-                case Constants.INTEREST_RESOURCE:
-                    Interests.findInBackground(new FindCallback<Interests>() {
+                case Constants.RECOGNITION_RESOURCE:
+                    Recognition.findInBackground(new FindCallback<Recognition>() {
                         @Override
-                        public void done(List<Interests> objects, ParseException e) {
+                        public void done(List<Recognition> objects, ParseException e) {
                             if (e == null) {
-                                for (Interests interest : objects) {
+                                for (Recognition recognition : objects) {
+                                    mResources.add(recognition.convertToResourceModel());
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+                    });
+                    break;
+
+                case Constants.INTEREST_RESOURCE:
+                    Interest.findInBackground(new FindCallback<Interest>() {
+                        @Override
+                        public void done(List<Interest> objects, ParseException e) {
+                            if (e == null) {
+                                for (Interest interest : objects) {
                                     mResources.add(interest.convertToResourceModel());
                                 }
                             }
@@ -122,11 +236,11 @@ public class ResourcesFragment extends Fragment {
                     });
                     break;
                 case Constants.SKILL_RESOURCE:
-                    Skills.findInBackground(new FindCallback<Skills>() {
+                    Skill.findInBackground(new FindCallback<Skill>() {
                         @Override
-                        public void done(List<Skills> objects, ParseException e) {
+                        public void done(List<Skill> objects, ParseException e) {
                             if (e == null) {
-                                for (Skills skill : objects) {
+                                for (Skill skill : objects) {
                                     mResources.add(skill.convertToResourceModel());
                                 }
                             }
@@ -136,12 +250,18 @@ public class ResourcesFragment extends Fragment {
                     });
                     break;
                 case Constants.USER_RESOURCE:
-                    List<SpecialUser> specialUsers = SpecialUser.getAllSpecialUsers();
-                    for (SpecialUser specialUser : specialUsers) {
-                        mResources.add(specialUser.convertToResourceModel());
-                    }
-                    mAdapter.notifyDataSetChanged();
-                    mProgressBar.setVisibility(View.GONE);
+                    SpecialUser.findInBackground(new FindCallback<SpecialUser>() {
+                        @Override
+                        public void done(List<SpecialUser> objects, ParseException e) {
+                            if (e == null) {
+                                for (SpecialUser specialUser : objects) {
+                                    mResources.add(specialUser.convertToResourceModel());
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+                    });
                     break;
                 case Constants.SCHOOL_RESOURCE:
                     School.findInBackground(new FindCallback<School>() {
@@ -158,18 +278,18 @@ public class ResourcesFragment extends Fragment {
                     });
                     break;
                 case Constants.GROUP_RESOURCE:
-//                    IG.findInBackground(new FindCallback<SpecialUser>() {
-//                        @Override
-//                        public void done(List<SpecialUser> objects, ParseException e) {
-//                            if (e == null) {
-//                                for (SpecialUser specialUser : objects) {
-//                                    mResources.add(specialUser.convertToResourceModel());
-//                                }
-//                            }
-//                    mAdapter.notifyDataSetChanged();
-//                    mProgressBar.setVisibility(View.GONE);
-//                        }
-//                    });
+                    InterestGroup.findInBackground(new FindCallback<InterestGroup>() {
+                        @Override
+                        public void done(List<InterestGroup> objects, ParseException e) {
+                            if (e == null) {
+                                for (InterestGroup groupMember : objects) {
+                                    mResources.add(groupMember.convertToResourceModel());
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+                    });
                     break;
                 case Constants.ORGANIZATION_RESOURCE:
                     Organization.findInBackground(new FindCallback<Organization>() {
@@ -186,22 +306,30 @@ public class ResourcesFragment extends Fragment {
                     });
                     break;
                 case Constants.OPPORTUNITY_RESOURCE:
-                    VolunteerOpportunity.getAllOpportunities(new FindCallback<VolunteerOpportunity>() {
-                        @Override
-                        public void done(List<VolunteerOpportunity> objects, ParseException e) {
-                            if (e == null) {
-                                for (VolunteerOpportunity opportunity : objects) {
-                                    mResources.add(opportunity.convertToResourceModel());
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
+                    if(Strings.isNullOrEmpty(userOrganization)) {
+                        VolunteerOpportunity.getAllOpportunities(findOpportunitiesCallback());
+                    } else {
+                        VolunteerOpportunity.getOpportunitiesForOrganization(userOrganization, false, findOpportunitiesCallback());
+                    }
                     break;
             }
         }
+    }
 
+    @NonNull
+    private FindCallback<VolunteerOpportunity> findOpportunitiesCallback() {
+        return new FindCallback<VolunteerOpportunity>() {
+            @Override
+            public void done(List<VolunteerOpportunity> objects, ParseException e) {
+                if (e == null) {
+                    for (VolunteerOpportunity opportunity : objects) {
+                        mResources.add(opportunity.convertToResourceModel());
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
+            }
+        };
     }
 
     @Override
@@ -211,6 +339,9 @@ public class ResourcesFragment extends Fragment {
         layout.setTag(TAG);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.resource_list);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+//        HeaderDecoration headerDecoration = new HeaderDecoration(container, true, 10f, 1f, 1);
+//        mRecyclerView.addItemDecoration(headerDecoration);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mProgressBar = (ProgressBar) layout.findViewById(R.id.resource_list_progress_bar);
@@ -224,8 +355,18 @@ public class ResourcesFragment extends Fragment {
         }
         setRecyclerViewLayoutManager();
 
-        mAdapter = new ResourceListAdapter(mResources);
         mRecyclerView.setAdapter(mAdapter);
+        RecyclerItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new RecyclerItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+//                intent.putExtra(Constants.MANAGE_ITEM_KEY, );
+//                intent.putExtra(Constants.OBJECT_ID_KEY, );
+//                intent.putExtra(Constants.USER_ORGANIZATION_KEY, );
+                startActivity(intent);
+            }
+        });
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 //        mAdapter.setOnItemClickListener(new RecyclerViewClickListener() {
 //            @Override
@@ -286,6 +427,27 @@ public class ResourcesFragment extends Fragment {
     public interface RecyclerItemClickListener{
         void onItemClick(View view, String resourceType, String objectId);
         void onItemLongClick(int position, View v);
+    }
+
+    private class RecyclerViewGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+            onClick(view);
+            return super.onSingleTapConfirmed(e);
+        }
+
+        public void onLongPress(MotionEvent e) {
+            View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
+            if (actionMode != null) {
+                return;
+            }
+            // Start the CAB using the ActionMode.Callback defined above
+            actionMode = getActivity().startActionMode(ResourcesFragment.this);
+            int idx = mRecyclerView.getChildAdapterPosition(view);
+            myToggleSelection(idx);
+            super.onLongPress(e);
+        }
     }
 
 //    public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {

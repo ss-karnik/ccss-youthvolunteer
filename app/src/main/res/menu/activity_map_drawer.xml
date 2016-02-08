@@ -5,8 +5,8 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_view_volunteer" android:icon="@android:drawable/ic_menu_search"
             android:title="@string/nav_title_volunteer" />
-        <item android:id="@+id/nav_places" android:icon="@android:drawable/ic_menu_compass"
-            android:title="@string/nav_title_places" />
+        <!--<item android:id="@+id/nav_places" android:icon="@android:drawable/ic_menu_compass"-->
+            <!--android:title="@string/nav_title_places" />-->
         <item android:id="@+id/nav_view_ranking" android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/nav_title_ranking" />
         <item android:id="@+id/nav_view_achievement" android:icon="@android:drawable/ic_menu_myplaces"

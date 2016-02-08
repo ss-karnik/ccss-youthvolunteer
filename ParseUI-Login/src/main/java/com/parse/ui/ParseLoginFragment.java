@@ -44,6 +44,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.twitter.Twitter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -265,8 +266,17 @@ public class ParseLoginFragment extends ParseLoginFragmentBase {
                                 ParseUser parseUser = ParseUser.getCurrentUser();
                                 if (fbUser != null && parseUser != null
                                         && fbUser.optString("name").length() > 0) {
-                                    parseUser.put(USER_OBJECT_NAME_FIELD, fbUser.optString("name"));
-                                    parseUser.put("email", fbUser.optString("email"));
+                                    try {
+                                        parseUser.put("lastName", fbUser.getString("last_name"));
+                                        parseUser.put(USER_OBJECT_NAME_FIELD, fbUser.getString("name"));
+                                        parseUser.put("email", fbUser.getString("email"));
+                                        parseUser.put("username", fbUser.getString("email"));
+                                        parseUser.put("firstName", fbUser.getString("first_name"));
+                                    } catch (JSONException extraPropErr) {
+                                        debugLog(getString(
+                                                R.string.com_parse_ui_login_warning_facebook_login_user_update_failed) +
+                                                extraPropErr.toString());
+                                    }
                                     parseUser.put("facebookLogin", true);
                                     parseUser.saveInBackground(new SaveCallback() {
                                         @Override

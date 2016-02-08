@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 public class ResourceModel {
     String title;
     String description;
@@ -84,4 +85,24 @@ public class ResourceModel {
         this.active = active;
         this.selected = false;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null
+                && getResourceType().equalsIgnoreCase(((ResourceModel) obj).getResourceType())
+                && this.getObjectId().equals(((ResourceModel) obj).getObjectId())
+                && getTitle().equalsIgnoreCase(((ResourceModel) obj).getTitle());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + (this.getResourceType() != null ? this.getResourceType().hashCode() : 0);
+        hash = 53 * hash + (this.getObjectId() != null ? this.getObjectId().hashCode() : 0);
+        return hash;
+    }
+
+
 }

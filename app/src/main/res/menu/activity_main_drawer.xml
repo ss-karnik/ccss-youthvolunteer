@@ -19,6 +19,8 @@
             android:title="@string/nav_category" />
         <item android:id="@+id/nav_manage_interests" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_interests" />
+        <item android:id="@+id/nav_manage_recognition" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_recognition" />
         <item android:id="@+id/nav_manage_skills" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_skills" />
         <item android:id="@+id/nav_manage_spl_user" android:icon="@drawable/manage_users"

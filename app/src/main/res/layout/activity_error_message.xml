@@ -33,8 +33,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="@dimen/com_parse_ui_vertical_spacing"
         android:layout_below="@id/error_image"
         android:id="@+id/error_message_text"
         style="@style/ParseLoginUI.TextView.Normal"/>
+
+    <Button
+        android:id="@+id/retry"
+        style="@style/ParseLoginUI.Button"
+        android:layout_marginTop="@dimen/com_parse_ui_vertical_spacing"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/retry" />
 
 </RelativeLayout>

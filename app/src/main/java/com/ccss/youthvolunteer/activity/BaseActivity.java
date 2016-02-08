@@ -52,11 +52,19 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void startManageActivityWithIdentifiers(Class<? extends Activity> targetActivity, String resourceType, String resourceObjectId) {
+    protected void startManageActivityWithIdentifiersForResult(Class<? extends Activity> targetActivity, String resourceType, String resourceObjectId, String organizationName) {
         Intent intent = new Intent(this, targetActivity);
         intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
         intent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
-        startActivity(intent);
+        intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
+        startActivityForResult(intent, 1001);
+    }
+
+    protected void startVolunteerActivity(String mode, String organizationName) {
+        Intent intent = new Intent(this, VolunteerOpportunityActivity.class);
+        intent.putExtra(Constants.MANAGE_ITEM_KEY, mode);
+        intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
+        startActivityForResult(intent, 1001);
     }
 
     protected void startManageResourceActivity(String resourceName, String organizationName){
@@ -277,19 +285,19 @@ public class BaseActivity extends AppCompatActivity {
 
             case R.id.nav_view_volunteer: {
                 if (!(this instanceof VolunteerOpportunityActivity)) {
-                    startActivity(VolunteerOpportunityActivity.class);
+                    startVolunteerActivity(Constants.READ_MODE, "");
                     finish();
                 }
                 break;
             }
 
-            case R.id.nav_places: {
-                if (!(this instanceof MapActivity)) {
-                    Intent i = new Intent(this, MapActivity.class);
-                    startActivityForResult(i, 0);
-                }
-                break;
-            }
+//            case R.id.nav_places: {
+//                if (!(this instanceof MapActivity)) {
+//                    Intent i = new Intent(this, MapActivity.class);
+//                    startActivityForResult(i, 0);
+//                }
+//                break;
+//            }
 
             case R.id.nav_view_ranking: {
                 if (!(this instanceof RankingActivity)) {
@@ -305,7 +313,7 @@ public class BaseActivity extends AppCompatActivity {
             }
             case R.id.nav_edit_profile: {
                 if (!(this instanceof ProfileActivitySimple)) {
-                    startActivity(ProfileActivitySimple.class);
+                    startActivity(ProfileActivity.class);
                 }
                 break;
             }

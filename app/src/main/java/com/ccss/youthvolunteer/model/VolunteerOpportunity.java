@@ -14,6 +14,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -333,6 +334,16 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
                     Collections.sort(objects, VolunteerOpportunityByDateComparator.get());
                 }
                 callback.done(objects, e);
+            }
+        });
+    }
+
+
+    public static void saveOpportunity(VolunteerOpportunity opportunityData, final SaveCallback onSave){
+        opportunityData.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                onSave.done(e);
             }
         });
     }

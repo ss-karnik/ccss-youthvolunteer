@@ -50,7 +50,7 @@ public class VolunteerOpportunityActivity extends BaseActivity {
     }
 
     public void configureCategoryList() {
-        final List<String> categories = Category.getAllCategories();
+        final List<String> categories = Category.getAllCategoryNames();
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, categories);

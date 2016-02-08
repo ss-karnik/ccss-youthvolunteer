@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:id="@+id/manage_resource_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:id="@+id/save_resource_form"
+        tools:context="com.ccss.youthvolunteer.activity.ManageSingleResourceActivity">
+
+        <ProgressBar
+            android:id="@+id/manage_res_progress" style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" android:visibility="gone" />
+
+        <com.parse.ParseImageView
+            android:id="@+id/resource_image"
+            android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_small"
+            android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_small"
+            android:src="@drawable/whitecircle"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_horizontal" android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/res_crop_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.theartofdev.edmodo.cropper.CropImageView
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/res_cropImageView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                custom:imageResource="@drawable/default_avatar"
+                android:layout_alignParentTop="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/res_cropImageView">
+                <Button
+                    android:id="@+id/res_button_rotate"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_margin="@dimen/com_parse_ui_small_vertical_spacing"
+                    style="@style/ParseLoginUI.Button"
+                    android:background="@color/colorPrimaryLighter"
+                    android:text="@string/prompt_rotate"/>
+
+                <Button
+                    android:id="@+id/res_button_crop_done"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_margin="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:background="@color/colorPrimaryLighter"
+                    style="@style/ParseLoginUI.Button"
+                    android:text="@string/prompt_crop_done"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/manage_res_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.EditText"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:hint="@string/title_input_hint"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/manage_res_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="200"
+            android:maxLines="4"
+            style="@style/ParseLoginUI.EditText"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:hint="@string/description_max_200"
+            android:inputType="textMultiLine" />
+
+        <!-- Category -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/manage_color_picker"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/manage_category_indicator"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/category_color_hint"
+                android:inputType= "none|text"/>
+
+            <TextView
+                android:layout_width="@dimen/com_parse_ui_vertical_spacing"
+                android:layout_height="@dimen/com_parse_ui_xlarge_vertical_spacing"
+                android:id="@+id/manage_category_color_indicator"
+                android:layout_toEndOf="@id/manage_category_indicator"
+                android:layout_toRightOf="@id/manage_category_indicator"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/manage_category_color_picker_button"
+                android:layout_alignTop="@id/manage_category_indicator"
+                android:layout_toEndOf="@id/manage_category_color_indicator"
+                android:layout_toRightOf="@id/manage_category_color_indicator"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                android:src="@drawable/colour_picker"
+                android:contentDescription="@string/color_picker" />
+        </RelativeLayout>
+
+        <!-- Action/Activity/Opportunity -->
+        <RelativeLayout
+            android:id="@+id/manage_opportunity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <Spinner
+                android:id="@+id/manage_activity_category"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/category_input_hint"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+            <Spinner
+                android:id="@+id/manage_activity_org"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/org_input_hint"
+                android:layout_below="@id/manage_activity_category"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+            <EditText
+                android:id="@+id/manage_activity_impact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="200"
+                android:maxLines="4"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_below="@id/manage_activity_org"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/impact_hint"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/manage_activity_spl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_below="@id/manage_activity_impact"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/special_feature_hint"
+                android:inputType="textPersonName" />
+
+            <CheckBox android:id="@+id/manage_activity_virtual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.TextView.Permission"
+                android:checked="false"
+                android:layout_below="@id/manage_activity_spl"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
+                android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
+                android:text="@string/virtual_text" />
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_location_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manage_activity_virtual"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/location_hint"
+                    android:inputType="textPersonName" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_map_button"
+                    android:layout_alignTop="@id/manage_activity_location"
+                    android:layout_toEndOf="@id/manage_activity_location"
+                    android:layout_toRightOf="@id/manage_activity_location"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_place"
+                    android:contentDescription="@string/nav_title_location" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_date_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manage_activity_location_container"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_date"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/prompt_date"
+                    android:inputType= "none|date"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_cal_button"
+                    android:layout_alignTop="@id/manage_activity_date"
+                    android:layout_toEndOf="@id/manage_activity_date"
+                    android:layout_toRightOf="@id/manage_activity_date"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/calendar_icon"
+                    android:contentDescription="@string/calendar" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_time_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manage_activity_date_container"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_duration"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/prompt_duration"
+                    android:inputType= "none|date"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_time_button"
+                    android:layout_alignTop="@id/manage_activity_duration"
+                    android:layout_toEndOf="@id/manage_activity_duration"
+                    android:layout_toRightOf="@id/manage_activity_duration"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/clock"
+                    android:contentDescription="@string/clock" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- Special User -->
+        <RelativeLayout
+            android:id="@+id/user_mgmt_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+
+            <Spinner
+                android:id="@+id/manage_user_org"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/org_input_hint"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+            <Spinner
+                android:id="@+id/manage_user_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/user_role_hint"
+                android:layout_below="@id/manage_user_org"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+        </RelativeLayout>
+
+        <!-- Recognition -->
+        <RelativeLayout
+            android:id="@+id/manage_recognition_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <Spinner
+                android:id="@+id/manage_recog_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/recog_type_hint"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+            <EditText
+                android:id="@+id/manage_recog_pts_req"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_below="@id/manage_recog_type"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/recognition_hours_required"
+                android:inputType="number" />
+            <EditText
+                android:id="@+id/manage_recog_max_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manage_recog_pts_req"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/recognition_max_units"
+                android:inputType="number" />
+            <CheckBox android:id="@+id/manage_recog_pts_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/manage_recog_max_units"
+                style="@style/ParseLoginUI.TextView.Permission"
+                android:checked="true"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
+                android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
+                android:text="@string/recog_unit" />
+        </RelativeLayout>
+
+        <CheckBox android:id="@+id/manage_active"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ParseLoginUI.TextView.Permission"
+            android:checked="true"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
+            android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
+            android:text="@string/active_text" />
+
+
+        <TextView
+            android:id="@+id/user_list_item_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="left"
+            android:background="@color/com_facebook_button_background_color"
+            android:textColor="@color/white"
+            android:text="@string/nav_title_volunteers"
+            android:visibility="gone"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"/>
+
+        <Button
+            android:id="@+id/manage_res_submit"
+            style="@style/ParseLoginUI.Button"
+            android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:text="@string/prompt_save" />
+
+    </LinearLayout>
+</ScrollView>

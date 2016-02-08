@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.ccss.youthvolunteer.R;
-import com.ccss.youthvolunteer.model.Interests;
+import com.ccss.youthvolunteer.model.Interest;
 import com.ccss.youthvolunteer.model.ProfileVerticalParent;
 import com.ccss.youthvolunteer.util.ExpandableParentViewHolder;
 import com.ccss.youthvolunteer.util.ExpandableProfileChildViewHolder;
@@ -18,10 +18,10 @@ import java.util.List;
 public class InterestsExpandableAdapter extends ExpandableRecyclerAdapter<ExpandableParentViewHolder, ExpandableProfileChildViewHolder> {
 
     private LayoutInflater mInflater;
-    private List<String> mExistingSelections;
+    private List<Interest> mExistingSelections;
     private ExpandableAdapter.OnItemClickListener mOnItemClickListener;
 
-    public InterestsExpandableAdapter(Context context, List<? extends ParentListItem> itemList, List<String> existingSelections, ExpandableAdapter.OnItemClickListener itemClickListener) {
+    public InterestsExpandableAdapter(Context context, List<? extends ParentListItem> itemList, List<Interest> existingSelections, ExpandableAdapter.OnItemClickListener itemClickListener) {
         super(itemList);
         mInflater = LayoutInflater.from(context);
         mExistingSelections = existingSelections;
@@ -48,9 +48,9 @@ public class InterestsExpandableAdapter extends ExpandableRecyclerAdapter<Expand
 
     @Override
     public void onBindChildViewHolder(ExpandableProfileChildViewHolder childViewHolder, int position, Object childListItem) {
-        Interests interests = (Interests) childListItem;
+        Interest interest = (Interest) childListItem;
 
-        childViewHolder.bind(interests.getInterestTitle(), interests.getDescription(), mExistingSelections.contains(interests.getInterestTitle()), mOnItemClickListener);
+        childViewHolder.bind(interest.getInterestTitle(), interest.getDescription(), mExistingSelections.contains(interest), mOnItemClickListener);
     }
 
     public void setOnItemClickListener(ExpandableAdapter.OnItemClickListener listener) {
