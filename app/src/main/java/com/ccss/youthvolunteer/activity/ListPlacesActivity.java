@@ -177,7 +177,7 @@ public class ListPlacesActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
+        if (requestCode == Constants.PLACE_PICKER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 locationAddress  =  place.getAddress().toString();

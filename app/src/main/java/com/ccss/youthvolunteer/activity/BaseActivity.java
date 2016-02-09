@@ -57,14 +57,14 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
         intent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
         intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
-        startActivityForResult(intent, 1001);
+        startActivityForResult(intent, Constants.ADD_RESOURCE_REQUEST_CODE);
     }
 
     protected void startVolunteerActivity(String mode, String organizationName) {
         Intent intent = new Intent(this, VolunteerOpportunityActivity.class);
         intent.putExtra(Constants.MANAGE_ITEM_KEY, mode);
         intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
-        startActivityForResult(intent, 1001);
+        startActivityForResult(intent, Constants.VOLUNTEER_ACTIVITY_REQUEST_CODE);
     }
 
     protected void startManageResourceActivity(String resourceName, String organizationName){
@@ -207,7 +207,7 @@ public class BaseActivity extends AppCompatActivity {
             Intent intent = intentBuilder.build(this);
             // Start the intent by requesting a result,
             // identified by a request code.
-            startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST);
+            startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST_CODE);
 
         } catch (GooglePlayServicesRepairableException e) {
             showError(e.getLocalizedMessage());

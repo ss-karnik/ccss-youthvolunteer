@@ -190,12 +190,13 @@ public class ProfileInterestsFragment extends Fragment implements ProfileActivit
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             View view = mInterestsRecyclerView.findChildViewUnder(e.getX(), e.getY());
-            //onClick(view);
+            //int idx = mInterestsRecyclerView.getChildAdapterPosition(view);
             return super.onSingleTapConfirmed(e);
         }
 
         public void onLongPress(MotionEvent e) {
             View view = mInterestsRecyclerView.findChildViewUnder(e.getX(), e.getY());
+            //int idx = mInterestsRecyclerView.getChildAdapterPosition(view);
 //            if (actionMode != null) {
 //                return;
 //            }

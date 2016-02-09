@@ -15,12 +15,14 @@
         android:textSize="24sp"
         android:textAppearance="@color/colorPrimaryDark"
         android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/com_parse_ui_small_horizontal_spacing"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Presented by"
+        android:paddingTop="@dimen/com_parse_ui_vertical_spacing"
+        android:text="Presented by:"
         android:textSize="12sp"
         android:textAppearance="@color/colorPrimaryDark"
         android:layout_margin="@dimen/com_parse_ui_vertical_spacing"/>

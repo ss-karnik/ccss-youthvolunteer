@@ -71,7 +71,6 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     private static final String USER_LAST_NAME_FIELD = "lastName";
     private static final String USER_SCHOOL_NAME_FIELD = "schoolName";
     private static final String USER_DOB_FIELD = "dateOfBirth";
-    private static final int SELECT_PICTURE = 200;
     private static final int ROTATE_NINETY_DEGREES = 90;
     private static final int DEFAULT_ASPECT_RATIO_VALUES = 20;
     private static final int ON_TOUCH = 1;
@@ -124,7 +123,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         mProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(getPickImageChooserIntent(), SELECT_PICTURE);
+                startActivityForResult(getPickImageChooserIntent(), Constants.IMAGE_PICKER_REQUEST_CODE);
             }
         });
 
@@ -307,7 +306,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_PICTURE) {
+            if (requestCode == Constants.IMAGE_PICKER_REQUEST_CODE) {
                 Uri imageUri = getPickImageResultUri(data);
 
                 final RelativeLayout cropSection = (RelativeLayout) findViewById(R.id.crop_section);

@@ -56,6 +56,16 @@
     <string name="color_picker">Color picker</string>
     <string name="active_text">Is Active?</string>
     <string name="nav_title_volunteers">Volunteers</string>
+    <string name="no_categories_available">No Categories defined</string>
+    <string name="no_recog_available">No Recognitions defined</string>
+    <string name="no_interests_available">No Interests defined</string>
+    <string name="no_skills_available">No Skills defined</string>
+    <string name="no_sp_available">No Special users defined</string>
+    <string name="no_schools_available">No Schools defined</string>
+    <string name="no_groups_available">No Interest Groups defined</string>
+    <string name="no_orgs_available">No Organizations defined</string>
+    <string name="no_opportunities_available">No Opportunities defined</string>
+    <string name="no_users_available">No volunteers</string>
 
     <string name="ok">OK</string>
     <string name="dialog_title_error">Error</string>
@@ -151,6 +161,7 @@
     <string name="recognition_max_units">Max available units</string>
     <string name="recog_unit">Is hours based?</string>
     <string name="recog_type_hint">Recognition Type</string>
+    <string name="recog_activity_hint">For Activity</string>
 
     <string name="action_rankby_volunteer">By Volunteer</string>
     <string name="action_rankby_school">By School</string>
@@ -225,6 +236,8 @@
     <string name="action_inactive">Remove</string>
     <string name="action_redeem">Redeem</string>
     <string name="selected_count">%1$s selected</string>
+
+
 
 
 

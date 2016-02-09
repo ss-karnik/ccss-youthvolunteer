@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class VolunteerLogAdapter extends RecyclerView.Adapter<VolunteerLogAdapte
 
         UserAction currentAction = mUserActions.get(position);
 
-       // viewHolder.getCategoryIndicatorTextView().setBackgroundColor(Color.parseColor(currentAction.getAction().getActionCategory().getCategoryColor()));
+        viewHolder.getCategoryIndicatorTextView().setBackgroundColor(Color.parseColor(currentAction.getAction().getActionCategory().getCategoryColor()));
         viewHolder.getTitleTextView().setText(currentAction.getAction().getTitle());
         viewHolder.getOrganizationTextView().setText(currentAction.getAction().getOrganizationName());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);

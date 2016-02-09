@@ -51,7 +51,6 @@ import java.util.List;
 
 public class ProfileDetailsFragment extends Fragment implements ProfileActivity.ValidateFragment {
 
-    private static final int SELECT_PICTURE = 2001;
     private static final int ROTATE_NINETY_DEGREES = 90;
     private static final int DEFAULT_ASPECT_RATIO_VALUES = 20;
     private static final int ON_TOUCH = 1;
@@ -80,8 +79,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     private List<String> mSchools = Lists.newArrayList();
 
     /**
-     * Returns a new instance of this fragment for the given section
-     * number.
+     * Returns a new instance of this fragment for the given section number.
      */
     public static ProfileDetailsFragment newInstance(int sectionNumber, VolunteerUser user) {
         ProfileDetailsFragment fragment = new ProfileDetailsFragment();
@@ -147,7 +145,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     //region  Profile Image
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == Constants.IMAGE_PICKER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 Uri imageUri = getPickImageResultUri(data);
                 mCropSection.setVisibility(View.VISIBLE);
                 mCropImageView.setFixedAspectRatio(true);
@@ -246,7 +244,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
         mProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(getPickImageChooserIntent(), SELECT_PICTURE);
+                startActivityForResult(getPickImageChooserIntent(), Constants.IMAGE_PICKER_REQUEST_CODE);
             }
         });
 

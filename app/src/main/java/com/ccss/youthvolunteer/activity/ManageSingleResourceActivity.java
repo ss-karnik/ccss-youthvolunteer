@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,15 +26,14 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.ccss.youthvolunteer.R;
+import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
 import com.ccss.youthvolunteer.adapter.SelectorHintAdapter;
 import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.Interest;
@@ -40,6 +41,7 @@ import com.ccss.youthvolunteer.model.InterestGroup;
 import com.ccss.youthvolunteer.model.Organization;
 import com.ccss.youthvolunteer.model.Recognition;
 import com.ccss.youthvolunteer.model.RecognitionType;
+import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.School;
 import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.SpecialUser;
@@ -49,6 +51,7 @@ import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DateUtils;
+import com.ccss.youthvolunteer.util.DividerItemDecoration;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -76,11 +79,9 @@ import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class ManageSingleResourceActivity extends BaseActivity {
 
-    private static final int SELECT_PICTURE = 300;
     private static final int ROTATE_NINETY_DEGREES = 90;
     private static final int DEFAULT_ASPECT_RATIO_VALUES = 20;
     private static final int ON_TOUCH = 1;
-    private static final int PLACE_PICKER_REQUEST = 100;
     private static final String PROFILE_IMAGE = "profileLogo";
 
     private ParseObject mResourceObject;
@@ -98,6 +99,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
     private RelativeLayout mActivityMgmtContainer;
     private Spinner mCategorySpinner;
     private Spinner mActivityOrgSpinner;
+    private Spinner mRecognitionActivitySpinner;
     private EditText mActivityImpactText;
     private EditText mActivitySplFeatureText;
     private EditText mActivityLocationText;
@@ -108,6 +110,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
     private ImageButton mActivityTimePicker;
     private static EditText mActivityDateText;
     private static EditText mActivityTimeText;
+    private EditText mActivityPoints;
     private ImageButton mActivityLocationPicker;
     private RelativeLayout mUserMgmtContainer;
     private Spinner mUserOrgSpinner;
@@ -120,7 +123,10 @@ public class ManageSingleResourceActivity extends BaseActivity {
     private TextView mUsersHeader;
     private RecyclerView mUsersRecyclerView;
     private Button mSubmitButton;
+    private TextView mEmptyUserList;
 
+    private List<ResourceModel> mVolunteerUsers = Lists.newArrayList();
+    private SelectableResourceListAdapter mUserResourceAdapter;
 
     private String mResourceObjectId;
 
@@ -172,7 +178,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
         mLogoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(getPickImageChooserIntent(), SELECT_PICTURE);
+                startActivityForResult(getPickImageChooserIntent(), Constants.IMAGE_PICKER_REQUEST_CODE);
             }
         });
 
@@ -205,7 +211,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 newFragment.show(getFragmentManager(), "timePicker");
             }
         });
-
+        mActivityPoints = (EditText) findViewById(R.id.manage_activity_points);
         mActivityLocationPicker = (ImageButton) findViewById(R.id.manage_activity_map_button);
         mActivityLocationPicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,9 +231,11 @@ public class ManageSingleResourceActivity extends BaseActivity {
 
         mRecogReqPtsText = (EditText) findViewById(R.id.manage_recog_pts_req);
         mRecogMaxUnitsText = (EditText) findViewById(R.id.manage_recog_max_units);
+        mRecognitionActivitySpinner = (Spinner) findViewById(R.id.manage_recog_activity);
 
         mUsersHeader = (TextView) findViewById(R.id.user_list_item_header);
         mUsersRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mEmptyUserList = (TextView) findViewById(R.id.empty_user_list);
 
         //Set control visibility based on the selection.
         mProgressBar.setVisibility(View.VISIBLE);
@@ -252,7 +260,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                         if(!isNewAddition){
                             mTitleText.setText(((Category) mResourceObject).getCategoryName());
                             mDescriptionText.setText(((Category) mResourceObject).getDescription());
-                            mActiveStatus.setChecked(((Interest) mResourceObject).isActive());
+                            mActiveStatus.setChecked(((Category) mResourceObject).isActive());
 
                             String categoryColorHex = ((Category) mResourceObject).getCategoryColor();
                             mColorHexText.setText(categoryColorHex);
@@ -291,6 +299,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 mCropImageView.setVisibility(View.VISIBLE);
                 mRecognitionMgmtContainer.setVisibility(View.VISIBLE);
                 initializeRecognitionTypeSpinner();
+                initializeRecognitionOpportunitySpinner();
 
                 ParseQuery<Recognition> recognitionQuery = ParseQuery.getQuery(Recognition.class);
                 recognitionQuery.whereEqualTo(Constants.OBJECT_ID_KEY, mResourceObjectId);
@@ -523,6 +532,10 @@ public class ManageSingleResourceActivity extends BaseActivity {
                         if (!isNewAddition) {
                             mTitleText.setText(((VolunteerOpportunity) mResourceObject).getTitle());
                             mDescriptionText.setText(((VolunteerOpportunity) mResourceObject).getDescription());
+                            mActivityPoints.setText(((VolunteerOpportunity) mResourceObject).getActionPoints());
+                            mActivityImpactText.setText(((VolunteerOpportunity) mResourceObject).getImpact());
+                            mActivitySplFeatureText.setText(((VolunteerOpportunity) mResourceObject).getSpecialFeature());
+                            //TODO: Populate Opportunity controls
 
                             mUsersHeader.setVisibility(View.VISIBLE);
                             LoadUsersForOpportunity();
@@ -543,56 +556,99 @@ public class ManageSingleResourceActivity extends BaseActivity {
         //endregion
     }
 
+    private void initializeUserRecyclerView() {
+        mUserResourceAdapter = new SelectableResourceListAdapter(mVolunteerUsers);
+
+        mUsersHeader.setVisibility(View.VISIBLE);
+        mUsersRecyclerView.setVisibility(View.VISIBLE);
+        mUsersRecyclerView.setHasFixedSize(true);
+        mUsersRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        mUsersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mUsersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mUsersRecyclerView.setAdapter(mUserResourceAdapter);
+    }
+
+    private void populateUserList(List<VolunteerUser> objects){
+        if(objects.isEmpty()){
+            mEmptyUserList.setVisibility(View.VISIBLE);
+        } else {
+            for (VolunteerUser user : objects) {
+                mVolunteerUsers.add(user.convertToResourceModel());
+            }
+        }
+        mUserResourceAdapter.notifyDataSetChanged();
+    }
+
     private void LoadUsersWithInterest() {
+        initializeUserRecyclerView();
         VolunteerUser.findUsersWithInterest(ParseObject.createWithoutData(Interest.class, mResourceObjectId), new FindCallback<VolunteerUser>() {
             @Override
             public void done(List<VolunteerUser> objects, ParseException e) {
-
+                populateUserList(objects);
             }
         });
     }
 
     private void LoadUsersWithSkills() {
+        initializeUserRecyclerView();
         VolunteerUser.findUsersWithSkill(ParseObject.createWithoutData(Skill.class, mResourceObjectId), new FindCallback<VolunteerUser>() {
             @Override
             public void done(List<VolunteerUser> objects, ParseException e) {
-
+                populateUserList(objects);
             }
         });
     }
 
     private void LoadSchoolUsers(String schoolName) {
+        //initializeUserRecyclerView();
         VolunteerUser.findUsersFromSchool(schoolName, new FindCallback<VolunteerUser>() {
             @Override
             public void done(List<VolunteerUser> objects, ParseException e) {
-
+                populateUserList(objects);
             }
         });
     }
 
     private void LoadOrganizationUsers(String orgName) {
+        initializeUserRecyclerView();
         VolunteerUser.findUsersFromOrganization(orgName, new FindCallback<VolunteerUser>() {
             @Override
             public void done(List<VolunteerUser> objects, ParseException e) {
-
+                populateUserList(objects);
             }
         });
     }
 
     private void LoadUsersForOpportunity() {
+        initializeUserRecyclerView();
         UserAction.findUsersForAction(ParseObject.createWithoutData(VolunteerOpportunity.class, mResourceObjectId), new FindCallback<UserAction>() {
             @Override
             public void done(List<UserAction> objects, ParseException e) {
-
+                if(objects.isEmpty()){
+                    mEmptyUserList.setVisibility(View.VISIBLE);
+                } else {
+                    for (UserAction action : objects) {
+                        mVolunteerUsers.add(VolunteerUser.convertToResourceModel(action.getActionBy()));
+                    }
+                }
+                mUserResourceAdapter.notifyDataSetChanged();
             }
         });
     }
 
     private void LoadRecognizedUsers() {
+        initializeUserRecyclerView();
         UserRecognition.findUsersWithRecognition(ParseObject.createWithoutData(Recognition.class, mResourceObjectId), new FindCallback<UserRecognition>() {
             @Override
             public void done(List<UserRecognition> objects, ParseException e) {
-
+                if(objects.isEmpty()){
+                    mEmptyUserList.setVisibility(View.VISIBLE);
+                } else {
+                    for (UserRecognition recognizedUsers : objects) {
+                        mVolunteerUsers.add(VolunteerUser.convertToResourceModel(recognizedUsers.getAchievedBy()));
+                    }
+                }
+                mUserResourceAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -600,7 +656,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
     private void LaunchPlacePicker() {
         PlacePicker.IntentBuilder placePickerBuilder = new PlacePicker.IntentBuilder();
         try {
-            startActivityForResult(placePickerBuilder.build(this), PLACE_PICKER_REQUEST);
+            startActivityForResult(placePickerBuilder.build(this), Constants.PLACE_PICKER_REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             Log.e("Location Picker", e.getLocalizedMessage(), e);
         }
@@ -648,18 +704,39 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 new SelectorHintAdapter(dataAdapter, R.layout.recog_selector_hint_row, this));
     }
 
+    private void initializeRecognitionOpportunitySpinner() {
+        final List<VolunteerOpportunity> availableOpportunities = Lists.newArrayList();
+        final ArrayAdapter<VolunteerOpportunity> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, availableOpportunities);
+        VolunteerOpportunity.getActiveOpportunities(new FindCallback<VolunteerOpportunity>() {
+            @Override
+            public void done(List<VolunteerOpportunity> objects, ParseException e) {
+                if(e == null){
+                    for (VolunteerOpportunity opportunity : objects) {
+                        availableOpportunities.add(opportunity);
+                    }
+                }
+                dataAdapter.notifyDataSetChanged();
+            }
+        });
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mRecognitionActivitySpinner.setPromptId(R.string.recog_activity_hint);
+        mRecognitionActivitySpinner.setAdapter(
+                new SelectorHintAdapter(dataAdapter, R.layout.action_selector_hint_row, this));
+    }
+
     //region Logo Image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             //Location selection
-            if (requestCode == PLACE_PICKER_REQUEST) {
+            if (requestCode == Constants.PLACE_PICKER_REQUEST_CODE) {
                 Place place = PlacePicker.getPlace(data, this);
                 mActivityLocationText.setText(place.getName());
             }
 
             //Logo selection
-            if (requestCode == SELECT_PICTURE) {
+            if (requestCode == Constants.IMAGE_PICKER_REQUEST_CODE) {
                 Uri imageUri = getPickImageResultUri(data);
 
                 final RelativeLayout cropSection = (RelativeLayout) findViewById(R.id.crop_section);
@@ -795,6 +872,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                         ? new SpecialUser()
                         : ParseObject.createWithoutData(SpecialUser.class, mResourceObjectId);
                 ((SpecialUser)mResourceObject).setEmailId(mTitleText.getText().toString());
+                ((SpecialUser)mResourceObject).setRole(String.valueOf(mUserRoleSpinner.getSelectedItem()));
 
                 //TODO: Save Organization and Role
 //                ((SpecialUser)mResourceObject).setOrganizationName(mUserOrgSpinner.getSelectedItem());
@@ -842,7 +920,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 break;
 
             case Constants.OPPORTUNITY_RESOURCE:
-
+                //TODO: Populate values from controls
                 ((VolunteerOpportunity)mResourceObject).setIsActive(mActiveStatus.isChecked());
 
                 VolunteerOpportunity.saveOpportunity((VolunteerOpportunity) mResourceObject, onResourceSave());

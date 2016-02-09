@@ -92,6 +92,7 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
      */
     private static ParseQuery<VolunteerOpportunity> createQuery(boolean getAll) {
         ParseQuery<VolunteerOpportunity> query = new ParseQuery(VolunteerOpportunity.class);
+        query.include("actionCategory");
         if(!getAll) {
             query.whereEqualTo("isActive", true);
         }
@@ -228,12 +229,13 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         return String.format("Category: %s; Title: %s", this.getActionCategory(), this.getTitle()) ;
     }
 
-    public static List<String> getOpportunityForCategory(String category, boolean getAll) {
+    public static List<String> getOpportunityForCategory(Category category, boolean getAll) {
         ParseQuery<VolunteerOpportunity> actionQuery = ParseQuery.getQuery(VolunteerOpportunity.class);
+        actionQuery.include("actionCategory");
         if(!getAll) {
             actionQuery.whereEqualTo("isActive", true);
         }
-        actionQuery.whereMatches("categoryName", category);
+        actionQuery.whereEqualTo("actionCategory", category);
         try {
             return Lists.transform(actionQuery.find(), new Function<VolunteerOpportunity, String>() {
                 @Override
@@ -246,10 +248,11 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         }
     }
 
-    public static VolunteerOpportunity getOpportunityByNameAndCategory(String actionName, String category) {
+    public static VolunteerOpportunity getOpportunityByNameAndCategory(String actionName, Category category) {
         final VolunteerOpportunity[] singleVolunteerOpportunity = new VolunteerOpportunity[1];
         ParseQuery<VolunteerOpportunity> actionQuery = createQuery(false);
-        actionQuery.whereEqualTo("title", actionName).whereEqualTo("categoryName", category);
+        actionQuery.include("actionCategory");
+        actionQuery.whereEqualTo("title", actionName).whereEqualTo("actionCategory", category);
         actionQuery.getFirstInBackground(new GetCallback<VolunteerOpportunity>() {
             @Override
             public void done(VolunteerOpportunity volunteerOpportunity, ParseException e) {

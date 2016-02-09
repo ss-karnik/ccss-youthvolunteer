@@ -63,6 +63,7 @@ public class UserRecognition extends ParseObject {
 
     public static void findLatestUserRecognitionInBackground(ParseUser user, final GetCallback<UserRecognition> callback) {
         ParseQuery<UserRecognition> userRecognitionQuery = ParseQuery.getQuery(UserRecognition.class);
+        userRecognitionQuery.include("achievedBy");
         userRecognitionQuery.whereEqualTo("achievedBy", user);
         userRecognitionQuery.addDescendingOrder("dateAchieved");
         userRecognitionQuery.getFirstInBackground(new GetCallback<UserRecognition>() {
@@ -79,6 +80,7 @@ public class UserRecognition extends ParseObject {
 
     public static void findUsersWithRecognition(Recognition recognition, final FindCallback<UserRecognition> callback) {
         ParseQuery<UserRecognition> userRecognitionQuery = ParseQuery.getQuery(UserRecognition.class);
+        userRecognitionQuery.include("achievedBy");
         userRecognitionQuery.whereEqualTo("recognition", recognition);
         userRecognitionQuery.addDescendingOrder("dateAchieved");
         userRecognitionQuery.findInBackground(new FindCallback<UserRecognition>() {

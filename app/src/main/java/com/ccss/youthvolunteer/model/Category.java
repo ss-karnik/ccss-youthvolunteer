@@ -25,6 +25,11 @@ public class Category extends ParseObject {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return getCategoryName();
+    }
+
     public void setCategoryName(String value){
         put("categoryName", value);
     }

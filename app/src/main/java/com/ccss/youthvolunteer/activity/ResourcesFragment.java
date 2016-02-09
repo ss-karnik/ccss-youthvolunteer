@@ -13,11 +13,13 @@ import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
@@ -33,13 +35,12 @@ import com.ccss.youthvolunteer.model.SpecialUser;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
-import com.ccss.youthvolunteer.util.HeaderDecoration;
-import com.ccss.youthvolunteer.util.RecyclerItemClickSupport;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,9 +52,12 @@ public class ResourcesFragment extends Fragment
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final String TAG = "ResourcesListFragment";
     protected LayoutManagerType mCurrentLayoutManagerType;
+    String mResourceType;
+    String mUserOrganization;
 
     private List<ResourceModel> mResources = Lists.newArrayList();
     private RecyclerView mRecyclerView;
+    private TextView mEmptyListMessage;
     protected RecyclerView.LayoutManager mLayoutManager;
     private SelectableResourceListAdapter mAdapter;
     private ProgressBar mProgressBar;
@@ -63,7 +67,10 @@ public class ResourcesFragment extends Fragment
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        return false;
+        // Inflate a menu resource providing context menu items
+        MenuInflater inflater = actionMode.getMenuInflater();
+        inflater.inflate(R.menu.menu_manage_resource, menu);
+        return true;
     }
 
     @Override
@@ -72,24 +79,50 @@ public class ResourcesFragment extends Fragment
     }
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        return false;
+    public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.manage_action_delete:
+                List<String> selectedItemPositions = mAdapter.getSelectedItems();
+                String currItem;
+                for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+                    currItem = selectedItemPositions.get(i);
+                    //TODO
+//                    removeItemFromList(currItem);
+//                    mAdapter.removeData(currItem);
+                }
+                actionMode.finish();
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-
+        this.actionMode = null;
+        mAdapter.clearSelections();
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.resources_container) {
+        if (view.getId() == R.id.resource_view) {
             // item click
             int idx = mRecyclerView.getChildAdapterPosition(view);
-            if (actionMode != null) {
-                myToggleSelection(idx);
-                return;
-            }
+            ResourceModel model = mAdapter.getItem(idx);
+            Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+            intent.putExtra(Constants.MANAGE_ITEM_KEY, model.getResourceType());
+            intent.putExtra(Constants.OBJECT_ID_KEY, model.getObjectId());
+            intent.putExtra(Constants.USER_ORGANIZATION_KEY, mUserOrganization);
+            startActivityForResult(intent, Constants.MANAGE_RESOURCE_REQUEST_CODE);
+            return;
+            //mAdapter.toggleSelection(idx);
+//            String title = getString(R.string.selected_count, mAdapter.getSelectedItems().size());
+//            actionMode.setTitle(title);
+
+//            if (actionMode != null) {
+//                myToggleSelection(idx);
+//                return;
+//            }
 //            ResourceModel data = mAdapter.getItem(idx);
 //            View innerContainer = view.findViewById(R.id.container_inner_item);
 //            innerContainer.setTransitionName(Constants.NAME_INNER_CONTAINER + "_" + data.getObjectId());
@@ -105,6 +138,7 @@ public class ResourcesFragment extends Fragment
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        gestureDetector.onTouchEvent(e);
         return false;
     }
 
@@ -119,7 +153,13 @@ public class ResourcesFragment extends Fragment
     }
 
     private void myToggleSelection(int idx) {
-        mAdapter.toggleSelection(idx);
+        ResourceModel model = mAdapter.getItem(idx);
+        Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+                intent.putExtra(Constants.MANAGE_ITEM_KEY, model.getResourceType());
+                intent.putExtra(Constants.OBJECT_ID_KEY, model.getObjectId());
+                intent.putExtra(Constants.USER_ORGANIZATION_KEY, mUserOrganization);
+                startActivityForResult(intent, Constants.MANAGE_RESOURCE_REQUEST_CODE);
+        //mAdapter.toggleSelection(idx);
         String title = getString(R.string.selected_count, mAdapter.getSelectedItems().size());
         actionMode.setTitle(title);
     }
@@ -128,8 +168,6 @@ public class ResourcesFragment extends Fragment
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
-
-
 
     /**
      * Use this factory method to create a new instance of
@@ -169,17 +207,17 @@ public class ResourcesFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        final String resourceType = getArguments().getString(Constants.MANAGE_ITEM_KEY);
-        final String userOrganization = getArguments().getString(Constants.USER_ORGANIZATION_KEY);
+        mResourceType = getArguments().getString(Constants.MANAGE_ITEM_KEY);
+        mUserOrganization = getArguments().getString(Constants.USER_ORGANIZATION_KEY);
 
         mAdapter = new SelectableResourceListAdapter(mResources);
         mAdapter.setOnItemClickListener(new RecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, String resourceItemType, String resourceObjectId) {
                 Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
-                intent.putExtra(Constants.MANAGE_ITEM_KEY, resourceType);
+                intent.putExtra(Constants.MANAGE_ITEM_KEY, mResourceType);
                 intent.putExtra(Constants.OBJECT_ID_KEY, resourceObjectId);
-                intent.putExtra(Constants.USER_ORGANIZATION_KEY, userOrganization);
+                intent.putExtra(Constants.USER_ORGANIZATION_KEY, mUserOrganization);
                 startActivity(intent);
             }
 
@@ -189,15 +227,21 @@ public class ResourcesFragment extends Fragment
             }
         });
         gestureDetector = new GestureDetectorCompat(getActivity(), new RecyclerViewGestureListener());
-        if(resourceType != null) {
-            switch (resourceType) {
+
+        if(mResourceType != null) {
+            switch (mResourceType) {
                 case Constants.CATEGORY_RESOURCE:
                     Category.findInBackground(new FindCallback<Category>() {
                         @Override
                         public void done(List<Category> objects, ParseException e) {
                             if (e == null) {
-                                for (Category category : objects) {
-                                    mResources.add(category.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_categories_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Category category : objects) {
+                                        mResources.add(category.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -211,8 +255,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<Recognition> objects, ParseException e) {
                             if (e == null) {
-                                for (Recognition recognition : objects) {
-                                    mResources.add(recognition.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_recog_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Recognition recognition : objects) {
+                                        mResources.add(recognition.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -226,8 +275,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<Interest> objects, ParseException e) {
                             if (e == null) {
-                                for (Interest interest : objects) {
-                                    mResources.add(interest.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_interests_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Interest interest : objects) {
+                                        mResources.add(interest.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -240,8 +294,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<Skill> objects, ParseException e) {
                             if (e == null) {
-                                for (Skill skill : objects) {
-                                    mResources.add(skill.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_skills_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Skill skill : objects) {
+                                        mResources.add(skill.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -254,8 +313,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<SpecialUser> objects, ParseException e) {
                             if (e == null) {
-                                for (SpecialUser specialUser : objects) {
-                                    mResources.add(specialUser.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_sp_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (SpecialUser specialUser : objects) {
+                                        mResources.add(specialUser.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -268,8 +332,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<School> objects, ParseException e) {
                             if (e == null) {
-                                for (School school : objects) {
-                                    mResources.add(school.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_schools_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (School school : objects) {
+                                        mResources.add(school.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -282,8 +351,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<InterestGroup> objects, ParseException e) {
                             if (e == null) {
-                                for (InterestGroup groupMember : objects) {
-                                    mResources.add(groupMember.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_groups_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (InterestGroup groupMember : objects) {
+                                        mResources.add(groupMember.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -296,8 +370,13 @@ public class ResourcesFragment extends Fragment
                         @Override
                         public void done(List<Organization> objects, ParseException e) {
                             if (e == null) {
-                                for (Organization org : objects) {
-                                    mResources.add(org.convertToResourceModel());
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_orgs_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Organization org : objects) {
+                                        mResources.add(org.convertToResourceModel());
+                                    }
                                 }
                             }
                             mAdapter.notifyDataSetChanged();
@@ -306,10 +385,10 @@ public class ResourcesFragment extends Fragment
                     });
                     break;
                 case Constants.OPPORTUNITY_RESOURCE:
-                    if(Strings.isNullOrEmpty(userOrganization)) {
+                    if(Strings.isNullOrEmpty(mUserOrganization)) {
                         VolunteerOpportunity.getAllOpportunities(findOpportunitiesCallback());
                     } else {
-                        VolunteerOpportunity.getOpportunitiesForOrganization(userOrganization, false, findOpportunitiesCallback());
+                        VolunteerOpportunity.getOpportunitiesForOrganization(mUserOrganization, false, findOpportunitiesCallback());
                     }
                     break;
             }
@@ -322,8 +401,13 @@ public class ResourcesFragment extends Fragment
             @Override
             public void done(List<VolunteerOpportunity> objects, ParseException e) {
                 if (e == null) {
-                    for (VolunteerOpportunity opportunity : objects) {
-                        mResources.add(opportunity.convertToResourceModel());
+                    if(objects.isEmpty()){
+                        mEmptyListMessage.setText(R.string.no_opportunities_available);
+                        mEmptyListMessage.setVisibility(View.VISIBLE);
+                    } else {
+                        for (VolunteerOpportunity opportunity : objects) {
+                            mResources.add(opportunity.convertToResourceModel());
+                        }
                     }
                 }
                 mAdapter.notifyDataSetChanged();
@@ -338,6 +422,7 @@ public class ResourcesFragment extends Fragment
 
         layout.setTag(TAG);
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.resource_list);
+        mEmptyListMessage = (TextView) layout.findViewById(R.id.empty_resource_list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 //        HeaderDecoration headerDecoration = new HeaderDecoration(container, true, 10f, 1f, 1);
@@ -356,17 +441,18 @@ public class ResourcesFragment extends Fragment
         setRecyclerViewLayoutManager();
 
         mRecyclerView.setAdapter(mAdapter);
-        RecyclerItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new RecyclerItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
-//                intent.putExtra(Constants.MANAGE_ITEM_KEY, );
-//                intent.putExtra(Constants.OBJECT_ID_KEY, );
-//                intent.putExtra(Constants.USER_ORGANIZATION_KEY, );
-                startActivity(intent);
-            }
-        });
+//        RecyclerItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new RecyclerItemClickSupport.OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                Intent intent = new Intent(getActivity(), ManageSingleResourceActivity.class);
+////                intent.putExtra(Constants.MANAGE_ITEM_KEY, );
+////                intent.putExtra(Constants.OBJECT_ID_KEY, );
+////                intent.putExtra(Constants.USER_ORGANIZATION_KEY, );
+//                startActivity(intent);
+//            }
+//        });
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addOnItemTouchListener(this);
 
 //        mAdapter.setOnItemClickListener(new RecyclerViewClickListener() {
 //            @Override
@@ -439,9 +525,9 @@ public class ResourcesFragment extends Fragment
 
         public void onLongPress(MotionEvent e) {
             View view = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
-            if (actionMode != null) {
-                return;
-            }
+//            if (actionMode != null) {
+//                return;
+//            }
             // Start the CAB using the ActionMode.Callback defined above
             actionMode = getActivity().startActionMode(ResourcesFragment.this);
             int idx = mRecyclerView.getChildAdapterPosition(view);

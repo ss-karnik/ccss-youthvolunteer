@@ -14,8 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:clickable="true"
         android:layout_alignParentTop="true" />
+
+    <TextView
+        android:id="@+id/empty_resource_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/resource_list_progress_bar"

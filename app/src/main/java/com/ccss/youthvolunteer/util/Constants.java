@@ -14,7 +14,7 @@ public class Constants {
     public static final String POST_BROADCAST_CHANNEL = "broadcastPost";
     public static final String OPPORTUNITY_BROADCAST_CHANNEL = "broadcastOpportunity";
     public static final String PLACE_ID = "place_id";
-    public static final int PLACE_PICKER_REQUEST = 1;
+
     public static final String GOOGLE_PLACE_API_URL = "https://maps.googleapis.com/maps/api/place/";
 
     public static final String LOCATION_LAT = "location_lat";
@@ -43,11 +43,18 @@ public class Constants {
     public static final String ORGANIZATION_RESOURCE = "Organization";
     public static final String OPPORTUNITY_RESOURCE = "Opportunity";
     public static final String USER_ORGANIZATION_KEY = "UserOrganization";
+    public static final String VOLUNTEER_USER_RESOURCE = "VolunteerUser";
 
     public static final String ERROR_ITEM_KEY = "ErrorItemKey";
     public static final String OBJECT_ID_KEY = "objectId";
 
     public static final int COOLING_PERIOD_BETWEEN_ACTIONS_IN_MINS = 10;
+
+    public static final int VOLUNTEER_ACTIVITY_REQUEST_CODE = 1001;
+    public static final int IMAGE_PICKER_REQUEST_CODE = 1002;
+    public static final int ADD_RESOURCE_REQUEST_CODE = 1003;
+    public static final int MANAGE_RESOURCE_REQUEST_CODE = 1004;
+    public static final int PLACE_PICKER_REQUEST_CODE = 1005;
 
     public static final String ENCOURAGE_KEY = "ENCOURAGE";
     public static final String GOODNESS_KEY = "GOODNESS";

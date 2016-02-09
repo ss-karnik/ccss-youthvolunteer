@@ -149,6 +149,7 @@
             android:name=".activity.ManageResourceActivity"
             android:label="@string/title_activity_manage_resources"
             android:parentActivityName=".activity.MainActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

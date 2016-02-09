@@ -3,6 +3,7 @@ package com.ccss.youthvolunteer.model;
 import android.content.Context;
 import android.text.format.DateFormat;
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.CountCallback;
@@ -236,6 +237,25 @@ public class VolunteerUser extends ParseUser implements Serializable {
 
     public String getProfileImageUri(){
         return getParseFile("profileImage").getUrl();
+    }
+
+    public boolean isActive() {
+        return getBoolean("isActive");
+    }
+
+    public void setIsActive(boolean value){
+        put("isActive", value);
+    }
+
+    public ResourceModel convertToResourceModel(){
+        return new ResourceModel(Constants.VOLUNTEER_USER_RESOURCE, this.getFullName(), this.getEmail(),
+                "", this.getObjectId(), "", this.isActive());
+    }
+
+    public static ResourceModel convertToResourceModel(ParseUser user){
+        VolunteerUser volunteerUser = getVolunteerUser(user);
+        return new ResourceModel(Constants.VOLUNTEER_USER_RESOURCE, volunteerUser.getFullName(), volunteerUser.getEmail(),
+                "", volunteerUser.getObjectId(), "", volunteerUser.isActive());
     }
 
     public static int getTotalUserCount(){

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/person_view"
         card_view:cardCornerRadius="4dp"
+        card_view:cardBackgroundColor="#ECF0F1"
         android:background="@drawable/rect_card_view">
 
         <RelativeLayout

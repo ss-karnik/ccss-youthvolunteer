@@ -29,7 +29,7 @@ public class VolunteerOpportunityActivity extends BaseActivity {
     private Spinner mCategoryList;
     private Button mBtnVolunteer;
     private List<String> mCategoryActions;
-    private String mSelectedCategory;
+    private Category mSelectedCategory;
     private VolunteerOpportunity mSelectedVolunteerOpportunity;
     private ParseUser mCurrentUser;
 
@@ -60,7 +60,8 @@ public class VolunteerOpportunityActivity extends BaseActivity {
         mCategoryList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int arg2, long arg3) {
-                mSelectedCategory = categories.get(arg2);
+                //TODO: Select category
+                //mSelectedCategory = categories.get(arg2);
                 mCategoryActions = VolunteerOpportunity.getOpportunityForCategory(mSelectedCategory, true);
                 populateCategoryActions();
             }
