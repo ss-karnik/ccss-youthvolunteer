@@ -10,6 +10,8 @@
 
 
     <string name="internet_connection_unavailable"><b>Please check your Internet Connection</b></string>
+    <string name="incomplete_profile_no_internet"><b>You need to complete your profile. Unable to connect to internet at the moment. Please try later.</b></string>
+
     <string name="verify_email_error_title"><b>Please confirm your email address!</b></string>
     <string name="verify_email_error_message">Thank you for signing up. Please take a moment to activate your account.</string>
     <string name="verify_email_error_message2">An email with confirmation link was sent to </string>
@@ -32,6 +34,7 @@
     <string name="nav_manage_label">Manage</string>
     <string name="delete_button_label">Delete</string>
     <string name="nav_spl_user">Special Users</string>
+    <string name="nav_announcement">Announcements</string>
     <string name="nav_category">Categories</string>
     <string name="nav_opportunity">Volunteer Opportunities</string>
     <string name="nav_recognition">Recognitions</string>
@@ -40,6 +43,7 @@
     <string name="nav_schools">Schools</string>
     <string name="nav_groups">Interest Groups</string>
     <string name="nav_organization">Organizations</string>
+    <string name="nav_user_action">User Action</string>
     <string name="nav_communicate_label">Communicate</string>
     <string name="msg_save_sucess">Saved successfully</string>
     <string name="msg_delete_sucess">Deleted successfully</string>
@@ -65,6 +69,7 @@
     <string name="no_groups_available">No Interest Groups defined</string>
     <string name="no_orgs_available">No Organizations defined</string>
     <string name="no_opportunities_available">No Opportunities defined</string>
+    <string name="no_pending_actions_available">No pending actions</string>
     <string name="no_users_available">No volunteers</string>
 
     <string name="ok">OK</string>
@@ -82,9 +87,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="prompt_forgot_password">Forgot password?</string>
     <string name="error_invalid_credentials">You email and/or password is not correct</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
 
     <!-- Strings related to profile -->
     <string name="help_us_know_you">Help us know you better…</string>
@@ -126,8 +129,8 @@
     <string name="main_month_stat_title">Your volunteering statistics for this month:</string>
     <string name="main_month_points_title">Your volunteering statistics for this month:</string>
     <string name="main_points">EARN Points</string>
-    <string name="main_points_rank">Overall with 50 points and 4 hours you are ranked 2 out of 8 volunteers!</string>
-    <string name="total_sg_users_hours">Our 8 volunteers have put in 20 hours!</string>
+    <string name="main_points_rank">Overall with %1$d points and %2$d hours you are ranked %3$d out of %4$d volunteers!</string>
+    <string name="total_sg_users_hours">Our %1$d volunteers have put in %2$d hours!</string>
     <string name="upcoming_event">Upcoming activity: Green Corridor Run</string>
     <string name="main_this_month_title">This month\'s statistics:</string>
     <string name="main_month_points">Your monthly target: hrs. Hours done: .</string>
@@ -233,12 +236,8 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="action_approve">Approve</string>
+    <string name="action_reject">Reject</string>
     <string name="action_inactive">Remove</string>
     <string name="action_redeem">Redeem</string>
     <string name="selected_count">%1$s selected</string>
-
-
-
-
-
 </resources>

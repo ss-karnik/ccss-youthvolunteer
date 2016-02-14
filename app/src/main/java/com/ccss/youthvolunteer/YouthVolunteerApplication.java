@@ -30,6 +30,7 @@ public class YouthVolunteerApplication extends Application {
 
         ParseUser.registerSubclass(VolunteerUser.class);
 
+        ParseObject.registerSubclass(Announcement.class);
         ParseObject.registerSubclass(VolunteerOpportunity.class);
         ParseObject.registerSubclass(Category.class);
         ParseObject.registerSubclass(Level.class);

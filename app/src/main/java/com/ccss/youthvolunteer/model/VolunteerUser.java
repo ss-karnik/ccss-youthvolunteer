@@ -55,10 +55,12 @@ public class VolunteerUser extends ParseUser implements Serializable {
 
     public static VolunteerUser getCurrentUserInformationFromLocalStore() {
         ParseQuery<VolunteerUser> userQuery = ParseQuery.getQuery(VolunteerUser.class).fromLocalDatastore();
-        userQuery.include("skills");
-        userQuery.include("interests");
         try {
-            return userQuery.getFirst();
+            VolunteerUser currentUser = userQuery.getFirst();
+            if(currentUser == null){
+                return getCurrentUserInformation(ParseUser.getCurrentUser());
+            }
+            return currentUser;
         } catch (ParseException e) {
             return getCurrentUser();
         }

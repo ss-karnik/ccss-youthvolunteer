@@ -26,6 +26,7 @@ public class Constants {
     public static final int MAXIMUM_AGE = 45;
 
     public static final String INTENT_SENDER = "Sender";
+    public static final String INTERNET_AVAILABLE = "Connectivity";
 
     public static final String ADMIN_ROLE = "Admin";
     public static final String MODERATOR_ROLE = "Moderator";
@@ -34,6 +35,7 @@ public class Constants {
 
     public static final String MANAGE_ITEM_KEY = "ManageItemKey";
     public static final String CATEGORY_RESOURCE = "Category";
+    public static final String ANNOUNCEMENT_RESOURCE = "Announcement";
     public static final String RECOGNITION_RESOURCE = "Recognition";
     public static final String INTEREST_RESOURCE = "Interest";
     public static final String SKILL_RESOURCE = "Skill";
@@ -44,6 +46,8 @@ public class Constants {
     public static final String OPPORTUNITY_RESOURCE = "Opportunity";
     public static final String USER_ORGANIZATION_KEY = "UserOrganization";
     public static final String VOLUNTEER_USER_RESOURCE = "VolunteerUser";
+    public static final String USER_ACTION_RESOURCE = "UserAction";
+    public static final String USER_RECOGNITION_RESOURCE = "UserRecognition";
 
     public static final String ERROR_ITEM_KEY = "ErrorItemKey";
     public static final String OBJECT_ID_KEY = "objectId";
@@ -58,9 +62,12 @@ public class Constants {
 
     public static final String ENCOURAGE_KEY = "ENCOURAGE";
     public static final String GOODNESS_KEY = "GOODNESS";
-    public static final String POINTSANDRANK_KEY = "OWNPOINTS";
-    public static final String SGSTATS_KEY = "SGSTATS";
+    public static final String POINTS_RANK_KEY = "OWNPOINTS";
+    public static final String SG_STATS_KEY = "SGSTATS";
     public static final String UPCOMING_KEY = "UPCOMING";
+    public static final String ANNOUNCEMENTS_KEY = "ANNOUNCEMENTS";
+    public static final String USER_STATS_KEY = "USERSTATS";
+    public static final String USER_CURRENT_MONTH_STATS_KEY = "USERCURRENTMONTHSTATS";
 
 
     public static final String PREF_FILE_NAME = "YouthVolunteer";

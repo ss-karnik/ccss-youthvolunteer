@@ -12,34 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Youth Volunteer"
-        android:textSize="24sp"
+        android:textSize="36sp"
         android:textAppearance="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
+        android:paddingTop="@dimen/activity_card_size"
         android:layout_margin="@dimen/com_parse_ui_small_horizontal_spacing"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/com_parse_ui_vertical_spacing"
+        android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
         android:text="Presented by:"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textAppearance="@color/colorPrimaryDark"
-        android:layout_margin="@dimen/com_parse_ui_vertical_spacing"/>
-
-    <include
-        layout="@layout/com_parse_ui_parse_login_app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:layout_margin="@dimen/com_parse_ui_vertical_spacing"/>
+        android:layout_margin="@dimen/com_parse_ui_small_vertical_spacing"/>
 
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/app_logo"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ccss_title_bar"
+        android:src="@drawable/ccss_logo_intro"
         android:contentDescription="@string/com_parse_ui_logo_content_description" />
 
 </LinearLayout>

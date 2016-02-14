@@ -149,6 +149,9 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
         });
 
         viewHolder.itemView.setActivated(selectedItems.get(position, false));
+        if(!currentResource.isActive()){
+            viewHolder.itemView.setAlpha(0.2f);
+        }
 
 //        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override

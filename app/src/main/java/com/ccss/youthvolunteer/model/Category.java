@@ -123,7 +123,7 @@ public class Category extends ParseObject {
     }
 
     /**
-     * Retrieves the set of all Categories, ordered by title. Uses the cache if possible.
+     * Retrieves the set of all Categories.
      */
     public static void findInBackground(final FindCallback<Category> callback) {
         ParseQuery<Category> query = Category.createQuery();
@@ -134,6 +134,18 @@ public class Category extends ParseObject {
                 callback.done(objects, e);
             }
         });
+    }
+
+    public static List<Category> getAllCategories(boolean activeOnly) {
+        ParseQuery<Category> query = Category.createQuery();
+        if(activeOnly){
+            query.whereEqualTo("isActive", true);
+        }
+        try {
+            return query.find();
+        } catch (ParseException e) {
+            return Lists.newArrayList();
+        }
     }
 
     public static void saveCategory(Category categoryData, final SaveCallback onSave){

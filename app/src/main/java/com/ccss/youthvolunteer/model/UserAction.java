@@ -74,6 +74,18 @@ public class UserAction extends ParseObject {
         put("actionPerformed", UserAction.createWithoutData(UserAction.class, value));
     }
 
+    public boolean isApproved() {
+        return "approved".equalsIgnoreCase(getVerificationResult());
+    }
+
+    public String getVerificationResult() {
+        return getString("verifiedState");
+    }
+
+    public void setVerificationResult(String value){
+        put("verifiedState", value);
+    }
+
     public boolean isVerified() {
         return !Strings.isNullOrEmpty(getVerifiedBy());
     }
@@ -201,6 +213,35 @@ public class UserAction extends ParseObject {
                         public int compare(UserAction lhs, UserAction rhs) {
                             return ((VolunteerUser.getVolunteerUser(lhs.getActionBy())).getLastName()
                                     .compareTo((VolunteerUser.getVolunteerUser(rhs.getActionBy())).getLastName()));
+                        }
+                    });
+                }
+                callback.done(objects, e);
+            }
+        });
+    }
+
+    public static void findUnverifiedUserActions(String organizationName, final FindCallback<UserAction> callback){
+        ParseQuery<UserAction> userActionsQuery = ParseQuery.getQuery(UserAction.class);
+        userActionsQuery.include("actionBy");
+        userActionsQuery.include("actionPerformed");
+        userActionsQuery.whereDoesNotExist("verifiedState");
+        if(!Strings.isNullOrEmpty(organizationName)){
+            ParseQuery<VolunteerOpportunity> innerQuery = ParseQuery.getQuery(VolunteerOpportunity.class);
+            innerQuery.whereEqualTo("organizationName", organizationName);
+            innerQuery.whereEqualTo("isActive", true);
+            userActionsQuery.whereMatchesQuery("actionPerformed", innerQuery);
+        }
+
+        userActionsQuery.findInBackground(new VolunteerActionFindCallback() {
+            @Override
+            protected void doneOnce(List<UserAction> objects, ParseException e) {
+                if (objects != null) {
+                    Collections.sort(objects, new Comparator<UserAction>() {
+                        @Override
+                        public int compare(UserAction lhs, UserAction rhs) {
+                            return (lhs.getAction().getTitle()
+                                    .compareTo(rhs.getAction().getTitle()));
                         }
                     });
                 }

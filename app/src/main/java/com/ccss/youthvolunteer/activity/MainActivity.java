@@ -20,7 +20,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
+import com.ccss.youthvolunteer.model.UserCategoryPoints;
 import com.ccss.youthvolunteer.model.VolunteerUser;
+import com.ccss.youthvolunteer.util.CheckNetworkConnection;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.TaskScheduler;
 import com.db.chart.Tools;
@@ -32,22 +34,27 @@ import com.db.chart.view.HorizontalBarChartView;
 import com.db.chart.view.Tooltip;
 import com.db.chart.view.XController;
 import com.db.chart.view.animation.Animation;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.DecoDrawEffect;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
+import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 
+import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends BaseActivity  implements NavigationView.OnNavigationItemSelectedListener  {
+public class MainActivity extends BaseActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     private DecoView mDecoViewChart;
-    private final float mSeriesMax = 20f; //Maximum value for each data series. This can be different for each data series
+    private float mSeriesMax = 20f; //Maximum value for each data series. This can be different for each data series
     private int mBackIndex;
     private int mSeries1Index;
     private float mSeries1Value;
@@ -57,13 +64,14 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     private float mSeries3Value;
 
     private HorizontalBarChartView mSgCompareChart;
-    private final String[] mLabelsSgChart= {"You", "SG (avg.)"};
-    private final float [] mValuesSgChart = {9.06f, 4.16f };
+    private final String[] mLabelsSgChart = {"You", "SG (avg.)"};
+    private final float[] mValuesSgChart = {9.06f, 4.16f};
     private TextView mTextViewTwo;
     private TextView mTextViewMetricTwo;
 
     private String mUserOrganization;
-    private static final long REFRESH_DATA_INTERVAL = 2000;
+    private static final long REFRESH_DATA_INTERVAL = 3000;
+    private static final float DEFAULT_MONTHLY_GOAL = 20f;
 
     private List<String> mRotatingTextItems = Lists.newArrayList();
     int index = 0;
@@ -74,16 +82,12 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         final VolunteerUser currentUser = VolunteerUser.getCurrentUserInformationFromLocalStore();
 
-        //Profile is complete.. lets set up the Main screen
+        //Profile is complete.. set up the Main screen
         setContentView(R.layout.activity_main);
         CoordinatorLayout mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
-//            Snackbar snackbar = Snackbar.make(mCoordinatorLayout,
-//                    getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName(), Snackbar.LENGTH_LONG);
-//            snackbar.show();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey(Constants.INTENT_SENDER) && "intro".equals(bundle.getString(Constants.INTENT_SENDER))) {
@@ -91,13 +95,11 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         }
 
         SharedPreferences prefs = this.getSharedPreferences(Constants.PREF_FILE_NAME, MODE_PRIVATE);
-        String encourageText = prefs.getString(Constants.ENCOURAGE_KEY, null);
-        if (encourageText != null)
-        {
-            mRotatingTextItems.add(encourageText);
-            mRotatingTextItems.add(prefs.getString(Constants.GOODNESS_KEY, null));
-            mRotatingTextItems.add(prefs.getString(Constants.SGSTATS_KEY, null));
-            mRotatingTextItems.add(prefs.getString(Constants.POINTSANDRANK_KEY, null));
+        String announcements = prefs.getString(Constants.ANNOUNCEMENTS_KEY, null);
+        if (announcements != null) {
+            Collections.addAll(mRotatingTextItems, announcements.split("\\|"));
+            mRotatingTextItems.add(prefs.getString(Constants.SG_STATS_KEY, null));
+            mRotatingTextItems.add(prefs.getString(Constants.POINTS_RANK_KEY, null));
             mRotatingTextItems.add(prefs.getString(Constants.UPCOMING_KEY, null));
         }
 
@@ -106,49 +108,77 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         timer.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if(!mRotatingTextItems.isEmpty()){
+                if (!mRotatingTextItems.isEmpty()) {
                     rotatingBanner.setText(mRotatingTextItems.get(index++));
                     if (index == mRotatingTextItems.size())
                         index = 0;
                 }
             }
-        },REFRESH_DATA_INTERVAL);
+        }, REFRESH_DATA_INTERVAL);
 
         initializeNavigationDrawer(currentUser, toolbar);
 
+        final float monthlyGoal = currentUser.getMonthlyGoal() == 0 ? DEFAULT_MONTHLY_GOAL : currentUser.getMonthlyGoal();
+        final List<UserCategoryStats> userCategoryStats = Lists.newArrayList();
+        UserCategoryPoints.findCurrentUsersPointsForMonthYearInBackground(currentUser, null, true, new FindCallback<UserCategoryPoints>() {
+            @Override
+            public void done(List<UserCategoryPoints> list, ParseException e) {
+                if (e == null) {
+                    for (UserCategoryPoints categoryItem : list) {
+                        userCategoryStats.add(new UserCategoryStats(categoryItem.getActionCategory().getCategoryName(),
+                                categoryItem.getCategoryHours(), categoryItem.getCategoryPoints()));
+                    }
+                }
+
+                plotUserStats(userCategoryStats, monthlyGoal);
+            }
+        });
+
+        FloatingActionButton fabAchievement = (FloatingActionButton) findViewById(R.id.fab_main_achievement);
+        fabAchievement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(VolunteerLogActivity.class);
+            }
+        });
+
+        FloatingActionButton fabLogActivity = (FloatingActionButton) findViewById(R.id.fab_main_log);
+        fabLogActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(LogHoursActivity.class);
+            }
+        });
+
+        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab_main_search);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(VolunteerOpportunityActivity.class);
+            }
+        });
+
+    }
+
+    private void plotUserStats(List<UserCategoryStats> userCategoryStats, float monthlyGoal) {
         TextView monthStats = (TextView) findViewById(R.id.main_month_points);
-        monthStats.setText(String.format("Monthly target: %s hrs. Achieved: %s.", currentUser.getMonthlyGoal(), "9.00"));
+        int achievedHours = 0;
+        for (UserCategoryStats item : userCategoryStats) {
+            achievedHours += item.getHours();
+        }
+
+        monthStats.setText(String.format("Monthly target: %s hrs. Achieved: %s.", monthlyGoal, achievedHours));
 
         mDecoViewChart = (DecoView) findViewById(R.id.dynamicArcView);
 
         //User points for month by category
-        //mSeriesMax = currentUser.getMonthlyGoal();
+        mSeriesMax = monthlyGoal;
         mSeries1Value = 6.4f;
         mSeries2Value = 2.3f;
         mSeries3Value = 0.4f;
         createBackSeries();
 
-        //TODO: Load categories dynamically
-        //foreach category...
-//        List<Category> categories = Lists.newArrayList();
-//        try {
-//            ParseQuery<Category> categoryQuery = ParseQuery.getQuery(Category.class).fromLocalDatastore();
-//            categories = categoryQuery.find();
-//        } catch (ParseException ex){
-//            final List<Category> finalCategories = Lists.newArrayList();
-//            Category.findInBackground(new FindCallback<Category>() {
-//                @Override
-//                public void done(List<Category> objects, ParseException e) {
-//                    finalCategories.addAll(objects);
-//                }
-//            });
-//            categories = finalCategories;
-//        }
-//
-//        for(Category category : categories){
-//            createCategoryDataForUser(category);
-//        }
-
+        //Load CategoryData from the settings
         createDoGoodCategoryData();
         createGreenCategoryData();
         createAdvocacyCategoryData();
@@ -179,32 +209,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 //            });
 
         showSgCompareChart();
-
-
-        FloatingActionButton fabAchievement = (FloatingActionButton) findViewById(R.id.fab_main_achievement);
-        fabAchievement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(VolunteerLogActivity.class);
-            }
-        });
-
-        FloatingActionButton fabLogActivity = (FloatingActionButton) findViewById(R.id.fab_main_log);
-        fabLogActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(LogHoursActivity.class);
-            }
-        });
-
-        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab_main_search);
-        fabSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(VolunteerOpportunityActivity.class);
-            }
-        });
-
     }
 
     private void initializeNavigationDrawer(VolunteerUser currentUser, Toolbar mToolbar) {
@@ -225,9 +229,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             navProfileImage.setParseFile(imageFile);
             navProfileImage.loadInBackground(new GetDataCallback() {
                 @Override
-                public void done(byte[] data, com.parse.ParseException e) { }
+                public void done(byte[] data, com.parse.ParseException e) {
+                }
             });
-           // navProfileImage.loadInBackground();
+            // navProfileImage.loadInBackground();
         } else {
             navProfileImage.setImageResource(R.drawable.default_avatar_small_64);
         }
@@ -236,15 +241,15 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         //((TextView) navDrawerHeader.findViewById(R.id.nav_user_email)).setText(currentUser.getEmail());
 
         String specialRole = currentUser.getSpecialRole();
-        if(!Strings.isNullOrEmpty(specialRole)){
-            if(Constants.ADMIN_ROLE.equalsIgnoreCase(specialRole) || Constants.MODERATOR_ROLE.equalsIgnoreCase(specialRole)){
+        if (!Strings.isNullOrEmpty(specialRole) && CheckNetworkConnection.isInternetAvailable(this)) {
+            if (Constants.ADMIN_ROLE.equalsIgnoreCase(specialRole) || Constants.MODERATOR_ROLE.equalsIgnoreCase(specialRole)) {
                 //Make the Admin options visible
                 //View navDrawerHeader = MenuInflater.class.ing` from(this).inflate(R.layout.nav_drawer_header, null);
                 navigationView.getMenu().setGroupVisible(R.id.admin_manage, true);
                 //Can manage volunteer actions across organizations.
                 mUserOrganization = "";
             }
-            if(Constants.ORGANIZER_ROLE.equalsIgnoreCase(specialRole)){
+            if (Constants.ORGANIZER_ROLE.equalsIgnoreCase(specialRole)) {
                 navigationView.getMenu().setGroupVisible(R.id.organizer_manage, true);
                 //Can manage volunteer actions only for his/her organization.
                 mUserOrganization = currentUser.getOrganizationName();
@@ -254,11 +259,12 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
     //region Compare chart
     private void showSgCompareChart() {
-        Runnable action =  new Runnable() {
+        Runnable action = new Runnable() {
             @Override
             public void run() {
                 new Handler().postDelayed(new Runnable() {
-                    public void run() { }
+                    public void run() {
+                    }
                 }, 500);
             }
         };
@@ -266,14 +272,14 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         //generateCompareChart(mSgCompareChart, action);
     }
 
-    public void generateCompareChart(ChartView chart, Runnable action){
+    public void generateCompareChart(ChartView chart, Runnable action) {
         HorizontalBarChartView horChart = (HorizontalBarChartView) chart;
 
         Tooltip tip = new Tooltip(this, R.layout.barchart_tooltip);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             tip.setEnterAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 1));
-            tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA,0));
+            tip.setExitAnimation(PropertyValuesHolder.ofFloat(View.ALPHA, 0));
         }
 
         horChart.setTooltips(tip);
@@ -283,10 +289,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             @Override
             public void onClick(int setIndex, int entryIndex, Rect rect) {
                 mTextViewTwo.setText(Integer.toString((int) mValuesSgChart[entryIndex]));
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                     mTextViewTwo.animate().alpha(1).setDuration(200);
                     mTextViewMetricTwo.animate().alpha(1).setDuration(200);
-                }else{
+                } else {
                     mTextViewTwo.setVisibility(View.VISIBLE);
                     mTextViewMetricTwo.setVisibility(View.VISIBLE);
                 }
@@ -296,10 +302,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         horChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                     mTextViewTwo.animate().alpha(0).setDuration(100);
                     mTextViewMetricTwo.animate().alpha(0).setDuration(100);
-                }else{
+                } else {
                     mTextViewTwo.setVisibility(View.INVISIBLE);
                     mTextViewMetricTwo.setVisibility(View.INVISIBLE);
                 }
@@ -309,9 +315,9 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         BarSet barSet = new BarSet();
         Bar bar;
-        for(int i = 0; i < mLabelsSgChart.length; i++){
+        for (int i = 0; i < mLabelsSgChart.length; i++) {
             bar = new Bar(mLabelsSgChart[i], mValuesSgChart[i]);
-            if(i == mLabelsSgChart.length - 1 )
+            if (i == mLabelsSgChart.length - 1)
                 bar.setColor(Color.parseColor("#b26657"));
             else if (i == 0)
                 bar.setColor(Color.parseColor("#998d6e"));
@@ -378,6 +384,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             }
         });
 
+        //http://stackoverflow.com/questions/6583019/dynamic-textview-in-relative-layout
         final TextView txtDoGood = (TextView) findViewById(R.id.cat_do_good);
         seriesItem.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
             @Override
@@ -478,7 +485,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch(id){
+        switch (id) {
             case R.id.nav_view_volunteer:
                 startActivity(OpportunityListActivity.class);
                 break;
@@ -500,6 +507,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                 break;
 
             //Admin
+            case R.id.nav_manage_announcement:
+                startManageResourceActivity(Constants.ANNOUNCEMENT_RESOURCE, mUserOrganization);
+                break;
+
             case R.id.nav_manage_category:
                 startManageResourceActivity(Constants.CATEGORY_RESOURCE, mUserOrganization);
                 break;
@@ -540,10 +551,42 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             case R.id.nav_manage_recognition:
                 startManageResourceActivity(Constants.RECOGNITION_RESOURCE, mUserOrganization);
                 break;
+
+            case R.id.nav_manage_action:
+                startManageResourceActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
+                break;
+
+            case R.id.nav_manage_organizer_action:
+                startManageResourceActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public class UserCategoryStats {
+        String mCategory;
+        int mHours;
+        int mPoints;
+
+        public String getCategory() {
+            return mCategory;
+        }
+
+        public int getHours() {
+            return mHours;
+        }
+
+        public int getPoints() {
+            return mPoints;
+        }
+
+        public UserCategoryStats(String category, int hours, int points) {
+            mCategory = category;
+            mHours = hours;
+            mPoints = points;
+        }
     }
 }

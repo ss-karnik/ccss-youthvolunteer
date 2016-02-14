@@ -15,6 +15,8 @@
     </group>
 
     <group android:title="@string/nav_manage_label" android:id="@+id/admin_manage" android:visible="false">
+        <item android:id="@+id/nav_manage_announcement" android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/nav_announcement" />
         <item android:id="@+id/nav_manage_category" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_category" />
         <item android:id="@+id/nav_manage_interests" android:icon="@android:drawable/ic_menu_edit"
@@ -31,6 +33,8 @@
             android:title="@string/nav_groups" />
         <item android:id="@+id/nav_manage_organization" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_organization" />
+        <item android:id="@+id/nav_manage_action" android:icon="@drawable/ic_approve_white"
+            android:title="@string/nav_user_action" />
         <item android:id="@+id/nav_manage_opportunity" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_opportunity" />
     </group>
@@ -38,6 +42,8 @@
     <group android:title="@string/nav_manage_label" android:id="@+id/organizer_manage" android:visible="false">
         <item android:id="@+id/nav_manage_organizer_opportunity" android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/nav_opportunity" />
+        <item android:id="@+id/nav_manage_organizer_action" android:icon="@drawable/ic_approve_white"
+            android:title="@string/nav_user_action" />
     </group>
 
     <!--<item android:title="@string/nav_communicate_label">-->

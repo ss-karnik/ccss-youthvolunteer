@@ -1,6 +1,8 @@
 package com.ccss.youthvolunteer.model;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -47,12 +49,14 @@ public class UserCategoryPoints extends ParseObject {
     }
 
     public int getCategoryPoints(){
-        return getInt("points");
+        return getInt("pointsAllocated");
     }
 
     public void setCategoryPoints(int value){
-        put("points", value);
+        put("pointsAllocated", value);
     }
+
+    public void incrementPointsBy(int value) { increment("pointsAllocated", value);}
 
     public int getCategoryHours(){
         return getInt("hours");
@@ -61,6 +65,9 @@ public class UserCategoryPoints extends ParseObject {
     public void setCategoryHours(int value){
         put("hours", value);
     }
+
+    public void incrementHoursBy(int value) {
+        increment("hours", value);}
 
     /**
      * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
@@ -98,7 +105,9 @@ public class UserCategoryPoints extends ParseObject {
         userPointsQuery.whereEqualTo("user", user);
         userPointsQuery.addDescendingOrder("createdAt");
         userPointsQuery.include("category");
-        userPointsQuery.setLimit(count);
+        if(count > 0){
+            userPointsQuery.setLimit(count);
+        }
         userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {
             @Override
             protected void doneOnce(List<UserCategoryPoints> objects, ParseException e) {
@@ -107,23 +116,50 @@ public class UserCategoryPoints extends ParseObject {
         });
     }
 
-    public static void findAllUsersPointsInBackground(final FindCallback<UserCategoryPoints> callback){
+    public static void findCurrentUsersPointsForMonthYearInBackground(ParseUser user, String monthYear, boolean fromLocalStore, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
+        userPointsQuery.whereEqualTo("user", user);
+        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString("MM-yyyy") : monthYear);
         userPointsQuery.addDescendingOrder("createdAt");
         userPointsQuery.include("category");
+        if(fromLocalStore){
+            userPointsQuery.fromLocalDatastore();
+        }
         userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {
             @Override
             protected void doneOnce(List<UserCategoryPoints> objects, ParseException e) {
                 callback.done(objects, e);
             }
         });
+    }
+
+    public static List<Integer> findHoursForAllUsers(){
+        ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
+        userPointsQuery.addDescendingOrder("createdAt");
+        userPointsQuery.selectKeys(Lists.newArrayList("hours"));
+        try {
+            List<UserCategoryPoints> results = userPointsQuery.find();
+            if(results.isEmpty()){
+                return Lists.newArrayList(0);
+            }
+            return Lists.transform(results, new Function<UserCategoryPoints, Integer>() {
+                @Override
+                public Integer apply(UserCategoryPoints input) {
+                    return input.getCategoryHours();
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return Lists.newArrayList(0);
     }
 
     public static void findAllUsersPointsForMonthYearInBackground(String monthYear, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
         userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString("MMyyyy") : monthYear);
         userPointsQuery.addDescendingOrder("createdAt");
-        userPointsQuery.include("category.categoryName");
+        userPointsQuery.include("category");
         userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {
             @Override
             protected void doneOnce(List<UserCategoryPoints> objects, ParseException e) {

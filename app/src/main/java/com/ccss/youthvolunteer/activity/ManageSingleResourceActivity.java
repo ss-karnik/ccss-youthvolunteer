@@ -35,6 +35,7 @@ import android.widget.TimePicker;
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
 import com.ccss.youthvolunteer.adapter.SelectorHintAdapter;
+import com.ccss.youthvolunteer.model.Announcement;
 import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.Interest;
 import com.ccss.youthvolunteer.model.InterestGroup;
@@ -242,6 +243,32 @@ public class ManageSingleResourceActivity extends BaseActivity {
 
         //region ResourceType switch-case
         switch (mResourceType){
+            case Constants.ANNOUNCEMENT_RESOURCE:
+
+                mTitleText.setVisibility(View.INVISIBLE);
+                ParseQuery<Announcement> announcementQuery = ParseQuery.getQuery(Announcement.class);
+                announcementQuery.whereEqualTo(Constants.OBJECT_ID_KEY, mResourceObjectId);
+                announcementQuery.getFirstInBackground(new GetCallback<Announcement>() {
+                    @Override
+                    public void done(Announcement object, ParseException e) {
+                        if (e == null) {
+                            mResourceObject = object;
+                        } else {
+                            mResourceObject = new Announcement();
+                        }
+
+                        if(!isNewAddition) {
+                            mDescriptionText.setText(((Announcement) mResourceObject).getAnnouncementText());
+                            mActiveStatus.setChecked(((Announcement) mResourceObject).isActive());
+                            mUsersHeader.setVisibility(View.VISIBLE);
+                            mLogoImageButton.loadInBackground();
+                        }
+
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+
             case Constants.CATEGORY_RESOURCE:
                 categoryContainer.setVisibility(View.VISIBLE);
                 final int[] currentColor = new int[1];
@@ -812,6 +839,15 @@ public class ManageSingleResourceActivity extends BaseActivity {
         }
 
         switch (mResourceType) {
+            case Constants.ANNOUNCEMENT_RESOURCE:
+                mResourceObject = Strings.isNullOrEmpty(mResourceObjectId)
+                        ? new Announcement()
+                        : ParseObject.createWithoutData(Announcement.class, mResourceObjectId);
+                ((Announcement)mResourceObject).setAnnouncementText(mDescriptionText.getText().toString());
+                ((Announcement)mResourceObject).setIsActive(mActiveStatus.isChecked());
+                Announcement.saveAnnouncement((Announcement) mResourceObject, onResourceSave());
+                break;
+
             case Constants.CATEGORY_RESOURCE:
                     mResourceObject = Strings.isNullOrEmpty(mResourceObjectId)
                             ? new Category()
@@ -904,6 +940,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 //((InterestGroup)mResourceObject).setLogo();
                 ((InterestGroup)mResourceObject).setIsActive(mActiveStatus.isChecked());
                 InterestGroup.saveGroup((InterestGroup) mResourceObject, onResourceSave());
+                //TODO: Add member
                 break;
 
             case Constants.ORGANIZATION_RESOURCE:

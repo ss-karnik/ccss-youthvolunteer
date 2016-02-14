@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
+import com.ccss.youthvolunteer.model.Announcement;
 import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.Interest;
 import com.ccss.youthvolunteer.model.InterestGroup;
@@ -32,14 +33,21 @@ import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.School;
 import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.SpecialUser;
+import com.ccss.youthvolunteer.model.UserAction;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
+import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -80,10 +88,28 @@ public class ResourcesFragment extends Fragment
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
+        List<String> selectedItemPositions = mAdapter.getSelectedItems();
+        String currItem;
         switch (menuItem.getItemId()) {
             case R.id.manage_action_delete:
-                List<String> selectedItemPositions = mAdapter.getSelectedItems();
-                String currItem;
+                for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+                    currItem = selectedItemPositions.get(i);
+                    //TODO
+//                    removeItemFromList(currItem);
+//                    mAdapter.removeData(currItem);
+                }
+                actionMode.finish();
+                return true;
+            case R.id.manage_action_approve:
+                for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+                    currItem = selectedItemPositions.get(i);
+                    //TODO
+//                    removeItemFromList(currItem);
+//                    mAdapter.removeData(currItem);
+                }
+                actionMode.finish();
+                return true;
+            case R.id.manage_action_reject:
                 for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
                     currItem = selectedItemPositions.get(i);
                     //TODO
@@ -230,6 +256,26 @@ public class ResourcesFragment extends Fragment
 
         if(mResourceType != null) {
             switch (mResourceType) {
+                case Constants.ANNOUNCEMENT_RESOURCE:
+                    Announcement.findInBackground(new FindCallback<Announcement>() {
+                        @Override
+                        public void done(List<Announcement> objects, ParseException e) {
+                            if (e == null) {
+                                if(objects.isEmpty()){
+                                    mEmptyListMessage.setText(R.string.no_categories_available);
+                                    mEmptyListMessage.setVisibility(View.VISIBLE);
+                                } else {
+                                    for (Announcement announcement : objects) {
+                                        mResources.add(announcement.convertToResourceModel());
+                                    }
+                                }
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+                    });
+                    break;
+
                 case Constants.CATEGORY_RESOURCE:
                     Category.findInBackground(new FindCallback<Category>() {
                         @Override
@@ -391,6 +437,14 @@ public class ResourcesFragment extends Fragment
                         VolunteerOpportunity.getOpportunitiesForOrganization(mUserOrganization, false, findOpportunitiesCallback());
                     }
                     break;
+
+                case Constants.USER_ACTION_RESOURCE:
+                    if(Strings.isNullOrEmpty(mUserOrganization)) {
+                        UserAction.findUnverifiedUserActions("", findUserActionsCallback());
+                    } else {
+                        UserAction.findUnverifiedUserActions(mUserOrganization, findUserActionsCallback());
+                    }
+                    break;
             }
         }
     }
@@ -407,6 +461,32 @@ public class ResourcesFragment extends Fragment
                     } else {
                         for (VolunteerOpportunity opportunity : objects) {
                             mResources.add(opportunity.convertToResourceModel());
+                        }
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
+            }
+        };
+    }
+
+    @NonNull
+    private FindCallback<UserAction> findUserActionsCallback() {
+        return new FindCallback<UserAction>() {
+            @Override
+            public void done(List<UserAction> objects, ParseException e) {
+                if (e == null) {
+                    if(objects.isEmpty()){
+                        mEmptyListMessage.setText(R.string.no_pending_actions_available);
+                        mEmptyListMessage.setVisibility(View.VISIBLE);
+                    } else {
+                        for (UserAction userAction : objects) {
+                            VolunteerUser actionPerformer = VolunteerUser.getVolunteerUser(userAction.getActionBy());
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+
+                            mResources.add(new ResourceModel(Constants.USER_ACTION_RESOURCE, actionPerformer.getFullName(),
+                                    userAction.getAction().getTitle(), dateFormatter.format(userAction.getActionDate()), userAction.getObjectId(),
+                                    actionPerformer.getProfileImageUri(), true));
                         }
                     }
                 }
