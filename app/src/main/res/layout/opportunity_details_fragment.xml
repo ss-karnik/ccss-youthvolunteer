@@ -151,7 +151,7 @@
                 android:orientation="horizontal" >
                 <EditText
                     android:id="@+id/manage_activity_location"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     style="@style/ParseLoginUI.EditText"
                     android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"

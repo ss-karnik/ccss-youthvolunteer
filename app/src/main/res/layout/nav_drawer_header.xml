@@ -24,13 +24,19 @@
         android:layout_alignTop="@id/nav_user_image"
         android:textColor="@color/label_text_light"
         android:textStyle="bold" android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+        android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
         android:id="@+id/nav_user_email"
+        android:layout_toRightOf="@id/nav_user_image"
+        android:layout_toEndOf="@id/nav_user_image"
         android:layout_below="@id/nav_user_fullname"
         android:textColor="@color/label_text_light"
-        android:textStyle="normal" android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:textStyle="normal" android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+        android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </RelativeLayout>

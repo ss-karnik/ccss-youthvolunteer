@@ -247,7 +247,6 @@ public class ResourcesFragment extends Fragment
         });
         gestureDetector = new GestureDetectorCompat(getActivity(), new RecyclerViewGestureListener());
 
-        mProgressBar.setVisibility(View.VISIBLE);
         if(mResourceType != null) {
             loadDataItems();
         }
@@ -263,6 +262,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_categories_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Announcement announcement : objects) {
                                     mResources.add(announcement.convertToResourceModel());
@@ -283,6 +283,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_categories_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Category category : objects) {
                                     mResources.add(category.convertToResourceModel());
@@ -303,6 +304,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_recog_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Recognition recognition : objects) {
                                     mResources.add(recognition.convertToResourceModel());
@@ -323,6 +325,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_interests_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Interest interest : objects) {
                                     mResources.add(interest.convertToResourceModel());
@@ -342,6 +345,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_skills_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Skill skill : objects) {
                                     mResources.add(skill.convertToResourceModel());
@@ -361,6 +365,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_sp_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (SpecialUser specialUser : objects) {
                                     mResources.add(specialUser.convertToResourceModel());
@@ -380,6 +385,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_schools_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (School school : objects) {
                                     mResources.add(school.convertToResourceModel());
@@ -399,6 +405,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_groups_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (InterestGroup groupMember : objects) {
                                     mResources.add(groupMember.convertToResourceModel());
@@ -418,6 +425,7 @@ public class ResourcesFragment extends Fragment
                             if(objects.isEmpty()){
                                 mEmptyListMessage.setText(R.string.no_orgs_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
                             } else {
                                 for (Organization org : objects) {
                                     mResources.add(org.convertToResourceModel());
@@ -456,6 +464,7 @@ public class ResourcesFragment extends Fragment
                     if(objects.isEmpty()){
                         mEmptyListMessage.setText(R.string.no_opportunities_available);
                         mEmptyListMessage.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
                     } else {
                         for (VolunteerOpportunity opportunity : objects) {
                             mResources.add(opportunity.convertToResourceModel());
@@ -477,6 +486,7 @@ public class ResourcesFragment extends Fragment
                     if(objects.isEmpty()){
                         mEmptyListMessage.setText(R.string.no_pending_actions_available);
                         mEmptyListMessage.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
                     } else {
                         for (UserAction userAction : objects) {
                             VolunteerUser actionPerformer = VolunteerUser.getVolunteerUser(userAction.getActionBy());
