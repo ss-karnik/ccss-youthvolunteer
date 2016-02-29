@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:background="@color/com_facebook_button_background_color">
+        <TextView
+            android:id="@+id/interests_list_item_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/interests_title"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/nav_next"
+            android:id="@+id/interests_to_skills_section"
+            android:contentDescription="@string/skills_navigation_next"
+            android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+            android:layout_marginEnd="@dimen/nav_header_vertical_spacing"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/opportunity_interests_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>

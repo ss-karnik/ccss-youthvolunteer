@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/express_interest"
+        android:icon="@android:drawable/star_big_off"
+        android:orderInCategory="9"
+        android:title="@string/express_interest">
+    </item>
+    <item
+        android:id="@+id/expressed_interest"
+        android:icon="@android:drawable/star_big_on"
+        android:orderInCategory="9"
+        android:title="@string/express_interest">
+    </item>
+</menu>

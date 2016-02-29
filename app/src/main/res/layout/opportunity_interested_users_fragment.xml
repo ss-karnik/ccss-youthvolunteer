@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:background="@color/com_facebook_button_background_color">
+        <ImageView
+            android:id="@+id/users_to_details_section"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+            android:layout_marginStart="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/nav_prev"
+            android:contentDescription="@string/details_navigation_prev"
+            android:background="@color/com_facebook_button_background_color"/>
+
+        <TextView
+            android:id="@+id/interested_users_list_item_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@color/com_facebook_button_background_color"
+            android:textColor="@color/white"
+            android:text="@string/interested_users_title"
+            android:layout_centerInParent="true"  />
+
+        <ImageView
+            android:id="@+id/go_to_participated_section"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/nav_next"
+            android:contentDescription="@string/skills_navigation_next"
+            android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+            android:layout_marginEnd="@dimen/nav_header_vertical_spacing"/>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/interested_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:visibility="gone"
+        android:scrollbars="vertical"/>
+    <TextView
+        android:id="@+id/empty_user_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingTop="@dimen/com_parse_ui_vertical_spacing"
+        android:paddingBottom="@dimen/com_parse_ui_vertical_spacing"
+        android:text="@string/no_users_available" />
+
+</LinearLayout>

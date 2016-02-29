@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.model.UserAction;
+import com.ccss.youthvolunteer.util.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -48,7 +49,7 @@ public class VolunteerLogAdapter extends RecyclerView.Adapter<VolunteerLogAdapte
         viewHolder.getCategoryIndicatorTextView().setBackgroundColor(Color.parseColor(currentAction.getAction().getActionCategory().getCategoryColor()));
         viewHolder.getTitleTextView().setText(currentAction.getAction().getTitle());
         viewHolder.getOrganizationTextView().setText(currentAction.getAction().getOrganizationName());
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.ENGLISH);
         viewHolder.getDateTextView().setText(dateFormatter.format(currentAction.getActionDate()));
         viewHolder.getLocationTextView().setText(currentAction.getAction().getLocationName());
         viewHolder.getUserCommentTextView().setText(currentAction.getComments());

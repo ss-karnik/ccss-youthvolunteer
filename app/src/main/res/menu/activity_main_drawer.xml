@@ -8,39 +8,37 @@
             android:title="@string/nav_title_ranking" />
         <item android:id="@+id/nav_view_log" android:icon="@android:drawable/ic_menu_recent_history"
             android:title="@string/nav_title_achievements" />
-        <item android:id="@+id/nav_edit_profile" android:icon="@drawable/ic_account"
-            android:title="@string/nav_title_edit_profile" />
         <item android:id="@+id/nav_about" android:icon="@android:drawable/ic_menu_info_details"
             android:title="@string/nav_about" />
     </group>
 
     <group android:title="@string/nav_manage_label" android:id="@+id/admin_manage" android:visible="false">
-        <item android:id="@+id/nav_manage_announcement" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_announcement" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_announcement" />
-        <item android:id="@+id/nav_manage_category" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_category" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_category" />
-        <item android:id="@+id/nav_manage_interests" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_interests" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_interests" />
-        <item android:id="@+id/nav_manage_recognition" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_recognition" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_recognition" />
-        <item android:id="@+id/nav_manage_skills" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_skills" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_skills" />
-        <item android:id="@+id/nav_manage_spl_user" android:icon="@drawable/manage_users"
+        <item android:id="@+id/nav_manage_spl_user" android:icon="@drawable/ic_manage_users_white"
             android:title="@string/nav_spl_user" />
-        <item android:id="@+id/nav_manage_schools" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_schools" android:icon="@drawable/ic_school"
             android:title="@string/nav_schools" />
-        <item android:id="@+id/nav_manage_groups" android:icon="@drawable/manage_users"
+        <item android:id="@+id/nav_manage_groups" android:icon="@drawable/ic_manage_users_white"
             android:title="@string/nav_groups" />
-        <item android:id="@+id/nav_manage_organization" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_organization" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_organization" />
         <item android:id="@+id/nav_manage_action" android:icon="@drawable/ic_approve_white"
             android:title="@string/nav_user_action" />
-        <item android:id="@+id/nav_manage_opportunity" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_opportunity" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_opportunity" />
     </group>
 
     <group android:title="@string/nav_manage_label" android:id="@+id/organizer_manage" android:visible="false">
-        <item android:id="@+id/nav_manage_organizer_opportunity" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/nav_manage_organizer_opportunity" android:icon="@drawable/ic_edit_white"
             android:title="@string/nav_opportunity" />
         <item android:id="@+id/nav_manage_organizer_action" android:icon="@drawable/ic_approve_white"
             android:title="@string/nav_user_action" />

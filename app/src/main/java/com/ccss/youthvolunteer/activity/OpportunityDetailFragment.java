@@ -48,7 +48,7 @@ public class OpportunityDetailFragment extends Fragment {
             mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.content);
             }

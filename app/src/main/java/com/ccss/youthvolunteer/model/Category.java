@@ -148,6 +148,17 @@ public class Category extends ParseObject {
         }
     }
 
+    public static Category getFromName(String categoryTitle) {
+        ParseQuery<Category> query = Category.createQuery();
+        query.whereEqualTo("categoryName", categoryTitle);
+        try {
+            return query.getFirst();
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+
     public static void saveCategory(Category categoryData, final SaveCallback onSave){
         categoryData.saveInBackground(new SaveCallback() {
             @Override

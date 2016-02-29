@@ -535,8 +535,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
 
             String textDate = dateOfBirthField.getText().toString();
             if(DateUtils.isValidDate(textDate, true)) {
-                DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
-                dobEntered = dtf.parseDateTime(textDate).toLocalDate();
+                dobEntered = DateUtils.stringToLocalDate(textDate);
             }
 
             // Create a new instance of DatePickerDialog and return it
@@ -549,20 +548,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         }
 
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            int monthOfYear = month + 1;
-            String formattedMonth = "" + monthOfYear;
-            String formattedDayOfMonth = "" + dayOfMonth;
-
-            if(monthOfYear < 10){
-                formattedMonth = "0" + monthOfYear;
-            }
-
-            if(dayOfMonth < 10){
-                formattedDayOfMonth = "0" + dayOfMonth;
-            }
-
-            dateOfBirthField.setText(new StringBuilder().append(formattedDayOfMonth).append("/")
-                    .append(formattedMonth).append("/").append(year));
+            dateOfBirthField.setText(DateUtils.convertedDate(year, month, dayOfMonth));
         }
     }
 }

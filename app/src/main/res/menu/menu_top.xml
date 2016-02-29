@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context="com.ccss.youthvolunteer.activity.AboutActivity">
+
+
+    <item android:id="@+id/nav_view_home" android:title="@string/title_activity_main"
+        android:icon="@drawable/ic_home_white" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/nav_view_wall" android:title="@string/title_activity_wall"
+        android:icon="@drawable/ic_wall_white" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/nav_edit_profile" android:title="@string/nav_title_edit_profile" app:showAsAction="never"/>
+    <item android:id="@+id/action_logout"  android:title="@string/profile_logout_button_label" app:showAsAction="never"/>
+
+
+</menu>

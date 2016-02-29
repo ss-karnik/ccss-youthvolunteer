@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.VolunteerOpportunityByDateComparator;
 import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -14,17 +15,20 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 @ParseClassName("Action")
-public class VolunteerOpportunity extends ParseObject implements Comparable<VolunteerOpportunity> {
+public class VolunteerOpportunity extends ParseObject implements Comparable<VolunteerOpportunity>, Serializable {
 
     @Override
     public int compareTo(@NonNull VolunteerOpportunity other) {
@@ -160,6 +164,19 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         put("specialFeature", value);
     }
 
+    public List<ParseUser> getInterestedUsers() {
+        ArrayList<ParseUser> userInterests =  (ArrayList<ParseUser>) get("interestedUsers");
+        if(userInterests == null || userInterests.isEmpty()){
+            return Lists.newArrayList();
+        }
+
+        return userInterests;
+    }
+
+    public void setInterestedUsers(List<ParseUser> value){
+        put("interestedUsers", value);
+    }
+
     public ParseGeoPoint getExactLocation(){
         return getParseGeoPoint("exactLocation");
     }
@@ -214,6 +231,32 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
 
     public void setOrganizationName(String value){
         put("organizationName", value);
+    }
+
+    public List<Skill> getRequiredSkills() {
+        ArrayList<Skill> requiredSkills =  (ArrayList<Skill>) get("requiredSkills");
+        if(requiredSkills == null || requiredSkills.isEmpty()){
+            return Lists.newArrayList();
+        }
+
+        return requiredSkills;
+    }
+
+    public void setRequiredSkills(List<Skill> value){
+        put("requiredSkills", value);
+    }
+
+    public List<Interest> getRequiredInterests() {
+        ArrayList<Interest> requiredInterests =  (ArrayList<Interest>) get("requiredInterests");
+        if(requiredInterests == null || requiredInterests.isEmpty()){
+            return Lists.newArrayList();
+        }
+
+        return requiredInterests;
+    }
+
+    public void setRequiredInterests(List<Interest> value){
+        put("requiredInterests", value);
     }
 
     public boolean isVirtual() {
@@ -282,6 +325,18 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         });
     }
 
+
+    public static VolunteerOpportunity getInterestedVolunteers(String opportunityId){
+        ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(true);
+        opportunityQuery.include("interestedUsers");
+        opportunityQuery.whereEqualTo("objectId", opportunityId);
+        try {
+            return opportunityQuery.getFirst();
+        } catch (ParseException e) {
+            return new VolunteerOpportunity();
+        }
+    }
+
     public static void getOpportunitiesNearMe(ParseGeoPoint userLocation , final FindCallback<VolunteerOpportunity> callback){
         ParseQuery<VolunteerOpportunity> actionQuery = createQuery(true);
         actionQuery.whereExists("exactLocation").whereNear("exactLocation", userLocation);
@@ -341,6 +396,18 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         });
     }
 
+    public static VolunteerOpportunity getOpportunityDetails(String opportunityId){
+        ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(true);
+        opportunityQuery.include("interestedUsers");
+        opportunityQuery.include("requiredSkills");
+        opportunityQuery.include("requiredInterests");
+        opportunityQuery.whereEqualTo("objectId", opportunityId);
+        try {
+            return opportunityQuery.getFirst();
+        } catch (ParseException e) {
+            return new VolunteerOpportunity();
+        }
+    }
 
     public static void saveOpportunity(VolunteerOpportunity opportunityData, final SaveCallback onSave){
         opportunityData.saveInBackground(new SaveCallback() {

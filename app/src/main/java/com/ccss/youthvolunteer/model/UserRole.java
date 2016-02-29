@@ -53,7 +53,7 @@ public class UserRole {
         return Iterables.tryFind(getParseRoles(), new Predicate<ParseRole>() {
             @Override
             public boolean apply(ParseRole input) {
-                return "moderator".equalsIgnoreCase(input.getName());
+                return "Moderator".equals(input.getName());
             }
         }).isPresent();
     }
@@ -62,7 +62,7 @@ public class UserRole {
         return Iterables.tryFind(getParseRoles(), new Predicate<ParseRole>() {
             @Override
             public boolean apply(ParseRole input) {
-                return "admin".equalsIgnoreCase(input.getName());
+                return "Admin".equalsIgnoreCase(input.getName());
             }
         }).isPresent();
     }

@@ -62,7 +62,7 @@ public class IntroActivity extends BaseActivity {
             //Start Main Activity
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra(Constants.INTENT_SENDER, "intro");
-            mainIntent.putExtra(Constants.INTERNET_AVAILABLE, "false");
+            mainIntent.putExtra(Constants.INTERNET_AVAILABLE, false);
             startActivity(mainIntent);
         }
 
@@ -169,7 +169,7 @@ public class IntroActivity extends BaseActivity {
 
         Intent mainIntent = new Intent(this, MainActivity.class);
         mainIntent.putExtra(Constants.INTENT_SENDER, "intro");
-        mainIntent.putExtra(Constants.INTERNET_AVAILABLE, "true");
+        mainIntent.putExtra(Constants.INTERNET_AVAILABLE, true);
         startActivity(mainIntent);
     }
 

@@ -19,6 +19,8 @@
     <string name="verify_email_error_message4">We look forward to see you contribute to the society!!</string>
 
     <string name="title_activity_login">Sign in</string>
+    <string name="title_refresh_main">Refresh</string>
+    <string name="title_wall_main">Wall</string>
     <string name="profile_title_logged_in">Signed in as</string>
     <string name="profile_logout_button_label">Sign out</string>
     <string name="profile_title_logged_out">You must be signed in to view your profile</string>
@@ -114,7 +116,8 @@
     <string name="interests_title">INTERESTS</string>
     <string name="interests_navigation">&lt; Interests</string>
     <string name="personal_details_title">DETAILS</string>
-    <string name="personal_details_navigation">Details &gt;</string>
+    <string name="details_navigation_next">Details &gt;</string>
+    <string name="details_navigation_prev">&lt; Details</string>
     <string name="ranked">Top 3</string>
     <string name="select">Select</string>
     <string name="selected">Selected</string>
@@ -122,6 +125,11 @@
     <string name="select_skills_message">Select at least one Skill</string>
     <string name="nav_next"> &gt;</string>
     <string name="nav_prev">&lt; </string>
+    <string name="interested_users_navigation_prev">&lt; Interested Users</string>
+    <string name="interested_users_navigation_next">Interested Users &gt;</string>
+    <string name="interested_users_title">INTERESTED USERS</string>
+    <string name="volunteered_users_navigation">Participating Users &gt;</string>
+    <string name="volunteered_users_title">PARTICIPATING USERS</string>
 
     <!-- Strings related to Main activity -->
     <string name="main_message">VOLUNTEER on the GO!!</string>
@@ -151,6 +159,9 @@
     <string name="clock">Clock</string>
     <string name="comments_max_150">Comments (max 150 chars)</string>
     <string name="activity_rating">Rating </string>
+    <string name="activity_post_comment">%1$s contributed %2$.2f hours for %3$s</string>
+    <string name="activity_post_success">Posted to Wall</string>
+
 
     <!-- Manage resource activity -->
     <string name="special_feature_hint">Special feature</string>
@@ -166,8 +177,8 @@
     <string name="recog_type_hint">Recognition Type</string>
     <string name="recog_activity_hint">For Activity</string>
 
-    <string name="action_rankby_volunteer">By Volunteer</string>
-    <string name="action_rankby_school">By School</string>
+    <string name="action_rankby_volunteer">Volunteer</string>
+    <string name="action_rankby_school">School</string>
 
     <!-- Achievements activity -->
     <string name="achievement_trophies">My Trophies</string>
@@ -180,16 +191,18 @@
     <string name="achievement_rank_of"> / </string>
 
     <string name="title_activity_home">Volunteer</string>
+    <string name="title_home">Home</string>
     <string name="prompt_add">Add</string>
     <string name="prompt_save">Save</string>
     <string name="action_name">Title</string>
+    <string name="log_activity_to_wall_title">Post activity?</string>
     <string name="log_activity_to_wall_prompt">Would you like to post this activity to the wall?</string>
 
     <string name="logout_title">Log out?</string>
     <string name="logout_prompt">Are you sure you want to exit?</string>
 
     <string name="category_prompt">Select Category</string>
-    <string name="action_prompt">Select Action</string>
+    <string name="action_prompt">Select Activity</string>
 
     <string name="nav_title_broadcast">Broadcast</string>
     <string name="nav_title_publish">Publish</string>
@@ -201,6 +214,7 @@
     <string name="msg_publish_success">Published message successfully</string>
     <string name="msg_publish_failed">Could not publish message</string>
     <string name="title_activity_main">Volunteer Home</string>
+    <string name="title_activity_wall">Volunteer Wall</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_volunteer">Volunteer</string>
     <string name="activity_submit_button_label">Volunteer</string>
@@ -224,10 +238,19 @@
     <string name="title_activity_nav_drawer">NavDrawerActivity</string>
     <string name="date_input_hint">Date (dd/MM/yyyy)</string>
 
+    <!-- Manage Single Resource-->
+    <string name="no_title">Title missing</string>
+    <string name="no_description">Description missing</string>
+    <string name="no_points_hours">Hours/Points missing</string>
+    <string name="no_email">Email Id missing</string>
+    <string name="express_interest">Interested</string>
+    <string name="opportunity_added_post">New volunteer opportunity available!! %1$s for %2$s</string>
+    <string name="resource_added_post">New %1$s \'%2$s\' added!!</string>
+
     <string name="okay_text">OK</string>
     <string name="cancel_text">Cancel</string>
     <string name="dialog_icon">Icon</string>
-    <string name="title_activity_about_new">AboutNew</string>
+    <string name="title_activity_about_new">About</string>
     <string name="title_activity_manage_resources">Manage Resources</string>
     <string name="title_activity_list_resources">ListResourcesActivity</string>
     <string name="title_opportunity_list">Opportunities</string>
@@ -235,6 +258,7 @@
     <string name="title_activity_profile">Manage Profile</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string name="collapse_expand">Collapse/Expand</string>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>
     <string name="action_inactive">Remove</string>

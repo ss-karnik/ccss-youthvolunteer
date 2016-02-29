@@ -148,8 +148,8 @@
         <activity
             android:name=".activity.ManageResourceActivity"
             android:label="@string/title_activity_manage_resources"
-            android:parentActivityName=".activity.MainActivity"
             android:launchMode="singleTop"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -208,8 +208,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.IntroActivity"
+        <activity
+            android:name=".activity.IntroActivity"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activity.WallActivity"
+            android:label="@string/title_activity_wall"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.PostActivity" >
         </activity>
     </application>
 

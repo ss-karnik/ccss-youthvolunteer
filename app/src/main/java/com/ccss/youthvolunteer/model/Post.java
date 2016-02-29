@@ -28,6 +28,14 @@ public class Post extends ParseObject {
         put("parentPost", value);
     }
 
+    public String getPostText() {
+        return getString("postText");
+    }
+
+    public void setPostText(String value) {
+        put("postText", value);
+    }
+
     /**
      * Returns a string representation of the time slot suitable for use in the
      * UI.

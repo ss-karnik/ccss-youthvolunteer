@@ -23,18 +23,24 @@ import android.widget.Toast;
 
 import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.adapter.SelectorHintAdapter;
+import com.ccss.youthvolunteer.model.Post;
+import com.ccss.youthvolunteer.model.UserAction;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.model.VolunteerUser;
+import com.ccss.youthvolunteer.util.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
 public class LogHoursActivity extends BaseActivity implements View.OnClickListener {
-
-    static final int TIME_DIALOG_ID = 999;
 
     private RatingBar ratingBar;
     private Spinner actionSpinner;
@@ -48,6 +54,8 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
     //Save these in db
     private static int mActivityDurationMinutes;
     public static String mActivityRating;
+    private VolunteerUser mVolunteerUser;
+    private VolunteerOpportunity mActivity;
 
 
     @Override
@@ -66,6 +74,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
         Button btnSubmit = (Button) findViewById(R.id.activity_log_submit);
         addListenerOnRatingBar();
 
+        mVolunteerUser = VolunteerUser.getVolunteerUser(ParseUser.getCurrentUser());
         VolunteerOpportunity.getAllLogEligibleOpportunities(new FindCallback<VolunteerOpportunity>() {
             @Override
             public void done(List<VolunteerOpportunity> objects, ParseException e) {
@@ -118,10 +127,9 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        //TODO: Save to table
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.okay_cancel_dialog);
-        dialog.setTitle("Post activity to wall?");
+        dialog.setTitle(R.string.log_activity_to_wall_title);
 
         // set the custom dialog components - text, image and button
         TextView text = (TextView) dialog.findViewById(R.id.dialog_text);
@@ -131,8 +139,18 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
         dialogOkayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Post to wall
-                //Create a Post object
+                Post volunteerPost = new Post();
+                volunteerPost.setPostText(String.format(getResources().getString(R.string.activity_post_comment),
+                        mVolunteerUser.getFullName(), mActivityDurationMinutes, mActivity.getTitle()));
+                volunteerPost.setPostBy(mVolunteerUser);
+                volunteerPost.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null) {
+                            showToast(R.string.activity_post_success);
+                        }
+                    }
+                });
                 dialog.dismiss();
             }
         });
@@ -150,9 +168,24 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void saveUserActivity() {
-        VolunteerUser currentUser = VolunteerUser.getCurrentUser();
-
         //Save UserAction + UserCategoryPoints
+        UserAction actionToSave = new UserAction();
+        actionToSave.setAction(mActivity.getObjectId());
+        actionToSave.setActionDuration(mActivityDurationMinutes);
+        DateTimeFormatter dtf = DateTimeFormat.forPattern(Constants.MONTH_YEAR_FORMAT);
+        actionToSave.setActionMonthYear(dtf.parseDateTime(activityDate.toString()).toString());
+        actionToSave.setActionDate(mActivity.getActionEndDate());
+        actionToSave.setActionBy(ParseUser.getCurrentUser());
+
+        if(mActivity.isVirtual()){
+            actionToSave.setPointsAllocated(true);
+            actionToSave.setVerifiedBy("SYSTEM");
+            actionToSave.setVerifiedDate(DateTime.now().toDate());
+            actionToSave.setVerificationResult(Constants.APPROVE);
+        } else {
+            actionToSave.setPointsAllocated(false);
+            actionToSave.setVerificationResult(Constants.PENDING);
+        }
 
         View form = findViewById(R.id.log_hours_form);
         Snackbar snackbar = Snackbar.make(form, R.string.msg_data_success, Snackbar.LENGTH_LONG);
@@ -167,12 +200,10 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
             LocalDate dateToday = new LocalDate();
-            LocalDate dateMin = new LocalDate().minusDays(20);
-
             // Create a new instance of DatePickerDialog and return it
             DatePickerDialog dialog = new DatePickerDialog(getActivity(),
                     this, dateToday.getYear(), dateToday.getMonthOfYear(), dateToday.getDayOfMonth());
-            dialog.getDatePicker().setMinDate(dateMin.toDateTimeAtStartOfDay().getMillis());
+            dialog.getDatePicker().setMinDate(dateToday.plusMonths(-1).toDateTimeAtStartOfDay().getMillis());
             dialog.getDatePicker().setMaxDate(dateToday.toDateTimeAtStartOfDay().getMillis());
 
             return dialog;

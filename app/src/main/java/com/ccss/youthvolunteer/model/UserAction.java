@@ -211,8 +211,9 @@ public class UserAction extends ParseObject {
                     Collections.sort(objects, new Comparator<UserAction>() {
                         @Override
                         public int compare(UserAction lhs, UserAction rhs) {
-                            return ((VolunteerUser.getVolunteerUser(lhs.getActionBy())).getLastName()
-                                    .compareTo((VolunteerUser.getVolunteerUser(rhs.getActionBy())).getLastName()));
+                            return lhs.getUpdatedAt().compareTo(rhs.getUpdatedAt());
+//                            return ((VolunteerUser.getVolunteerUser(lhs.getActionBy())).getLastName()
+//                                    .compareTo((VolunteerUser.getVolunteerUser(rhs.getActionBy())).getLastName()));
                         }
                     });
                 }

@@ -24,6 +24,7 @@ public class RankingActivity extends BaseActivity {
     private List<RankingModel> mVolunteers = Lists.newArrayList();
     private RankingViewAdapter mAdapter;
     private ProgressBar mProgressBar;
+    private boolean mRankedByVolunteer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class RankingActivity extends BaseActivity {
 
         mProgressBar = (ProgressBar) findViewById(R.id.ranking_progress_bar);
         mProgressBar.setVisibility(View.VISIBLE);
+        mRankedByVolunteer = true;
 
         initializeData();
 
@@ -75,6 +77,11 @@ public class RankingActivity extends BaseActivity {
 
             case R.id.action_school_rank:
                 //Show the ranking by school
+                return true;
+
+            case R.id.nav_home:
+                startActivity(MainActivity.class);
+                finish();
                 return true;
 
             default:

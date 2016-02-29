@@ -74,7 +74,7 @@ public class SpecialUser extends ParseObject {
      */
     public static void findInBackground(final FindCallback<SpecialUser> callback) {
         ParseQuery<SpecialUser> query = new ParseQuery<>(SpecialUser.class);
-        query.orderByAscending("emailId");
+        query.orderByAscending("role");
         query.findInBackground(new SpecialUserFindCallback() {
             @Override
             protected void doneOnce(List<SpecialUser> objects, ParseException e) {

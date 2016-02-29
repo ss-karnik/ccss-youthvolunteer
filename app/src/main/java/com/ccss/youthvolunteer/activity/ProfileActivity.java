@@ -83,16 +83,7 @@ public class ProfileActivity extends BaseActivity implements ViewPager.OnPageCha
         setupViewPager(mViewPager);
 
         mViewPager.setOffscreenPageLimit(2);
-//        mViewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return false;
-//            }
-//        });
         mPageHistory = new Stack<>();
-
-//        mTabLayout = (TabLayout) findViewById(R.id.profile_tabs);
-//        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -151,7 +142,7 @@ public class ProfileActivity extends BaseActivity implements ViewPager.OnPageCha
                     showProgress(false, mProfileDetailsForm, mProgressBar);
                     signUpCompleteSuccess();
                 } else {
-                    showToast(com.parse.ui.R.string.com_parse_ui_signup_failed_unknown_toast);
+                    showToast(getResources().getString(com.parse.ui.R.string.com_parse_ui_signup_failed_unknown_toast));
                 }
             }
         });
@@ -236,15 +227,5 @@ public class ProfileActivity extends BaseActivity implements ViewPager.OnPageCha
 
     public interface ValidateFragment {
         public boolean validate();
-    }
-
-    public interface OnProfileDataPass {
-        public void onProfileDataPass(List<String> data);
-    }
-
-    public interface OnProfileFragmentSelectionListener {
-        public void onFragmentSelection(Uri uri);
-        public void onFragmentSelection(String id);
-        public void onFragmentSelection(int actionId);
     }
 }

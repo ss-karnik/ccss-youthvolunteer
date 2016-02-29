@@ -86,13 +86,14 @@ public class ProfileInterestsFragment extends Fragment implements ProfileActivit
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadInterests();
+
         List<Interest> userInterests = (List<Interest>) getArguments().getSerializable(INTERESTS_TAG);
         if(userInterests != null){
             for(Interest userInterest : userInterests){
                 mUserInterests.add(userInterest.convertToResourceModel());
             }
         }
+        loadInterests();
     }
 
     @Override

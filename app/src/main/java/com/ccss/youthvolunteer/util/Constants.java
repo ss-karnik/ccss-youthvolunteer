@@ -54,11 +54,11 @@ public class Constants {
 
     public static final int COOLING_PERIOD_BETWEEN_ACTIONS_IN_MINS = 10;
 
-    public static final int VOLUNTEER_ACTIVITY_REQUEST_CODE = 1001;
-    public static final int IMAGE_PICKER_REQUEST_CODE = 1002;
-    public static final int ADD_RESOURCE_REQUEST_CODE = 1003;
-    public static final int MANAGE_RESOURCE_REQUEST_CODE = 1004;
-    public static final int PLACE_PICKER_REQUEST_CODE = 1005;
+    public static final int VOLUNTEER_ACTIVITY_REQUEST_CODE = 22771;
+    public static final int IMAGE_PICKER_REQUEST_CODE = 22772;
+    public static final int ADD_RESOURCE_REQUEST_CODE = 22773;
+    public static final int MANAGE_RESOURCE_REQUEST_CODE = 22774;
+    public static final int PLACE_PICKER_REQUEST_CODE = 22775;
 
     public static final String ENCOURAGE_KEY = "ENCOURAGE";
     public static final String GOODNESS_KEY = "GOODNESS";
@@ -72,11 +72,24 @@ public class Constants {
 
     public static final String PREF_FILE_NAME = "YouthVolunteer";
 
+    //Enter in lowercase only
+    public static final String ACCESS_MODE_KEY = "mode";
     public static final String READ_MODE = "read";
+    public static final String WRITE_MODE = "edit";
     public static final String EDIT_MODE = "edit";
     public static final String ADD_MODE = "add";
 
-    //Enter in lowercase only
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String MONTH_YEAR_FORMAT = "MMM-yyyy";
     public static final int PROFILE_IMAGE_SIZE = 100;
     public static final int LIST_IMAGE_SIZE = 50;
+    public static final float INACTIVE_ALPHA = 0.7f;
+    public static final String APPROVE = "Approve";
+    public static final String PENDING = "Pending";
+    public static final String REJECT = "Reject";
+
+    public enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
+    }
 }

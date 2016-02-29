@@ -131,7 +131,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void showError(CharSequence errorMsg) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(errorMsg)
-                .setTitle(R.string.dialog_title_error);
+                .setTitle(getResources().getString(R.string.dialog_title_error));
         builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
@@ -266,7 +266,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_top, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -278,15 +278,22 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.nav_view_home: {
                 if (!(this instanceof MainActivity)) {
                     startActivity(MainActivity.class);
-                    finish();
                 }
                 break;
             }
 
+            case R.id.nav_main_refresh:
+                finish();
+                startActivity(MainActivity.class);
+                break;
+
+            case R.id.nav_main_wall:
+                startActivity(WallActivity.class);
+                break;
+
             case R.id.nav_view_volunteer: {
                 if (!(this instanceof VolunteerOpportunityActivity)) {
                     startVolunteerActivity(Constants.READ_MODE, "");
-                    finish();
                 }
                 break;
             }
@@ -329,11 +336,11 @@ public class BaseActivity extends AppCompatActivity {
 
                 final Dialog dialog = new Dialog(this);
                 dialog.setContentView(R.layout.okay_cancel_dialog);
-                dialog.setTitle(getResources().getText(R.string.logout_title));
+                dialog.setTitle(getResources().getString(R.string.logout_title));
 
                 // set the custom dialog components - text, image and button
                 TextView text = (TextView) dialog.findViewById(R.id.dialog_text);
-                text.setText(getResources().getText(R.string.logout_prompt));
+                text.setText(getResources().getString(R.string.logout_prompt));
 
                 Button dialogOkayButton = (Button) dialog.findViewById(R.id.dialog_okay);
                 dialogOkayButton.setOnClickListener(new View.OnClickListener() {

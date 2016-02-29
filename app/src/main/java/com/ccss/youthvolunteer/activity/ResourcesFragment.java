@@ -1,11 +1,13 @@
 package com.ccss.youthvolunteer.activity;
 
-import android.app.ActivityOptions;
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,13 +44,8 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,12 +56,13 @@ public class ResourcesFragment extends Fragment
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final String TAG = "ResourcesListFragment";
-    protected LayoutManagerType mCurrentLayoutManagerType;
+    protected Constants.LayoutManagerType mCurrentLayoutManagerType;
     String mResourceType;
     String mUserOrganization;
 
     private List<ResourceModel> mResources = Lists.newArrayList();
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView mEmptyListMessage;
     protected RecyclerView.LayoutManager mLayoutManager;
     private SelectableResourceListAdapter mAdapter;
@@ -190,11 +188,6 @@ public class ResourcesFragment extends Fragment
         actionMode.setTitle(title);
     }
 
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -254,198 +247,203 @@ public class ResourcesFragment extends Fragment
         });
         gestureDetector = new GestureDetectorCompat(getActivity(), new RecyclerViewGestureListener());
 
+        mProgressBar.setVisibility(View.VISIBLE);
         if(mResourceType != null) {
-            switch (mResourceType) {
-                case Constants.ANNOUNCEMENT_RESOURCE:
-                    Announcement.findInBackground(new FindCallback<Announcement>() {
-                        @Override
-                        public void done(List<Announcement> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_categories_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Announcement announcement : objects) {
-                                        mResources.add(announcement.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
+            loadDataItems();
+        }
+    }
 
-                case Constants.CATEGORY_RESOURCE:
-                    Category.findInBackground(new FindCallback<Category>() {
-                        @Override
-                        public void done(List<Category> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_categories_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Category category : objects) {
-                                        mResources.add(category.convertToResourceModel());
-                                    }
+    private void loadDataItems(){
+        switch (mResourceType) {
+            case Constants.ANNOUNCEMENT_RESOURCE:
+                Announcement.findInBackground(new FindCallback<Announcement>() {
+                    @Override
+                    public void done(List<Announcement> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_categories_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Announcement announcement : objects) {
+                                    mResources.add(announcement.convertToResourceModel());
                                 }
                             }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
                         }
-                    });
-                    break;
-
-                case Constants.RECOGNITION_RESOURCE:
-                    Recognition.findInBackground(new FindCallback<Recognition>() {
-                        @Override
-                        public void done(List<Recognition> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_recog_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Recognition recognition : objects) {
-                                        mResources.add(recognition.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-
-                case Constants.INTEREST_RESOURCE:
-                    Interest.findInBackground(new FindCallback<Interest>() {
-                        @Override
-                        public void done(List<Interest> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_interests_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Interest interest : objects) {
-                                        mResources.add(interest.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.SKILL_RESOURCE:
-                    Skill.findInBackground(new FindCallback<Skill>() {
-                        @Override
-                        public void done(List<Skill> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_skills_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Skill skill : objects) {
-                                        mResources.add(skill.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.USER_RESOURCE:
-                    SpecialUser.findInBackground(new FindCallback<SpecialUser>() {
-                        @Override
-                        public void done(List<SpecialUser> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_sp_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (SpecialUser specialUser : objects) {
-                                        mResources.add(specialUser.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.SCHOOL_RESOURCE:
-                    School.findInBackground(new FindCallback<School>() {
-                        @Override
-                        public void done(List<School> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_schools_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (School school : objects) {
-                                        mResources.add(school.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.GROUP_RESOURCE:
-                    InterestGroup.findInBackground(new FindCallback<InterestGroup>() {
-                        @Override
-                        public void done(List<InterestGroup> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_groups_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (InterestGroup groupMember : objects) {
-                                        mResources.add(groupMember.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.ORGANIZATION_RESOURCE:
-                    Organization.findInBackground(new FindCallback<Organization>() {
-                        @Override
-                        public void done(List<Organization> objects, ParseException e) {
-                            if (e == null) {
-                                if(objects.isEmpty()){
-                                    mEmptyListMessage.setText(R.string.no_orgs_available);
-                                    mEmptyListMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    for (Organization org : objects) {
-                                        mResources.add(org.convertToResourceModel());
-                                    }
-                                }
-                            }
-                            mAdapter.notifyDataSetChanged();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
-                    break;
-                case Constants.OPPORTUNITY_RESOURCE:
-                    if(Strings.isNullOrEmpty(mUserOrganization)) {
-                        VolunteerOpportunity.getAllOpportunities(findOpportunitiesCallback());
-                    } else {
-                        VolunteerOpportunity.getOpportunitiesForOrganization(mUserOrganization, false, findOpportunitiesCallback());
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
                     }
-                    break;
+                });
+                break;
 
-                case Constants.USER_ACTION_RESOURCE:
-                    if(Strings.isNullOrEmpty(mUserOrganization)) {
-                        UserAction.findUnverifiedUserActions("", findUserActionsCallback());
-                    } else {
-                        UserAction.findUnverifiedUserActions(mUserOrganization, findUserActionsCallback());
+            case Constants.CATEGORY_RESOURCE:
+                Category.findInBackground(new FindCallback<Category>() {
+                    @Override
+                    public void done(List<Category> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_categories_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Category category : objects) {
+                                    mResources.add(category.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
                     }
-                    break;
-            }
+                });
+                break;
+
+            case Constants.RECOGNITION_RESOURCE:
+                Recognition.findInBackground(new FindCallback<Recognition>() {
+                    @Override
+                    public void done(List<Recognition> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_recog_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Recognition recognition : objects) {
+                                    mResources.add(recognition.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+
+            case Constants.INTEREST_RESOURCE:
+                Interest.findInBackground(new FindCallback<Interest>() {
+                    @Override
+                    public void done(List<Interest> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_interests_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Interest interest : objects) {
+                                    mResources.add(interest.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+            case Constants.SKILL_RESOURCE:
+                Skill.findInBackground(new FindCallback<Skill>() {
+                    @Override
+                    public void done(List<Skill> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_skills_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Skill skill : objects) {
+                                    mResources.add(skill.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+            case Constants.USER_RESOURCE:
+                SpecialUser.findInBackground(new FindCallback<SpecialUser>() {
+                    @Override
+                    public void done(List<SpecialUser> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_sp_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (SpecialUser specialUser : objects) {
+                                    mResources.add(specialUser.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+            case Constants.SCHOOL_RESOURCE:
+                School.findInBackground(new FindCallback<School>() {
+                    @Override
+                    public void done(List<School> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_schools_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (School school : objects) {
+                                    mResources.add(school.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+            case Constants.GROUP_RESOURCE:
+                InterestGroup.findInBackground(new FindCallback<InterestGroup>() {
+                    @Override
+                    public void done(List<InterestGroup> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_groups_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (InterestGroup groupMember : objects) {
+                                    mResources.add(groupMember.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
+                break;
+            case Constants.ORGANIZATION_RESOURCE:
+                Organization.findInBackground(new FindCallback<Organization>() {
+                    @Override
+                    public void done(List<Organization> objects, ParseException e) {
+                        if (e == null) {
+                            if(objects.isEmpty()){
+                                mEmptyListMessage.setText(R.string.no_orgs_available);
+                                mEmptyListMessage.setVisibility(View.VISIBLE);
+                            } else {
+                                for (Organization org : objects) {
+                                    mResources.add(org.convertToResourceModel());
+                                }
+                            }
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+                break;
+            case Constants.OPPORTUNITY_RESOURCE:
+                if(Strings.isNullOrEmpty(mUserOrganization)) {
+                    VolunteerOpportunity.getAllOpportunities(findOpportunitiesCallback());
+                } else {
+                    VolunteerOpportunity.getOpportunitiesForOrganization(mUserOrganization, false, findOpportunitiesCallback());
+                }
+                break;
+
+            case Constants.USER_ACTION_RESOURCE:
+                if(Strings.isNullOrEmpty(mUserOrganization)) {
+                    UserAction.findUnverifiedUserActions("", findUserActionsCallback());
+                } else {
+                    UserAction.findUnverifiedUserActions(mUserOrganization, findUserActionsCallback());
+                }
+                break;
         }
     }
 
@@ -482,7 +480,7 @@ public class ResourcesFragment extends Fragment
                     } else {
                         for (UserAction userAction : objects) {
                             VolunteerUser actionPerformer = VolunteerUser.getVolunteerUser(userAction.getActionBy());
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
                             mResources.add(new ResourceModel(Constants.USER_ACTION_RESOURCE, actionPerformer.getFullName(),
                                     userAction.getAction().getTitle(), dateFormatter.format(userAction.getActionDate()), userAction.getObjectId(),
@@ -501,6 +499,15 @@ public class ResourcesFragment extends Fragment
         View layout = inflater.inflate(R.layout.manage_resources_list_fragment, container, false);
 
         layout.setTag(TAG);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.resources_container);
+        mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshDataItems();
+            }
+        });
+
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.resource_list);
         mEmptyListMessage = (TextView) layout.findViewById(R.id.empty_resource_list);
         mRecyclerView.setHasFixedSize(true);
@@ -512,11 +519,11 @@ public class ResourcesFragment extends Fragment
         mProgressBar = (ProgressBar) layout.findViewById(R.id.resource_list_progress_bar);
         mProgressBar.setVisibility(View.VISIBLE);
 
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        mCurrentLayoutManagerType = Constants.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
-            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER);
+            mCurrentLayoutManagerType = (Constants.LayoutManagerType) savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager();
 
@@ -561,7 +568,23 @@ public class ResourcesFragment extends Fragment
 //                    }
 //                })
 //        );
+        setHasOptionsMenu(true);
         return layout;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.MANAGE_RESOURCE_REQUEST_CODE) {
+                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
+            }
+        }
+    }
+
+    private void refreshDataItems() {
+        mResources.clear();
+        loadDataItems();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -576,7 +599,7 @@ public class ResourcesFragment extends Fragment
                     .findFirstCompletelyVisibleItemPosition();
         }
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        mCurrentLayoutManagerType = Constants.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(scrollPosition);
@@ -588,7 +611,6 @@ public class ResourcesFragment extends Fragment
         savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
     }
-
 
     public interface RecyclerItemClickListener{
         void onItemClick(View view, String resourceType, String objectId);

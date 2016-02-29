@@ -34,15 +34,23 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     private Map<String, Boolean> mItemSelectionStates = Maps.newHashMap();
     private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
     private SparseBooleanArray selectedItems;
+    boolean mSelectable;
 
     /**
      * Initialize the list of the Adapter.
      *
      * @param resources List containing the data to populate views to be used by RecyclerView.
      */
+    public SelectableResourceListAdapter(List<ResourceModel> resources, boolean isSelectable) {
+        mResources = resources;
+        selectedItems = new SparseBooleanArray();
+        mSelectable = isSelectable;
+    }
+
     public SelectableResourceListAdapter(List<ResourceModel> resources) {
         mResources = resources;
         selectedItems = new SparseBooleanArray();
+        mSelectable = true;
     }
 
     /**
@@ -140,17 +148,19 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
         // provide support for selected state
         updateCheckedState(viewHolder, currentResource);
 
-        viewHolder.getResourceImageLayoutView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentResource.setSelected(!currentResource.isSelected());
-                updateCheckedState(viewHolder, currentResource);
-            }
-        });
+        if(mSelectable) {
+            viewHolder.getResourceImageLayoutView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currentResource.setSelected(!currentResource.isSelected());
+                    updateCheckedState(viewHolder, currentResource);
+                }
+            });
+        }
 
         viewHolder.itemView.setActivated(selectedItems.get(position, false));
         if(!currentResource.isActive()){
-            viewHolder.itemView.setAlpha(0.2f);
+            viewHolder.itemView.setAlpha(Constants.INACTIVE_ALPHA);
         }
 
 //        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

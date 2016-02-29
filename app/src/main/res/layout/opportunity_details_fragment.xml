@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:background="@color/com_facebook_button_background_color">
+        <ImageView
+            android:id="@+id/details_to_skills_section"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+            android:layout_marginStart="@dimen/nav_header_vertical_spacing"
+            android:src="@drawable/nav_prev"
+            android:contentDescription="@string/interests_navigation"
+            android:background="@color/com_facebook_button_background_color"/>
+
+        <TextView
+            android:id="@+id/details_item_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:background="@color/com_facebook_button_background_color"
+            android:textColor="@color/white"
+            android:text="@string/personal_details_title"
+            android:layout_centerInParent="true"  />
+
+        <ImageView
+            android:id="@+id/details_to_interested_users_section"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/nav_next"
+            android:contentDescription="@string/interested_users_navigation_next"
+            android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+            android:layout_marginEnd="@dimen/nav_header_vertical_spacing"/>
+    </RelativeLayout>
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+            android:paddingRight="@dimen/com_parse_ui_small_vertical_spacing"
+            android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:paddingBottom="@dimen/com_parse_ui_small_vertical_spacing"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/opportunity_details_progress" style="?android:attr/progressBarStyleInverse"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/manage_activity_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/title_input_hint"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/manage_activity_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="200"
+                android:maxLines="4"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/description_max_200"
+                android:inputType="textMultiLine" />
+
+            <Spinner
+                android:id="@+id/manage_activity_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/category_input_hint"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+            <TextView android:id="@+id/activity_category_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/manage_activity_org"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/org_input_hint"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
+
+            <TextView android:id="@+id/activity_organization_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/manage_activity_impact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="200"
+                android:maxLines="4"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/impact_hint"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/manage_activity_spl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.EditText"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:hint="@string/special_feature_hint"
+                android:inputType="textPersonName" />
+
+            <CheckBox android:id="@+id/manage_activity_virtual"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.TextView.Permission"
+                android:checked="false"
+                android:layout_below="@id/manage_activity_spl"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
+                android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
+                android:text="@string/virtual_text" />
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_location_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/location_hint"
+                    android:inputType="textPersonName" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_map_button"
+                    android:layout_alignTop="@id/manage_activity_location"
+                    android:layout_toEndOf="@id/manage_activity_location"
+                    android:layout_toRightOf="@id/manage_activity_location"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_place"
+                    android:contentDescription="@string/nav_title_location" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_date_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_date"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/prompt_date"
+                    android:inputType= "none|date"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_cal_button"
+                    android:layout_alignTop="@id/manage_activity_date"
+                    android:layout_toEndOf="@id/manage_activity_date"
+                    android:layout_toRightOf="@id/manage_activity_date"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/calendar_icon"
+                    android:contentDescription="@string/calendar" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/manage_activity_time_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/manage_activity_duration"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    style="@style/ParseLoginUI.EditText"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:hint="@string/prompt_duration"
+                    android:inputType= "none|date"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manage_activity_time_button"
+                    android:layout_alignTop="@id/manage_activity_duration"
+                    android:layout_toEndOf="@id/manage_activity_duration"
+                    android:layout_toRightOf="@id/manage_activity_duration"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/clock"
+                    android:contentDescription="@string/clock" />
+            </RelativeLayout>
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/manage_activity_points"
+                android:paddingBottom="@dimen/activity_horizontal_margin"
+                android:inputType="number"/>
+
+            <CheckBox android:id="@+id/opportunity_manage_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ParseLoginUI.TextView.Permission"
+                android:checked="true"
+                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
+                android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
+                android:text="@string/active_text" />
+
+            <Button
+                android:id="@+id/submit_opportunity"
+                style="@style/ParseLoginUI.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/com_parse_ui_xlarge_vertical_spacing"
+                android:layout_margin="@dimen/com_parse_ui_vertical_spacing"
+                android:text="@string/com_parse_ui_login_help_submit_button_label" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

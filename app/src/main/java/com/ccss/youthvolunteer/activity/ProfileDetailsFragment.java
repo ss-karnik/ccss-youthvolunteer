@@ -55,7 +55,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     private static final int DEFAULT_ASPECT_RATIO_VALUES = 20;
     private static final int ON_TOUCH = 1;
     private static final String PROFILE_IMAGE = "profileImage";
-    private static final DateTimeFormatter DOB_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DOB_FORMAT = DateTimeFormat.forPattern(Constants.DATE_FORMAT);
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String USER_TAG = "User";
 
@@ -64,8 +64,6 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     private Spinner mSchoolNameSpinner;
     public static EditText dateOfBirthField;
 
-    private View mProfileDetailsForm;
-    private View mProgressBar;
     private RadioGroup mRadioGenderGroup;
     private ParseImageView mProfileImageButton;
     private CheckBox mFbPublishPermission;
@@ -131,7 +129,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
                 break;
             }
         }
-        dateOfBirthField.setText(DateFormat.format("dd/MM/yyyy", mVolunteerUser.getDateOfBirth()));
+        dateOfBirthField.setText(DateFormat.format(Constants.DATE_FORMAT, mVolunteerUser.getDateOfBirth()));
         if("Male".equalsIgnoreCase(mVolunteerUser.getGender())){
             mRadioGenderGroup.check(R.id.radioMale);
         } else {
@@ -227,8 +225,8 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_details_fragment, container, false);
 
-        mProgressBar =  rootView.findViewById(R.id.profile_details_progress);
-        mProfileDetailsForm = rootView.findViewById(R.id.profile_details_form);
+        View mProgressBar = rootView.findViewById(R.id.profile_details_progress);
+        View mProfileDetailsForm = rootView.findViewById(R.id.profile_details_form);
         mSchoolNameSpinner = (Spinner) rootView.findViewById(R.id.school_name);
         mProfileImageButton = (ParseImageView) rootView.findViewById(R.id.profile_image);
         mFirstNameField = (EditText) rootView.findViewById(R.id.signup_firstname_input);
@@ -262,12 +260,14 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
             }
         });
 
+        mProgressBar.setVisibility(View.VISIBLE);
         populateSchoolSpinner();
 
         TextView userNameField = (TextView) rootView.findViewById(R.id.signup_user_email);
         userNameField.setText(mVolunteerUser.getEmail());
 
         populateExistingUserDetails();
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         ImageButton btnDobCalendar = (ImageButton) rootView.findViewById(R.id.cal_button);
         btnDobCalendar.setOnClickListener(new View.OnClickListener() {
@@ -315,6 +315,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
         volunteer.setMobileNumber(mMobileNumberField.getText().toString());
         volunteer.setPublishToFbPermission(mFbPublishPermission.isChecked());
         volunteer.setProfileComplete(true);
+        volunteer.setIsActive(true);
 
         return volunteer;
     }
@@ -393,8 +394,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
 
             String textDate = dateOfBirthField.getText().toString();
             if(DateUtils.isValidDate(textDate, true)) {
-                DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
-                dobEntered = dtf.parseDateTime(textDate).toLocalDate();
+                dobEntered = DateUtils.stringToLocalDate(textDate);
             }
 
             // Create a new instance of DatePickerDialog and return it

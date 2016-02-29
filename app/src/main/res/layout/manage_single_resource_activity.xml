@@ -129,159 +129,6 @@
                 android:contentDescription="@string/color_picker" />
         </RelativeLayout>
 
-        <!-- Action/Activity/Opportunity -->
-        <RelativeLayout
-            android:id="@+id/manage_opportunity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-            <Spinner
-                android:id="@+id/manage_activity_category"
-                android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:prompt="@string/category_input_hint"
-                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
-
-            <Spinner
-                android:id="@+id/manage_activity_org"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:prompt="@string/org_input_hint"
-                android:layout_below="@id/manage_activity_category"
-                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
-
-            <EditText
-                android:id="@+id/manage_activity_impact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="200"
-                android:maxLines="4"
-                style="@style/ParseLoginUI.EditText"
-                android:layout_below="@id/manage_activity_org"
-                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                android:hint="@string/impact_hint"
-                android:inputType="textMultiLine" />
-
-            <EditText
-                android:id="@+id/manage_activity_spl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/ParseLoginUI.EditText"
-                android:layout_below="@id/manage_activity_impact"
-                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                android:hint="@string/special_feature_hint"
-                android:inputType="textPersonName" />
-
-            <CheckBox android:id="@+id/manage_activity_virtual"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/ParseLoginUI.TextView.Permission"
-                android:checked="false"
-                android:layout_below="@id/manage_activity_spl"
-                android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                android:paddingLeft="@dimen/com_parse_ui_padding_checkbox"
-                android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
-                android:text="@string/virtual_text" />
-
-            <RelativeLayout
-                android:id="@+id/manage_activity_location_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/manage_activity_virtual"
-                android:orientation="horizontal" >
-                <EditText
-                    android:id="@+id/manage_activity_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/ParseLoginUI.EditText"
-                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                    android:hint="@string/location_hint"
-                    android:inputType="textPersonName" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/manage_activity_map_button"
-                    android:layout_alignTop="@id/manage_activity_location"
-                    android:layout_toEndOf="@id/manage_activity_location"
-                    android:layout_toRightOf="@id/manage_activity_location"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_place"
-                    android:contentDescription="@string/nav_title_location" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/manage_activity_date_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/manage_activity_location_container"
-                android:orientation="horizontal" >
-                <EditText
-                    android:id="@+id/manage_activity_date"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    style="@style/ParseLoginUI.EditText"
-                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                    android:hint="@string/prompt_date"
-                    android:inputType= "none|date"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/manage_activity_cal_button"
-                    android:layout_alignTop="@id/manage_activity_date"
-                    android:layout_toEndOf="@id/manage_activity_date"
-                    android:layout_toRightOf="@id/manage_activity_date"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/calendar_icon"
-                    android:contentDescription="@string/calendar" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/manage_activity_time_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/manage_activity_date_container"
-                android:orientation="horizontal" >
-                <EditText
-                    android:id="@+id/manage_activity_duration"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    style="@style/ParseLoginUI.EditText"
-                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
-                    android:hint="@string/prompt_duration"
-                    android:inputType= "none|date"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/manage_activity_time_button"
-                    android:layout_alignTop="@id/manage_activity_duration"
-                    android:layout_toEndOf="@id/manage_activity_duration"
-                    android:layout_toRightOf="@id/manage_activity_duration"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/clock"
-                    android:contentDescription="@string/clock" />
-            </RelativeLayout>
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:id="@+id/manage_activity_points"
-                android:paddingBottom="@dimen/activity_horizontal_margin"
-                android:layout_below="@id/manage_activity_time_container"/>
-        </RelativeLayout>
-
         <!-- Special User -->
         <RelativeLayout
             android:id="@+id/user_mgmt_section"
@@ -372,34 +219,55 @@
             android:paddingStart="@dimen/com_parse_ui_padding_checkbox"
             android:text="@string/active_text" />
 
-
-        <TextView
-            android:id="@+id/user_list_item_header"
+        <!-- Userlist -->
+        <RelativeLayout
+            android:id="@+id/user_list_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/com_parse_ui_small_vertical_spacing"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:gravity="left"
+            android:layout_gravity="top"
             android:background="@color/com_facebook_button_background_color"
-            android:textColor="@color/white"
-            android:text="@string/nav_title_volunteers"
-            android:visibility="gone"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/user_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:visibility="gone"
-            android:scrollbars="vertical"/>
+            android:visibility="gone" >
+            <TextView
+                android:id="@+id/user_list_item_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:text="@string/nav_title_volunteers"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"/>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/arrow_down"
+                android:id="@+id/expand_users"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/collapse_expand"
+                android:layout_marginRight="@dimen/nav_header_vertical_spacing"
+                android:layout_marginEnd="@dimen/nav_header_vertical_spacing"/>
+        </RelativeLayout>
         <TextView
             android:id="@+id/empty_user_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="gone"
+            android:paddingTop="@dimen/com_parse_ui_vertical_spacing"
             android:paddingBottom="@dimen/com_parse_ui_vertical_spacing"
             android:text="@string/no_users_available" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+            android:visibility="gone"
+            android:scrollbars="vertical"/>
         <Button
             android:id="@+id/manage_res_submit"
             style="@style/ParseLoginUI.Button"
