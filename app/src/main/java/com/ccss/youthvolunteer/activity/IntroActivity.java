@@ -9,18 +9,24 @@ import com.ccss.youthvolunteer.R;
 import com.ccss.youthvolunteer.model.Announcement;
 import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.UserCategoryPoints;
+import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.CheckNetworkConnection;
 import com.ccss.youthvolunteer.util.Constants;
+import com.ccss.youthvolunteer.util.DateUtils;
 import com.google.common.base.Joiner;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import org.joda.time.LocalDate;
+
+import java.util.Date;
 import java.util.List;
 
 public class IntroActivity extends BaseActivity {
-    int mUserPoints, mUserHours, mUserRank, mTotalUsers, mTotalUserHours;
+    int mUserPoints, mUserHours, mUserRank, mTotalUsers;
+    String mTotalUserHours;
     String mCurrentAnnouncements;
 
     public static int sum(List<Integer> list, int start) {
@@ -32,6 +38,11 @@ public class IntroActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        loadPageContent();
+    }
+
+    private void loadPageContent() {
 
         if (!CheckNetworkConnection.isInternetAvailable(this)) {
             showToastLong(R.string.internet_connection_unavailable);
@@ -86,6 +97,14 @@ public class IntroActivity extends BaseActivity {
             showToastLong(R.string.help_us_know_you);
             startActivity(ProfileActivitySimple.class);
         } else {
+
+            try {
+                UserCategoryPoints.unpinAll(Constants.CURRENT_USER_POINTS);
+                Category.unpinAll(Constants.CATEGORY_RESOURCE);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             Category.pinAllInBackground(Constants.CATEGORY_RESOURCE, Category.getAllCategories(true));
 
             //TODO: Load UserCategoryPoints/Hours
@@ -95,14 +114,15 @@ public class IntroActivity extends BaseActivity {
 
             mCurrentAnnouncements = Joiner.on("|").join(Announcement.getAllAnnouncementText());
             mTotalUsers = VolunteerUser.getTotalUserCount();
-            mTotalUserHours = sum(UserCategoryPoints.findHoursForAllUsers(), 0);
+            mTotalUserHours = DateUtils.minutesToHoursRepresentation(sum(UserCategoryPoints.findMinutesForAllUsers(), 0));
+
 
 //            final String[] userMonthStats = new String[0];
             UserCategoryPoints.findCurrentUserPointsInBackground(currentParseUser, 0, new FindCallback<UserCategoryPoints>() {
                 @Override
                 public void done(List<UserCategoryPoints> list, ParseException e) {
                     if (e == null) {
-                        UserCategoryPoints.pinAllInBackground("CurrentUserPoints", list);
+                        UserCategoryPoints.pinAllInBackground(Constants.CURRENT_USER_POINTS, list);
 //                        if (!list.isEmpty()) {
 //                            UserCategoryPoints.pinAllInBackground("CurrentUserPoints", list);
 ////                            userMonthStats[0] = Joiner.on(";").join(Collections2.transform(Collections2.filter(list, new Predicate<UserCategoryPoints>() {
@@ -119,7 +139,10 @@ public class IntroActivity extends BaseActivity {
 ////                                }
 ////                            }));
 //                        }
+                    } else {
+                        e.getMessage();
                     }
+
                     startMainActivity();
                 }
             });
@@ -149,12 +172,11 @@ public class IntroActivity extends BaseActivity {
 //                    break;
 //                }
 //            }
-
-
         }
     }
 
     private void startMainActivity() {
+        VolunteerOpportunity upcomingActivity = VolunteerOpportunity.getUpcomingOpportunity();
         SharedPreferences sharedPref = this.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(Constants.ANNOUNCEMENTS_KEY, mCurrentAnnouncements);
@@ -163,8 +185,8 @@ public class IntroActivity extends BaseActivity {
                 mUserPoints, mUserHours, mUserRank, mTotalUsers));
         //Our %s volunteers have put in %s hours!
         editor.putString(Constants.SG_STATS_KEY, String.format(getString(R.string.total_sg_users_hours), mTotalUsers, mTotalUserHours));
-        editor.putString(Constants.UPCOMING_KEY, getString(R.string.upcoming_event));
-
+        editor.putString(Constants.UPCOMING_KEY, String.format(getString(R.string.upcoming_event), upcomingActivity.getTitle()));
+        editor.putString(Constants.STATS_LAST_UPDATE_DATE, DateUtils.formattedDateString(new LocalDate().toDate()).toString());
         editor.apply();
 
         Intent mainIntent = new Intent(this, MainActivity.class);

@@ -1,9 +1,11 @@
 package com.ccss.youthvolunteer.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,6 +66,7 @@ public class OpportunityListActivity extends BaseActivity
     private List<ResourceModel> mResources = Lists.newArrayList();
     private RecyclerView mRecyclerView;
     private TextView mEmptyListMessage;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView.LayoutManager mLayoutManager;
     private SelectableResourceListAdapter mAdapter;
     private ProgressBar mProgressBar;
@@ -84,12 +87,21 @@ public class OpportunityListActivity extends BaseActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.resource_list);
-        mEmptyListMessage = (TextView) findViewById(R.id.empty_resource_list);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.opportunities_container);
+        mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshDataItems();
+            }
+        });
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.opportunity_list);
+        mEmptyListMessage = (TextView) findViewById(R.id.empty_opportunity_list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mLayoutManager = new LinearLayoutManager(this);
-        mProgressBar = (ProgressBar) findViewById(R.id.resource_list_progress_bar);
+        mProgressBar = (ProgressBar) findViewById(R.id.opportunity_list_progress_bar);
         mProgressBar.setVisibility(View.VISIBLE);
 
         mCurrentLayoutManagerType = Constants.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -136,6 +148,12 @@ public class OpportunityListActivity extends BaseActivity
 //        }
 
         // TODO: If exposing deep links into your app, handle intents here.
+    }
+
+    private void refreshDataItems() {
+        mResources.clear();
+        VolunteerOpportunity.getAllOpportunities(findOpportunitiesCallback());
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void setRecyclerViewLayoutManager() {
@@ -224,7 +242,6 @@ public class OpportunityListActivity extends BaseActivity
         intent.putExtra(Constants.USER_ORGANIZATION_KEY, "");
         startActivity(intent);
     }
-
 
     private class RecyclerViewGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override

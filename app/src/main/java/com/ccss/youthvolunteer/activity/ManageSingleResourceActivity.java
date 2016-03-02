@@ -715,7 +715,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         control.setPromptId(R.string.org_input_hint);
-        control.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.org_selector_hint_row, this));
+        control.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.org_selector_hint, this));
     }
 
     private void initializeUserTypeSpinner() {
@@ -725,7 +725,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUserRoleSpinner.setPromptId(R.string.user_role_hint);
         mUserRoleSpinner.setAdapter(
-                new SelectorHintAdapter(dataAdapter, R.layout.userrole_selector_hint_row, this));
+                new SelectorHintAdapter(dataAdapter, R.layout.userrole_selector_hint, this));
     }
 
     private void initializeRecognitionTypeSpinner() {
@@ -735,7 +735,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mRecognitionTypeSpinner.setPromptId(R.string.recog_type_hint);
         mRecognitionTypeSpinner.setAdapter(
-                new SelectorHintAdapter(dataAdapter, R.layout.recog_selector_hint_row, this));
+                new SelectorHintAdapter(dataAdapter, R.layout.recog_selector_hint, this));
     }
 
     private void initializeRecognitionOpportunitySpinner() {
@@ -1073,6 +1073,17 @@ public class ManageSingleResourceActivity extends BaseActivity {
             }
         };
     }
+
+//    private void exitSuccess()
+//    {
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("Longitude", updatedGeoPoint.getLongitudeE6());
+//        bundle.putInt("Latitude", updatedGeoPoint.getLatitudeE6());
+//        Intent intent = new Intent();
+//        intent.putExtras(bundle);
+//        setResult(RESULT_OK, intent);
+//        finish();
+//    }
 
     private void postNewAdditionToWall() {
 

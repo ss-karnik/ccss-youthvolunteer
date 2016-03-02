@@ -221,7 +221,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.PostActivity" >
+        <activity android:name=".activity.PostActivity"
+            android:parentActivityName=".activity.WallActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ccss.youthvolunteer.activity.WallActivity" />
         </activity>
     </application>
 

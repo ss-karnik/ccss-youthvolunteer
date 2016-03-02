@@ -168,7 +168,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void saveUserActivity() {
-        //Save UserAction + UserCategoryPoints
+        //Save UserAction
         UserAction actionToSave = new UserAction();
         actionToSave.setAction(mActivity.getObjectId());
         actionToSave.setActionDuration(mActivityDurationMinutes);

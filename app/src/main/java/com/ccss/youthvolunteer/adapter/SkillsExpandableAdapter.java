@@ -36,7 +36,7 @@ public class SkillsExpandableAdapter extends ExpandableRecyclerAdapter<Expandabl
 
     @Override
     public ExpandableProfileChildViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
-        View view = mInflater.inflate(R.layout.profile_selection_row_layout, childViewGroup, false);
+        View view = mInflater.inflate(R.layout.profile_selection_item, childViewGroup, false);
         return new ExpandableProfileChildViewHolder(view);
     }
 

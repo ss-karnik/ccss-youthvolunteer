@@ -26,6 +26,7 @@ import com.ccss.youthvolunteer.model.UserCategoryPoints;
 import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.CheckNetworkConnection;
 import com.ccss.youthvolunteer.util.Constants;
+import com.ccss.youthvolunteer.util.DateUtils;
 import com.ccss.youthvolunteer.util.TaskScheduler;
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     private final float[] mValuesSgChart = {9.06f, 4.16f};
     private TextView mTextViewTwo;
     private TextView mTextViewMetricTwo;
+    private TextView mDataAsOfText;
 
     private String mUserOrganization;
     private static final long REFRESH_DATA_INTERVAL = 3000;
@@ -90,6 +92,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         setContentView(R.layout.activity_main);
         CoordinatorLayout mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordinator);
 
+        mDataAsOfText = (TextView) findViewById(R.id.data_as_of);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
@@ -105,6 +108,8 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             mRotatingTextItems.add(prefs.getString(Constants.SG_STATS_KEY, null));
             mRotatingTextItems.add(prefs.getString(Constants.POINTS_RANK_KEY, null));
             mRotatingTextItems.add(prefs.getString(Constants.UPCOMING_KEY, null));
+            mDataAsOfText.setText(String.format(getString(R.string.main_data_as_of),
+                                                prefs.getString(Constants.STATS_LAST_UPDATE_DATE, null)));
         }
 
         final TextView rotatingBanner = (TextView) findViewById(R.id.main_rotating);
@@ -142,7 +147,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                     for (UserCategoryPoints categoryItem : list) {
                         userCategoryStats.add(new UserCategoryStats(categoryItem.getActionCategory().getCategoryName(),
                                 categoryItem.getActionCategory().getCategoryColor(),
-                                categoryItem.getCategoryHours(), categoryItem.getCategoryPoints()));
+                                DateUtils.minutesAsHours(categoryItem.getCategoryMinutes()), categoryItem.getCategoryPoints()));
                     }
                 }
 
@@ -252,7 +257,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                 public void done(byte[] data, com.parse.ParseException e) {
                 }
             });
-            // navProfileImage.loadInBackground();
         } else {
             navProfileImage.setImageResource(R.drawable.default_avatar_small_64);
         }
@@ -270,7 +274,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         if (!Strings.isNullOrEmpty(specialRole)) {
             if (Constants.ADMIN_ROLE.equalsIgnoreCase(specialRole) || Constants.MODERATOR_ROLE.equalsIgnoreCase(specialRole)) {
                 //Make the Admin options visible
-                //View navDrawerHeader = MenuInflater.class.ing` from(this).inflate(R.layout.nav_drawer_header, null);
                 navigationView.getMenu().setGroupVisible(R.id.admin_manage, true);
                 //Can manage volunteer actions across organizations.
                 mUserOrganization = "";
@@ -493,6 +496,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                 .setIndex(mSeries3Index).setDelay(14000).build());
     }
     //endregion
+
 
     @Override
     public void onBackPressed() {

@@ -34,7 +34,7 @@ public class VolunteerLogAdapter extends RecyclerView.Adapter<VolunteerLogAdapte
     public VolunteerLogViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.volunteer_log_action_row, viewGroup, false);
+                .inflate(R.layout.volunteer_log_action_item, viewGroup, false);
 
         return new VolunteerLogViewHolder(v);
     }

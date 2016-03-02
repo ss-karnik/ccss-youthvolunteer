@@ -267,9 +267,39 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         put("isVirtual", value);
     }
 
+    public boolean isPastActivity(){
+        return this.getActionStartDate().before(LocalDate.now().toDate());
+    }
+
     @Override
     public String toString() {
         return String.format("Category: %s; Title: %s", this.getActionCategory(), this.getTitle()) ;
+    }
+
+    public static String cloneOpportunity(VolunteerOpportunity original){
+        VolunteerOpportunity cloned = new VolunteerOpportunity();
+        cloned.setIsVirtual(original.isVirtual());
+        cloned.setIsActive(true);
+        cloned.setOrganizationName(original.getOrganizationName());
+        cloned.setActionCategory(original.getActionCategory());
+        cloned.setActionDuration(original.getActionDuration());
+        cloned.setActionPoints(original.getActionPoints());
+        cloned.setActionLink(original.getActionLink());
+        cloned.setDescription(original.getDescription());
+        cloned.setImpact(original.getImpact());
+        cloned.setRequiredInterests(original.getRequiredInterests());
+        cloned.setRequiredSkills(original.getRequiredSkills());
+        cloned.setExactLocation(original.getExactLocation());
+        cloned.setLocationName(original.getLocationName());
+        cloned.setSpecialFeature(original.getSpecialFeature());
+
+        try {
+            cloned.save();
+        } catch (ParseException e) {
+            return "";
+        }
+
+        return cloned.getObjectId();
     }
 
     public static List<String> getOpportunityForCategory(Category category, boolean getAll) {
@@ -325,11 +355,22 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         });
     }
 
-
     public static VolunteerOpportunity getInterestedVolunteers(String opportunityId){
         ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(true);
         opportunityQuery.include("interestedUsers");
         opportunityQuery.whereEqualTo("objectId", opportunityId);
+        try {
+            return opportunityQuery.getFirst();
+        } catch (ParseException e) {
+            return new VolunteerOpportunity();
+        }
+    }
+
+    public static VolunteerOpportunity getUpcomingOpportunity(){
+        ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(false);
+        opportunityQuery.include("title");
+        opportunityQuery.whereGreaterThan("startDate", LocalDate.now().toDate());
+        opportunityQuery.orderByAscending("startDate");
         try {
             return opportunityQuery.getFirst();
         } catch (ParseException e) {

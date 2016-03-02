@@ -47,12 +47,20 @@ public class UserAction extends ParseObject {
         put("duration", value);
     }
 
+    public int getNonVirtualActionDuration() {
+        return getInt("nonVirtualActionDuration");
+    }
+
+    public void setNonVirtualActionDuration(int value){
+        put("nonVirtualActionDuration", value);
+    }
+
     public String getActionMonthYear() {
         return getString("monthYear");
     }
 
     /*
-    Should be in the format MMM-yyyy
+    Should be in the format MMM-yyyy (Constants.MONTH_YEAR_FORMAT)
      */
     public void setActionMonthYear(String value){
         put("monthYear", value);

@@ -284,7 +284,7 @@ public class BaseActivity extends AppCompatActivity {
 
             case R.id.nav_main_refresh:
                 finish();
-                startActivity(MainActivity.class);
+                startActivity(IntroActivity.class);
                 break;
 
             case R.id.nav_main_wall:

@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
@@ -46,5 +47,17 @@ public class DateUtils {
             formattedDayOfMonth = "0" + dayOfMonth;
         }
         return formattedDayOfMonth + "/" + formattedMonth + "/" + year;
+    }
+
+    public static String minutesToHoursRepresentation(int min){
+        long hours = TimeUnit.MINUTES.toHours(min);
+        long remainMinutes = min - TimeUnit.HOURS.toMinutes(hours);
+        return String.format("%02d:%02d", hours, remainMinutes);
+    }
+
+    public static double minutesAsHours(int min){
+        long hours = TimeUnit.MINUTES.toHours(min);
+        long remainMinutes = min - TimeUnit.HOURS.toMinutes(hours);
+        return hours + (remainMinutes * 0.0166667);
     }
 }

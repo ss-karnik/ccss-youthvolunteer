@@ -31,7 +31,7 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileListAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.profile_selection_row_layout, viewGroup, false);
+                .inflate(R.layout.profile_selection_item, viewGroup, false);
 
         return new ViewHolder(v);
     }

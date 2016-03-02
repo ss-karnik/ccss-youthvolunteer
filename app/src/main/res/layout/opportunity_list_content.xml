@@ -3,10 +3,10 @@
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/resources_container">
+    android:id="@+id/opportunities_container">
 
     <TextView
-        android:id="@+id/empty_resource_list"
+        android:id="@+id/empty_opportunity_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -15,12 +15,12 @@
         android:visibility="gone" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/resource_list"
+        android:id="@+id/opportunity_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <ProgressBar
-        android:id="@+id/resource_list_progress_bar"
+        android:id="@+id/opportunity_list_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

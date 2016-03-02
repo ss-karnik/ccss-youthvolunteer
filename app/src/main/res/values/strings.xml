@@ -62,6 +62,7 @@
     <string name="color_picker">Color picker</string>
     <string name="active_text">Is Active?</string>
     <string name="nav_title_volunteers">Volunteers</string>
+    <string name="no_announcements_available">No Announcements defined</string>
     <string name="no_categories_available">No Categories defined</string>
     <string name="no_recog_available">No Recognitions defined</string>
     <string name="no_interests_available">No Interests defined</string>
@@ -138,8 +139,8 @@
     <string name="main_month_points_title">Your volunteering statistics for this month:</string>
     <string name="main_points">EARN Points</string>
     <string name="main_points_rank">Overall with %1$d points and %2$d hours you are ranked %3$d out of %4$d volunteers!</string>
-    <string name="total_sg_users_hours">Our %1$d volunteers have put in %2$d hours!</string>
-    <string name="upcoming_event">Upcoming activity: Green Corridor Run</string>
+    <string name="total_sg_users_hours">Our %1$d volunteers have put in %2$s hours!</string>
+    <string name="upcoming_event">Upcoming activity: %1$s</string>
     <string name="main_this_month_title">This month\'s statistics:</string>
     <string name="main_month_points">Your monthly target: hrs. Hours done: .</string>
     <string name="main_recognised">ACHIEVE Recognition</string>
@@ -147,6 +148,7 @@
     <string name="main_recognised_title">Your Title</string>
     <string name="main_line_trophies">WIN Trophies</string>
     <string name="main_latest_trophy">Your Latest Trophy</string>
+    <string name="main_data_as_of">*data as of %1$s</string>
 
     <!-- Maps activity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -246,6 +248,11 @@
     <string name="express_interest">Interested</string>
     <string name="opportunity_added_post">New volunteer opportunity available!! %1$s for %2$s</string>
     <string name="resource_added_post">New %1$s \'%2$s\' added!!</string>
+
+    <!-- Post -->
+    <string name="whats_on_your_mind">What\'s on your mind?</string>
+    <string name="no_comments">No comments</string>
+    <string name="no_posts_available">Be the first to write on the wall!!</string>
 
     <string name="okay_text">OK</string>
     <string name="cancel_text">Cancel</string>

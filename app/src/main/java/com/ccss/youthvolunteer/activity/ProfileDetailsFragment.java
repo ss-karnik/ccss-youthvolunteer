@@ -104,7 +104,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSchoolNameSpinner.setPromptId(R.string.prompt_school_name);
-        mSchoolNameSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.school_selector_hint_row, getActivity()));
+        mSchoolNameSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.school_selector_hint, getActivity()));
     }
 
     private void populateExistingUserDetails() {

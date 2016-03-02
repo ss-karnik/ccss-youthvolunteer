@@ -3,9 +3,7 @@ package com.ccss.youthvolunteer.adapter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +112,7 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     public ResourceViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.manage_resource_row_layout, viewGroup, false);
+                .inflate(R.layout.manage_resource_item, viewGroup, false);
 
         return new ResourceViewHolder(v);
     }

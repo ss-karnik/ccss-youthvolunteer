@@ -260,10 +260,12 @@ public class ResourcesFragment extends Fragment
                     public void done(List<Announcement> objects, ParseException e) {
                         if (e == null) {
                             if(objects.isEmpty()){
-                                mEmptyListMessage.setText(R.string.no_categories_available);
+                                mEmptyListMessage.setText(R.string.no_announcements_available);
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Announcement announcement : objects) {
                                     mResources.add(announcement.convertToResourceModel());
                                 }
@@ -285,6 +287,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Category category : objects) {
                                     mResources.add(category.convertToResourceModel());
                                 }
@@ -306,6 +310,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Recognition recognition : objects) {
                                     mResources.add(recognition.convertToResourceModel());
                                 }
@@ -327,6 +333,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Interest interest : objects) {
                                     mResources.add(interest.convertToResourceModel());
                                 }
@@ -347,6 +355,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Skill skill : objects) {
                                     mResources.add(skill.convertToResourceModel());
                                 }
@@ -367,6 +377,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (SpecialUser specialUser : objects) {
                                     mResources.add(specialUser.convertToResourceModel());
                                 }
@@ -387,6 +399,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (School school : objects) {
                                     mResources.add(school.convertToResourceModel());
                                 }
@@ -407,6 +421,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (InterestGroup groupMember : objects) {
                                     mResources.add(groupMember.convertToResourceModel());
                                 }
@@ -427,6 +443,8 @@ public class ResourcesFragment extends Fragment
                                 mEmptyListMessage.setVisibility(View.VISIBLE);
                                 mRecyclerView.setVisibility(View.GONE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mEmptyListMessage.setVisibility(View.INVISIBLE);
                                 for (Organization org : objects) {
                                     mResources.add(org.convertToResourceModel());
                                 }
@@ -466,6 +484,8 @@ public class ResourcesFragment extends Fragment
                         mEmptyListMessage.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.GONE);
                     } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyListMessage.setVisibility(View.INVISIBLE);
                         for (VolunteerOpportunity opportunity : objects) {
                             mResources.add(opportunity.convertToResourceModel());
                         }
@@ -488,9 +508,11 @@ public class ResourcesFragment extends Fragment
                         mEmptyListMessage.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.GONE);
                     } else {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mEmptyListMessage.setVisibility(View.INVISIBLE);
                         for (UserAction userAction : objects) {
                             VolunteerUser actionPerformer = VolunteerUser.getVolunteerUser(userAction.getActionBy());
-                            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 
                             mResources.add(new ResourceModel(Constants.USER_ACTION_RESOURCE, actionPerformer.getFullName(),
                                     userAction.getAction().getTitle(), dateFormatter.format(userAction.getActionDate()), userAction.getObjectId(),

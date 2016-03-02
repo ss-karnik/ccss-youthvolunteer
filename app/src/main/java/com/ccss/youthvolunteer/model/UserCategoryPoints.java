@@ -1,5 +1,6 @@
 package com.ccss.youthvolunteer.model;
 
+import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -58,16 +59,29 @@ public class UserCategoryPoints extends ParseObject {
 
     public void incrementPointsBy(int value) { increment("pointsAllocated", value);}
 
-    public int getCategoryHours(){
-        return getInt("hours");
+    public int getCategoryMinutes(){
+        return getInt("minutes");
     }
 
-    public void setCategoryHours(int value){
-        put("hours", value);
+    public void setCategoryMinutes(int value){
+        put("minutes", value);
     }
 
-    public void incrementHoursBy(int value) {
-        increment("hours", value);}
+    public void incrementMinutesBy(int value) {
+        increment("minutes", value);
+    }
+
+    public int getNonVirtualMinutes(){
+        return getInt("nonVirtualMinutes");
+    }
+
+    public void setNonVirtualMinutes(int value){
+        put("nonVirtualMinutes", value);
+    }
+
+    public void incrementNonVirtualMinutesBy(int value) {
+        increment("nonVirtualMinutes", value);
+    }
 
     /**
      * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
@@ -119,7 +133,7 @@ public class UserCategoryPoints extends ParseObject {
     public static void findCurrentUsersPointsForMonthYearInBackground(ParseUser user, String monthYear, boolean fromLocalStore, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
         userPointsQuery.whereEqualTo("user", user);
-        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString("MM-yyyy") : monthYear);
+        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString(Constants.MONTH_YEAR_FORMAT) : monthYear);
         userPointsQuery.addDescendingOrder("createdAt");
         userPointsQuery.include("category");
         if(fromLocalStore){
@@ -133,10 +147,10 @@ public class UserCategoryPoints extends ParseObject {
         });
     }
 
-    public static List<Integer> findHoursForAllUsers(){
+    public static List<Integer> findMinutesForAllUsers(){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
         userPointsQuery.addDescendingOrder("createdAt");
-        userPointsQuery.selectKeys(Lists.newArrayList("hours"));
+        userPointsQuery.selectKeys(Lists.newArrayList("minutes"));
         try {
             List<UserCategoryPoints> results = userPointsQuery.find();
             if(results.isEmpty()){
@@ -145,7 +159,7 @@ public class UserCategoryPoints extends ParseObject {
             return Lists.transform(results, new Function<UserCategoryPoints, Integer>() {
                 @Override
                 public Integer apply(UserCategoryPoints input) {
-                    return input.getCategoryHours();
+                    return input.getCategoryMinutes();
                 }
             });
         } catch (ParseException e) {
@@ -157,7 +171,7 @@ public class UserCategoryPoints extends ParseObject {
 
     public static void findAllUsersPointsForMonthYearInBackground(String monthYear, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
-        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString("MMyyyy") : monthYear);
+        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString(Constants.MONTH_YEAR_FORMAT) : monthYear);
         userPointsQuery.addDescendingOrder("createdAt");
         userPointsQuery.include("category");
         userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {

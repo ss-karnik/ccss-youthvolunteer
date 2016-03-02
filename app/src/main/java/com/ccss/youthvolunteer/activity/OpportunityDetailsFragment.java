@@ -105,7 +105,7 @@ public class OpportunityDetailsFragment extends Fragment  {
 
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mActivityOrgSpinner.setPromptId(R.string.org_input_hint);
-        mActivityOrgSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.org_selector_hint_row, getActivity()));
+        mActivityOrgSpinner.setAdapter(new SelectorHintAdapter(dataAdapter, R.layout.org_selector_hint, getActivity()));
     }
 
     private void initializeCategorySpinner() {

@@ -4,6 +4,7 @@
     <color name="com_parse_ui_parse_login_button_push">#30CCCCCC</color>
     <color name="com_parse_ui_parse_login_button_focus">#35CCCCCC</color>
     <color name="com_parse_ui_parse_login_help_button_label">#E0E0E0</color>
+    <color name="card_view_background">#ECF0F1</color>
     <color name="com_parse_ui_parse_login_help_button_label_push">#AAAAAA</color>
     <color name="gray">#737373</color>
     <color name="hyperlink">#0099CC</color>
@@ -16,5 +17,6 @@
     <color name="com_parse_ui_twitter_login_button">#2DAAE2</color>
     <color name="com_parse_ui_twitter_login_button_push">#2588B5</color>
     <color name="com_parse_ui_twitter_login_button_focus">#2788BE</color>
+
 
 </resources>

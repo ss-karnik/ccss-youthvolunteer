@@ -50,13 +50,11 @@
         android:text="@string/main_this_month_title" />
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/deco_card"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        card_view:cardBackgroundColor="#ECF0F1"
-        android:layout_below="@id/main_month_title"
-        card_view:cardCornerRadius="4dp">
+        style="@style/CardView"
+        android:layout_below="@id/main_month_title">
 
         <RelativeLayout
             android:id="@+id/deco_chart"
@@ -158,7 +156,7 @@
                     android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
                     android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
                     android:textStyle="italic"
-                    android:text="*data as of 04/12/2016"
+                    android:text="main_data_as_of"
                     android:textSize="10sp" />
             </LinearLayout>
         </RelativeLayout>

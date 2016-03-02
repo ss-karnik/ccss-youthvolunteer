@@ -68,6 +68,8 @@ public class Constants {
     public static final String ANNOUNCEMENTS_KEY = "ANNOUNCEMENTS";
     public static final String USER_STATS_KEY = "USERSTATS";
     public static final String USER_CURRENT_MONTH_STATS_KEY = "USERCURRENTMONTHSTATS";
+    public static final String STATS_LAST_UPDATE_DATE = "STATSLASTUPDATED";
+    public static final String CURRENT_USER_POINTS = "CurrentUserPoints";
 
 
     public static final String PREF_FILE_NAME = "YouthVolunteer";
@@ -83,7 +85,7 @@ public class Constants {
     public static final String MONTH_YEAR_FORMAT = "MMM-yyyy";
     public static final int PROFILE_IMAGE_SIZE = 100;
     public static final int LIST_IMAGE_SIZE = 50;
-    public static final float INACTIVE_ALPHA = 0.7f;
+    public static final float INACTIVE_ALPHA = 0.5f;
     public static final String APPROVE = "Approve";
     public static final String PENDING = "Pending";
     public static final String REJECT = "Reject";

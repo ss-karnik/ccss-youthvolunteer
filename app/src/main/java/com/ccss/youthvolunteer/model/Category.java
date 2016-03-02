@@ -83,7 +83,7 @@ public class Category extends ParseObject {
     }
 
     /**
-     * Creates a query for Interest with all the includes
+     * Creates a query for Category
      */
     private static ParseQuery<Category> createQuery() {
         ParseQuery<Category> query = new ParseQuery<>(Category.class);
