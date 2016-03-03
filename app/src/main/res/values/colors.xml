@@ -32,6 +32,7 @@
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="highlight">#99BEFF</color>
+    <color name="background">#F0F0F0</color>
 
     <color name="do_good_action">#CC6B30</color>
     <color name="green_action">#99B433</color>

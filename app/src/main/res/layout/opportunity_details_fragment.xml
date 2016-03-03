@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -232,6 +232,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/prompt_points"
                 android:id="@+id/manage_activity_points"
                 android:paddingBottom="@dimen/activity_horizontal_margin"
                 android:inputType="number"/>

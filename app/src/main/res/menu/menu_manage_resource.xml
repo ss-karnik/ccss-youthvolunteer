@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/clone_opportunity"  android:title="@string/delete_button_label"
-        android:icon="@drawable/ic_delete_white" android:visible="false" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/clone_opportunity"  android:title="@string/clone_button_label"
+        android:icon="@drawable/ic_content_copy" android:visible="false" app:showAsAction="ifRoom"/>
     <item android:id="@+id/manage_action_delete"  android:title="@string/delete_button_label"
         android:icon="@drawable/ic_delete_white" android:visible="false" app:showAsAction="ifRoom"/>
     <item android:id="@+id/manage_action_approve"  android:title="@string/action_approve"

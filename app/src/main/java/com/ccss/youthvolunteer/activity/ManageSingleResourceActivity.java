@@ -836,6 +836,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
 
         if(!Strings.isNullOrEmpty(errorMessage)){
             showError(errorMessage);
+            mProgressBar.setVisibility(View.GONE);
             return;
         }
 
@@ -962,6 +963,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                     }
                 });
         }
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private String validateResource() {

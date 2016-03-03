@@ -35,6 +35,7 @@
     <string name="nav_about">About</string>
     <string name="nav_manage_label">Manage</string>
     <string name="delete_button_label">Delete</string>
+    <string name="clone_button_label">Clone</string>
     <string name="nav_spl_user">Special Users</string>
     <string name="nav_announcement">Announcements</string>
     <string name="nav_category">Categories</string>
@@ -178,6 +179,7 @@
     <string name="recog_unit">Is hours based?</string>
     <string name="recog_type_hint">Recognition Type</string>
     <string name="recog_activity_hint">For Activity</string>
+    <string name="prompt_points">Points</string>
 
     <string name="action_rankby_volunteer">Volunteer</string>
     <string name="action_rankby_school">School</string>

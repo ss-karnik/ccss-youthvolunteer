@@ -74,6 +74,13 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(manageIntent);
     }
 
+    protected void startManageOpportunityActivity(String resourceName, String organizationName){
+        Intent manageIntent = new Intent(this, OpportunityListActivity.class);
+        manageIntent.putExtra(Constants.MANAGE_ITEM_KEY, resourceName);
+        manageIntent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
+        startActivity(manageIntent);
+    }
+
     protected void replaceActivity(Class<? extends Activity> targetActivity) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

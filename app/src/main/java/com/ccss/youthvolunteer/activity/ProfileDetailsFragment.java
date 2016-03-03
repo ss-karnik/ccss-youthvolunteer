@@ -225,19 +225,18 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_details_fragment, container, false);
 
-        View mProgressBar = rootView.findViewById(R.id.profile_details_progress);
-        View mProfileDetailsForm = rootView.findViewById(R.id.profile_details_form);
-        mSchoolNameSpinner = (Spinner) rootView.findViewById(R.id.school_name);
-        mProfileImageButton = (ParseImageView) rootView.findViewById(R.id.profile_image);
-        mFirstNameField = (EditText) rootView.findViewById(R.id.signup_firstname_input);
-        mLastNameField = (EditText) rootView.findViewById(R.id.signup_lastname_input);
-        mMobileNumberField = (EditText) rootView.findViewById(R.id.signup_mobile_input);
-        dateOfBirthField = (EditText) rootView.findViewById(R.id.signup_dateofbirth_input);
+        View mProgressBar = rootView.findViewById(R.id.profile_detail_progress);
+        mSchoolNameSpinner = (Spinner) rootView.findViewById(R.id.detail_school_name);
+        mProfileImageButton = (ParseImageView) rootView.findViewById(R.id.profile_detail_image);
+        mFirstNameField = (EditText) rootView.findViewById(R.id.signup_detail_firstname_input);
+        mLastNameField = (EditText) rootView.findViewById(R.id.signup_detail_lastname_input);
+        mMobileNumberField = (EditText) rootView.findViewById(R.id.signup_detail_mobile_input);
+        dateOfBirthField = (EditText) rootView.findViewById(R.id.signup_detail_dateofbirth_input);
         mFbPublishPermission = (CheckBox) rootView.findViewById(R.id.checkbox_fbPublish);
-        mRadioGenderGroup = (RadioGroup) rootView.findViewById(R.id.radioGroupGender);
-        mCropImageView = (CropImageView) rootView.findViewById(R.id.cropImageView);
-        mOrganizationField = (TextView) rootView.findViewById(R.id.user_organization);
-        mCropSection = (RelativeLayout) rootView.findViewById(R.id.crop_section);
+        mRadioGenderGroup = (RadioGroup) rootView.findViewById(R.id.detail_radioGroupGender);
+        mCropImageView = (CropImageView) rootView.findViewById(R.id.detail_cropImageView);
+        mOrganizationField = (TextView) rootView.findViewById(R.id.user_detail_organization);
+        mCropSection = (RelativeLayout) rootView.findViewById(R.id.detail_crop_section);
 
         mProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,7 +266,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
         userNameField.setText(mVolunteerUser.getEmail());
 
         populateExistingUserDetails();
-        mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressBar.setVisibility(View.GONE);
 
         ImageButton btnDobCalendar = (ImageButton) rootView.findViewById(R.id.cal_button);
         btnDobCalendar.setOnClickListener(new View.OnClickListener() {

@@ -522,8 +522,6 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         int id = item.getItemId();
 
         switch (id) {
-
-
             case R.id.nav_view_volunteer:
                 startActivity(OpportunityListActivity.class);
                 break;
@@ -591,7 +589,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                 break;
 
             case R.id.nav_manage_action:
-                startManageResourceActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
+                startManageOpportunityActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
                 break;
 
             case R.id.nav_manage_organizer_action:

@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:id="@+id/resources_container">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/resource_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/empty_resource_list"
         android:layout_width="match_parent"
@@ -13,11 +18,6 @@
         android:textSize="16sp"
         android:paddingTop="@dimen/image_size_small"
         android:visibility="gone" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/resource_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/resource_list_progress_bar"

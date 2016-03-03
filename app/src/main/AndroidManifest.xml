@@ -130,7 +130,7 @@
             android:value="@string/fb_app_id" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCewRzoZ23-pJFH-oYcYD2tyXo9eXqWU9M" />
+            android:value="AIzaSyB8_lWi_2MnMt7BAwj_8Kb4JOzje5QDrT4" />
 
         <activity
             android:name=".activity.LogHoursActivity"
@@ -193,13 +193,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ccss.youthvolunteer.activity.ManageResourceActivity" />
-        </activity>
-        <activity
-            android:name=".activity.ManageVolunteerOpportunityActivity"
-            android:parentActivityName=".activity.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.ccss.youthvolunteer.activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.ErrorMessageActivity"

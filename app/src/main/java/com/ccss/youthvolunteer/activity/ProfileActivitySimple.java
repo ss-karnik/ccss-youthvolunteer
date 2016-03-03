@@ -105,7 +105,7 @@ public class ProfileActivitySimple extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_profile_simple);
 
         mProgressBar = findViewById(R.id.profile_details_progress);
-        mProfileDetailsForm = findViewById(R.id.profile_details_form);
+        mProfileDetailsForm = findViewById(R.id.profile_details_form_simple);
         mSchoolNameSpinner = (Spinner) findViewById(R.id.school_name);
         mProfileImageButton = (ParseImageView) findViewById(R.id.profile_image);
         mFirstNameField = (EditText) findViewById(R.id.signup_firstname_input);

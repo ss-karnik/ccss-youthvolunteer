@@ -55,6 +55,7 @@ public class OpportunityDetailActivity extends BaseActivity {
     private boolean mIsInterestedUser;
     private boolean mSaveToHistory;
     private boolean mReadonly;
+    private boolean mIsCloneable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,8 @@ public class OpportunityDetailActivity extends BaseActivity {
             loadVolunteersForOpportunity();
             if(mReadonly && mOpportunity.isPastActivity()){
                 mFabExpressInterest.setVisibility(View.VISIBLE);
+                mIsCloneable = true;
+                invalidateOptionsMenu();
                 mIsInterestedUser = mOpportunity.getInterestedUsers().contains(ParseUser.getCurrentUser());
                 if(mIsInterestedUser){
                     mFabExpressInterest.setImageResource(android.R.drawable.star_big_on);
@@ -267,7 +270,7 @@ public class OpportunityDetailActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_manage_resource, menu);
 
-        menu.findItem(R.id.clone_opportunity).setVisible(true);
+        menu.findItem(R.id.clone_opportunity).setVisible(mIsCloneable);
         return true;
     }
 

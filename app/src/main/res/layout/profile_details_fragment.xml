@@ -15,22 +15,21 @@
         tools:context="com.ccss.youthvolunteer.activity.ProfileActivity.DetailsFragment">
 
             <ProgressBar
-                android:id="@+id/profile_details_progress" style="?android:attr/progressBarStyleLarge"
+                android:id="@+id/profile_detail_progress" style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp" android:visibility="gone" />
 
             <com.parse.ParseImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/profile_detail_image"
                 android:layout_width="@dimen/com_facebook_profilepictureview_preset_size_normal"
                 android:layout_height="@dimen/com_facebook_profilepictureview_preset_size_normal"
                 android:background="@drawable/whitecircle"
                 android:src="@drawable/default_avatar_change_me"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_gravity="center_horizontal"
-                android:layout_alignParentTop="true"/>
+                android:layout_gravity="center_horizontal" />
 
             <RelativeLayout
-                android:id="@+id/crop_section"
+                android:id="@+id/detail_crop_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -38,7 +37,7 @@
 
                 <com.theartofdev.edmodo.cropper.CropImageView
                     xmlns:custom="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/cropImageView"
+                    android:id="@+id/detail_cropImageView"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:layout_gravity="center"
@@ -73,14 +72,14 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/signup_user_email"
+                android:id="@+id/signup_user_detail_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
                 style="@style/ParseLoginUI.EditText" />
 
             <TextView
-                android:id="@+id/user_organization"
+                android:id="@+id/user_detail_organization"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ParseLoginUI.EditText"
@@ -88,7 +87,7 @@
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/signup_firstname_input"
+                android:id="@+id/signup_detail_firstname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ParseLoginUI.EditText"
@@ -97,7 +96,7 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/signup_lastname_input"
+                android:id="@+id/signup_detail_lastname_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ParseLoginUI.EditText"
@@ -110,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <EditText
-                    android:id="@+id/signup_dateofbirth_input"
+                    android:id="@+id/signup_detail_dateofbirth_input"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     style="@style/ParseLoginUI.EditText"
@@ -133,7 +132,7 @@
             </RelativeLayout>
 
             <RadioGroup
-                android:id="@+id/radioGroupGender"
+                android:id="@+id/detail_radioGroupGender"
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content" >
@@ -158,14 +157,14 @@
             </RadioGroup>
 
             <Spinner
-                android:id="@+id/school_name"
+                android:id="@+id/detail_school_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:prompt="@string/com_parse_ui_schoolname_input_hint"
                 style="@style/Base.Widget.AppCompat.Spinner.Underlined" />
 
             <EditText
-                android:id="@+id/signup_mobile_input"
+                android:id="@+id/signup_detail_mobile_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/ParseLoginUI.EditText"
