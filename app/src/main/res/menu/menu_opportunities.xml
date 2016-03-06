@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/activity_search"
+        android:title="@string/search_hint"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always"/>
+    <item android:id="@+id/nav_view_home" android:title="@string/title_home"
+        android:icon="@drawable/ic_home_white" app:showAsAction="ifRoom"/>
+    <item android:id="@+id/activity_by_category" android:title="@string/search_by_category"
+        app:showAsAction="never" />
+    <item android:id="@+id/activity_by_org" android:title="@string/search_by_org"
+        app:showAsAction="never" />
+    <item android:id="@+id/activity_by_type" android:title="@string/search_by_type"
+        app:showAsAction="never" />
+    <item android:id="@+id/past_activities" android:title="@string/show_past"
+        app:showAsAction="never" />
+    <item android:id="@+id/upcoming_activities" android:title="@string/show_upcoming"
+        app:showAsAction="never" />
+</menu>

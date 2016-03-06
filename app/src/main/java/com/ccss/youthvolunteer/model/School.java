@@ -70,8 +70,8 @@ public class School extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(Constants.SCHOOL_RESOURCE, this.getSchoolName(), this.getDescription(), "", this.getObjectId(),
-                this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive());
+        return new ResourceModel(Constants.SCHOOL_RESOURCE, this.getSchoolName(), this.getDescription(), "", "", "", "",
+                this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive(), false);
     }
 
     /**

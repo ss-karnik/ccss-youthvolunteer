@@ -53,7 +53,7 @@
     <string name="msg_progress_wait">Please wait…</string>
     <string name="msg_no_current_location">No search location specified</string>
     <string name="msg_no_results_found">No results found</string>
-    <string name="search_hint">Search</string>
+    <string name="search_hint">Search by name</string>
     <string name="add_item">Add</string>
     <string name="view_edit_item">Edit</string>
     <string name="switch_view">Switch between List </string>
@@ -166,6 +166,7 @@
     <string name="activity_post_success">Posted to Wall</string>
 
 
+
     <!-- Manage resource activity -->
     <string name="special_feature_hint">Special feature</string>
     <string name="impact_hint">Social impact</string>
@@ -183,6 +184,13 @@
 
     <string name="action_rankby_volunteer">Volunteer</string>
     <string name="action_rankby_school">School</string>
+    <string name="search_by_category">By Category</string>
+    <string name="search_by_org">By Organization</string>
+    <string name="search_by_type">By Type</string>
+    <string name="show_past">Past</string>
+    <string name="show_upcoming">Upcoming</string>
+    <string name="virtual_indicator">Virtual</string>
+    <string name="physical_indicator">Physical</string>
 
     <!-- Achievements activity -->
     <string name="achievement_trophies">My Trophies</string>
@@ -246,8 +254,10 @@
     <string name="no_title">Title missing</string>
     <string name="no_description">Description missing</string>
     <string name="no_points_hours">Hours/Points missing</string>
+    <string name="no_start_date">Start date missing</string>
     <string name="no_email">Email Id missing</string>
-    <string name="express_interest">Interested</string>
+    <string name="express_interest">Express Interest</string>
+    <string name="interested">Interested</string>
     <string name="opportunity_added_post">New volunteer opportunity available!! %1$s for %2$s</string>
     <string name="resource_added_post">New %1$s \'%2$s\' added!!</string>
 

@@ -4,12 +4,16 @@ package com.ccss.youthvolunteer.model;
 public class ResourceModel {
     String title;
     String description;
-    String extraInformation;
+    String extraInformationTopRight;
+    String extraInformationBottom;
+    String extraInformationBelowDesc;
+    String borderColor;
     String objectId;
     String imageUri;
     String resourceType;
     boolean active;
     boolean selected;
+    boolean starred;
 
     public String getTitle() {
         return title;
@@ -27,12 +31,36 @@ public class ResourceModel {
         this.description = value;
     }
 
-    public String getExtraInformation() {
-        return extraInformation;
+    public String getExtraInformationTopRight() {
+        return extraInformationTopRight;
     }
 
-    public void setExtraInformation(String value) {
-        this.extraInformation = value;
+    public void setExtraInformationTopRight(String value) {
+        this.extraInformationTopRight = value;
+    }
+
+    public String getExtraInformationBottom() {
+        return extraInformationBottom;
+    }
+
+    public void setExtraInformationBottom(String value) {
+        this.extraInformationBottom = value;
+    }
+
+    public String getExtraInformationBelowDesc() {
+        return extraInformationBelowDesc;
+    }
+
+    public void setExtraInformationBelowDesc(String value) {
+        this.extraInformationBelowDesc = value;
+    }
+
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(String value) {
+        this.borderColor = value;
     }
 
     public String getObjectId() {
@@ -67,6 +95,14 @@ public class ResourceModel {
         this.active = value;
     }
 
+    public boolean isStarred() {
+        return starred;
+    }
+
+    public void setStarred(boolean value) {
+        this.starred = value;
+    }
+
     public boolean isSelected() {
         return selected;
     }
@@ -75,17 +111,22 @@ public class ResourceModel {
         this.selected = value;
     }
 
-    public ResourceModel(String resourceType, String title, String description, String extraInformation, String objectId, String imageUri, boolean active) {
-        this.resourceType = resourceType;
+    public ResourceModel(String resourceType, String title, String description, String borderColor,
+                         String extraInformationTopRight, String extraInformationBelowDesc, String extraInformationBottom,
+                         String objectId, String imageUri, boolean active, boolean starred) {
+        this.setResourceType(resourceType);
         this.title = title;
         this.description = description;
-        this.extraInformation = extraInformation;
+        this.borderColor = borderColor;
+        this.extraInformationTopRight = extraInformationTopRight;
+        this.extraInformationBelowDesc = extraInformationBelowDesc;
+        this.extraInformationBottom = extraInformationBottom;
         this.objectId = objectId;
         this.imageUri = imageUri;
         this.active = active;
+        this.starred = starred;
         this.selected = false;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -103,6 +144,4 @@ public class ResourceModel {
         hash = 53 * hash + (this.getObjectId() != null ? this.getObjectId().hashCode() : 0);
         return hash;
     }
-
-
 }

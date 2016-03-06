@@ -249,7 +249,7 @@ public class OpportunityDetailsFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 if(validate()) {
-                    setOpportunityData();
+                    setOpportunityDataToSave();
                     ((OpportunityDetailActivity) getActivity()).onSubmitDetailsClick(mVolunteerOpportunity);
                 } else {
                     Toast.makeText(getActivity(), mValidationMessage, Toast.LENGTH_LONG).show();
@@ -295,7 +295,7 @@ public class OpportunityDetailsFragment extends Fragment  {
         mActivityLocationPicker.setVisibility(View.INVISIBLE);
     }
 
-    private void setOpportunityData() {
+    private void setOpportunityDataToSave() {
         mVolunteerOpportunity.setTitle(mTitleText.getText().toString());
         mVolunteerOpportunity.setDescription(mDescriptionText.getText().toString());
         mVolunteerOpportunity.setActionPoints(Integer.parseInt(mActivityPoints.getText().toString()));
@@ -306,7 +306,6 @@ public class OpportunityDetailsFragment extends Fragment  {
         if(!mVirtualCheck.isChecked()){
             mVolunteerOpportunity.setActionStartDate(DATE_TIME_FORMATTER.parseDateTime(mActivityDateText.getText().toString()).toDate());
         }
-
         mVolunteerOpportunity.setActionDuration(Integer.parseInt(mActivityTimeText.getText().toString()));
         mVolunteerOpportunity.setIsActive(mActiveStatus.isChecked());
         mVolunteerOpportunity.setActionCategory(Category.getFromName(mCategorySpinner.getSelectedItem().toString()));
@@ -326,6 +325,9 @@ public class OpportunityDetailsFragment extends Fragment  {
         }
         if(mActivityPoints.getText().toString().isEmpty()){
             validationMessage.append(getString(R.string.no_points_hours));
+        }
+        if(!mVirtualCheck.isChecked() && mActivityDateText.getText().toString().isEmpty()){
+            validationMessage.append(getString(R.string.no_start_date));
         }
 
         if(validationMessage.length() > 0){

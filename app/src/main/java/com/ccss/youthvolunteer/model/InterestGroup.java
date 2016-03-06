@@ -75,8 +75,8 @@ public class InterestGroup extends ParseObject {
 
     public ResourceModel convertToResourceModel() {
         return new ResourceModel(Constants.GROUP_RESOURCE, this.getGroupName(), this.getGroupDescription(),
-                "Member count: " + this.getGroupMembers().size(), this.getObjectId(),
-                this.getGroupLogo() == null ? "" : this.getGroupLogo().getUrl(), this.isActive());
+                "", "", "Member count: " + this.getGroupMembers().size(), "", this.getObjectId(),
+                this.getGroupLogo() == null ? "" : this.getGroupLogo().getUrl(), this.isActive(), false);
     }
 
     /**

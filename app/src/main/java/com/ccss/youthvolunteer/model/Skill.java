@@ -89,7 +89,7 @@ public class Skill extends ParseObject implements Serializable {
 
     public ResourceModel convertToResourceModel() {
         return new ResourceModel(Constants.SKILL_RESOURCE, this.getSkillTitle(), this.getDescription(),
-                "", this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), true);
+                "", "", "", "", this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), true, false);
     }
 
     /**

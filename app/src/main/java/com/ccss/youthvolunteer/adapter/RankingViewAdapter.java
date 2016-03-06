@@ -28,7 +28,7 @@ public class RankingViewAdapter extends RecyclerView.Adapter<RankingViewAdapter.
 
     @Override
     public RankingViewAdapter.RankingViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.action_list_row_layout, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.volunteer_user_item, viewGroup, false);
         return new RankingViewHolder(context, v);
     }
 

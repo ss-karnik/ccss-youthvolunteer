@@ -108,8 +108,8 @@ public class IntroActivity extends BaseActivity {
             Category.pinAllInBackground(Constants.CATEGORY_RESOURCE, Category.getAllCategories(true));
 
             //TODO: Load UserCategoryPoints/Hours
-            mUserPoints = 10;
-            mUserHours = 2;
+            mUserPoints = 0;
+            mUserHours = 0;
             mUserRank = 5; //Map<User, Points>?
 
             mCurrentAnnouncements = Joiner.on("|").join(Announcement.getAllAnnouncementText());
@@ -123,22 +123,10 @@ public class IntroActivity extends BaseActivity {
                 public void done(List<UserCategoryPoints> list, ParseException e) {
                     if (e == null) {
                         UserCategoryPoints.pinAllInBackground(Constants.CURRENT_USER_POINTS, list);
-//                        if (!list.isEmpty()) {
-//                            UserCategoryPoints.pinAllInBackground("CurrentUserPoints", list);
-////                            userMonthStats[0] = Joiner.on(";").join(Collections2.transform(Collections2.filter(list, new Predicate<UserCategoryPoints>() {
-////                                @Override
-////                                public boolean apply(UserCategoryPoints input) {
-////                                    return input.getActionMonthYear().equals(DateTime.now().toString("MM-yyyy"));
-////                                }
-////                            }), new Function<UserCategoryPoints, String>() {
-////                                @Override
-////                                public String apply(UserCategoryPoints userCategoryPoints) {
-////                                    return userCategoryPoints.getActionCategory().getCategoryName() + "|"
-////                                            + userCategoryPoints.getCategoryHours() + "|"
-////                                            + userCategoryPoints.getCategoryPoints();
-////                                }
-////                            }));
-//                        }
+                        for (UserCategoryPoints item: list) {
+                            mUserPoints += item.getCategoryPoints();
+                            mUserHours += item.getCategoryMinutes();
+                        }
                     } else {
                         e.getMessage();
                     }
@@ -146,32 +134,6 @@ public class IntroActivity extends BaseActivity {
                     startMainActivity();
                 }
             });
-
-//                        UserCategoryPoints.findCurrentUsersPointsForMonthYearInBackground(currentParseUser, null, true, new FindCallback<UserCategoryPoints>() {
-//                            @Override
-//                            public void done(List<UserCategoryPoints> list, ParseException e) {
-//                                if (e == null) {
-//                                    userMonthStats = Joiner.on(";").join(Lists.transform(list;
-//                        userStats[0] = Joiner.on(";").join(Lists.transform(list, new Function<UserCategoryPoints, String>() {
-//                            @Override
-//                            public String apply(UserCategoryPoints userCategoryPoints) {
-//                                return userCategoryPoints.getActionCategory().getCategoryName() + "|"
-//                                        + userCategoryPoints.getCategoryHours() + "|"
-//                                        + userCategoryPoints.getCategoryPoints() + "|"
-//                                        + userCategoryPoints.getActionMonthYear();
-//                            }
-//                        }));
-//                    }
-//                    mQueryCount++;
-//                }
-//            });
-//
-//            //After all queries complete
-//            while (true){
-//                if(mQueryCompleted){
-//                    break;
-//                }
-//            }
         }
     }
 

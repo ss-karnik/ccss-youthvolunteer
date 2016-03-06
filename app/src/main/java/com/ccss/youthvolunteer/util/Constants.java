@@ -89,6 +89,7 @@ public class Constants {
     public static final String APPROVE = "Approve";
     public static final String PENDING = "Pending";
     public static final String REJECT = "Reject";
+    public static final String VIRTUAL = "Virtual";
 
     public enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,

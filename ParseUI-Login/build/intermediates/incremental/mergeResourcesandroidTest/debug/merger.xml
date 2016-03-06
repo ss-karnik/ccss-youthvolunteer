@@ -14,7 +14,7 @@
         <item name="android:fontFamily"/>
         <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
         <item name="android:textSize">24sp</item>
-    </style><color name="com_parse_ui_parse_login_display_text">@android:color/white</color><string name="radio_male">Male</string><style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
+    </style><color name="card_view_background">#ECF0F1</color><color name="com_parse_ui_parse_login_display_text">@android:color/white</color><string name="radio_male">Male</string><style name="ParseLoginUI.TextView.Permission" parent="@android:style/Widget.TextView">
         <item name="android:fontFamily"/>
         <item name="android:textColor">@color/com_parse_ui_twitter_login_button_focus</item>
         <item name="android:textSize">14sp</item>

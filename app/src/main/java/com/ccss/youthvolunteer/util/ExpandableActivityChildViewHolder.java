@@ -29,7 +29,7 @@ public class ExpandableActivityChildViewHolder extends ChildViewHolder {
         mOrganizationText = (TextView) itemView.findViewById(R.id.action_organization);
         mLocationText = (TextView) itemView.findViewById(R.id.action_location);
         mDateText = (TextView) itemView.findViewById(R.id.action_date);
-        mLikeButton = (ImageButton) itemView.findViewById(R.id.btn_like);
-        mDetailsButton = (ImageButton) itemView.findViewById(R.id.btn_view_details);
+        mLikeButton = (ImageButton) itemView.findViewById(R.id.btn_express_interest);
+        mDetailsButton = (ImageButton) itemView.findViewById(R.id.btn_express_interest);
     }
 }

@@ -2,6 +2,7 @@
 <resources>
     <!-- From: file:/E:/Mobile%20Apps/CCSS/YouthVolunteer/ccss-youthvolunteer/ParseUI-Login/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
+    <color name="card_view_background">#ECF0F1</color>
     <color name="com_parse_ui_facebook_login_button">#3B5998</color>
     <color name="com_parse_ui_facebook_login_button_focus">#304F8B</color>
     <color name="com_parse_ui_facebook_login_button_push">#2E4677</color>

@@ -154,8 +154,8 @@ public class Recognition extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel(){
-        return new ResourceModel(Constants.RECOGNITION_RESOURCE, this.getTitle(),
-                "Points req,:" + this.getPointsRequired() + ". " + this.getDescription(),
-                this.getRecognitionType(), this.getObjectId(), this.getImage() == null ? "" : this.getImage().getUrl(), this.isActive());
+        return new ResourceModel(Constants.RECOGNITION_RESOURCE, this.getTitle(), this.getDescription(), "",
+                this.getRecognitionType(), "Points req,:" + this.getPointsRequired() + ". ", "", this.getObjectId(),
+                this.getImage() == null ? "" : this.getImage().getUrl(), this.isActive(), false);
     }
 }

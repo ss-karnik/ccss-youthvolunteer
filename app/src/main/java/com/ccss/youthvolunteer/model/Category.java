@@ -170,7 +170,7 @@ public class Category extends ParseObject {
 
     public ResourceModel convertToResourceModel(){
         return new ResourceModel(Constants.CATEGORY_RESOURCE, this.getCategoryName(), this.getDescription(),
-                this.getCategoryColor(), this.getObjectId(), "", this.isActive());
+                this.getCategoryColor(), this.getCategoryColor(), "", "", this.getObjectId(), "", this.isActive(), false);
     }
 
 }

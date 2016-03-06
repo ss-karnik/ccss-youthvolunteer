@@ -3,6 +3,7 @@ package com.ccss.youthvolunteer.model;
 import android.support.annotation.NonNull;
 
 import com.ccss.youthvolunteer.util.Constants;
+import com.ccss.youthvolunteer.util.DateUtils;
 import com.ccss.youthvolunteer.util.VolunteerOpportunityByDateComparator;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -30,6 +31,8 @@ import java.util.List;
 @ParseClassName("Action")
 public class VolunteerOpportunity extends ParseObject implements Comparable<VolunteerOpportunity>, Serializable {
 
+    private boolean mSelected;
+
     @Override
     public int compareTo(@NonNull VolunteerOpportunity other) {
         int activeCompare = this.isActive() == other.isActive() ? 0 : -1;
@@ -55,53 +58,12 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         return this.getLocationName().compareTo(other.getLocationName());
     }
 
-    public ResourceModel convertToResourceModel() {
-        return new ResourceModel(Constants.OPPORTUNITY_RESOURCE, this.getTitle(), this.getDescription(),
-                this.getOrganizationName(), this.getObjectId(), "", this.isActive());
+    public boolean isSelected() {
+        return mSelected;
     }
 
-    /**
-     * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
-     * policy, but only call the callback once, with the first data available.
-     */
-    private abstract static class VolunteerOpportunityFindCallback implements FindCallback<VolunteerOpportunity> {
-        private boolean isCachedResult = true;
-        private boolean calledCallback = false;
-
-        @Override
-        public void done(List<VolunteerOpportunity> objects, ParseException e) {
-            if (!calledCallback) {
-                if (objects != null) {
-                    // We got a result, use it.
-                    calledCallback = true;
-                    doneOnce(objects, null);
-                } else if (!isCachedResult) {
-                    // We got called back twice, but got a null result both
-                    // times. Pass on the latest error.
-                    doneOnce(null, e);
-                }
-            }
-            isCachedResult = false;
-        }
-
-        /**
-         * Override this method with the callback that should only be called
-         * once.
-         */
-        protected abstract void doneOnce(List<VolunteerOpportunity> objects, ParseException e);
-    }
-
-    /**
-     * Creates a query for VolunteerOpportunity with all the includes
-     */
-    private static ParseQuery<VolunteerOpportunity> createQuery(boolean getAll) {
-        ParseQuery<VolunteerOpportunity> query = new ParseQuery(VolunteerOpportunity.class);
-        query.include("actionCategory");
-        if(!getAll) {
-            query.whereEqualTo("isActive", true);
-        }
-        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
-        return query;
+    public void setIsSelected(boolean value){
+        mSelected = value;
     }
 
     public String getActionLink(){
@@ -302,6 +264,57 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         return cloned.getObjectId();
     }
 
+    public ResourceModel convertToResourceModel() {
+        return new ResourceModel(Constants.OPPORTUNITY_RESOURCE.concat("|" + this.getActionCategory().getCategoryName()),
+                this.getTitle(), this.getDescription(), this.getActionCategory().getCategoryColor(),
+                this.isVirtual() ? Constants.VIRTUAL : DateUtils.formattedDateString(this.getActionStartDate()).toString(),
+                "By: ".concat(this.getOrganizationName()), "At: ".concat(this.getLocationName()), this.getObjectId(), "", this.isActive(), false);
+    }
+
+    /**
+     * Wraps a FindCallback so that we can use the CACHE_THEN_NETWORK caching
+     * policy, but only call the callback once, with the first data available.
+     */
+    private abstract static class VolunteerOpportunityFindCallback implements FindCallback<VolunteerOpportunity> {
+        private boolean isCachedResult = true;
+        private boolean calledCallback = false;
+
+        @Override
+        public void done(List<VolunteerOpportunity> objects, ParseException e) {
+            if (!calledCallback) {
+                if (objects != null) {
+                    // We got a result, use it.
+                    calledCallback = true;
+                    doneOnce(objects, null);
+                } else if (!isCachedResult) {
+                    // We got called back twice, but got a null result both
+                    // times. Pass on the latest error.
+                    doneOnce(null, e);
+                }
+            }
+            isCachedResult = false;
+        }
+
+        /**
+         * Override this method with the callback that should only be called
+         * once.
+         */
+        protected abstract void doneOnce(List<VolunteerOpportunity> objects, ParseException e);
+    }
+
+    /**
+     * Creates a query for VolunteerOpportunity with all the includes
+     */
+    private static ParseQuery<VolunteerOpportunity> createQuery(boolean getAll) {
+        ParseQuery<VolunteerOpportunity> query = new ParseQuery(VolunteerOpportunity.class);
+        query.include("actionCategory");
+        if(!getAll) {
+            query.whereEqualTo("isActive", true);
+        }
+        //query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        return query;
+    }
+    
     public static List<String> getOpportunityForCategory(Category category, boolean getAll) {
         ParseQuery<VolunteerOpportunity> actionQuery = ParseQuery.getQuery(VolunteerOpportunity.class);
         actionQuery.include("actionCategory");
@@ -366,6 +379,20 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         }
     }
 
+    public static void getInterestedOpportunitiesForUser(ParseUser user, final FindCallback<VolunteerOpportunity> callback){
+        ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(true);
+        opportunityQuery.whereEqualTo("interestedUsers", user);
+        opportunityQuery.findInBackground(new VolunteerOpportunityFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerOpportunity> objects, ParseException e) {
+                if (objects != null) {
+                    Collections.sort(objects, VolunteerOpportunityByDateComparator.get());
+                }
+                callback.done(objects, e);
+            }
+        });
+    }
+
     public static VolunteerOpportunity getUpcomingOpportunity(){
         ParseQuery<VolunteerOpportunity> opportunityQuery = createQuery(false);
         opportunityQuery.include("title");
@@ -379,7 +406,7 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
     }
 
     public static void getOpportunitiesNearMe(ParseGeoPoint userLocation , final FindCallback<VolunteerOpportunity> callback){
-        ParseQuery<VolunteerOpportunity> actionQuery = createQuery(true);
+        ParseQuery<VolunteerOpportunity> actionQuery = createQuery(false);
         actionQuery.whereExists("exactLocation").whereNear("exactLocation", userLocation);
         actionQuery.findInBackground(new VolunteerOpportunityFindCallback() {
             @Override
@@ -393,19 +420,6 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
     }
 
     public static void getAllOpportunities(final FindCallback<VolunteerOpportunity> callback){
-        ParseQuery<VolunteerOpportunity> actionQuery = createQuery(false);
-        actionQuery.findInBackground(new VolunteerOpportunityFindCallback() {
-            @Override
-            protected void doneOnce(List<VolunteerOpportunity> objects, ParseException e) {
-                if (objects != null) {
-                    Collections.sort(objects, VolunteerOpportunityByDateComparator.get());
-                }
-                callback.done(objects, e);
-            }
-        });
-    }
-
-    public static void getActiveOpportunities(final FindCallback<VolunteerOpportunity> callback){
         ParseQuery<VolunteerOpportunity> actionQuery = createQuery(true);
         actionQuery.findInBackground(new VolunteerOpportunityFindCallback() {
             @Override
@@ -418,14 +432,27 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         });
     }
 
+    public static void getActiveOpportunities(final FindCallback<VolunteerOpportunity> callback){
+        ParseQuery<VolunteerOpportunity> actionQuery = createQuery(false);
+        actionQuery.findInBackground(new VolunteerOpportunityFindCallback() {
+            @Override
+            protected void doneOnce(List<VolunteerOpportunity> objects, ParseException e) {
+                if (objects != null) {
+                    Collections.sort(objects, VolunteerOpportunityByDateComparator.get());
+                }
+                callback.done(objects, e);
+            }
+        });
+    }
+
     public static void getAllLogEligibleOpportunities(final FindCallback<VolunteerOpportunity> callback){
-        ParseQuery<VolunteerOpportunity> datedOpportunity = createQuery(true);
-        datedOpportunity.whereExists("startDate").whereLessThan("startDate", LocalDate.now());
+        ParseQuery<VolunteerOpportunity> nonVirtualOpportunitiesQuery = createQuery(false);
+        nonVirtualOpportunitiesQuery.whereExists("startDate").whereGreaterThan("startDate", LocalDate.now().minusDays(30).toDate());
 
-        ParseQuery<VolunteerOpportunity> virtualOpportunity = createQuery(true);
-        virtualOpportunity.whereDoesNotExist("startDate");
+        ParseQuery<VolunteerOpportunity> virtualOpportunitiesQuery = createQuery(false);
+        virtualOpportunitiesQuery.whereEqualTo("isVirtual", true);
 
-        ParseQuery<VolunteerOpportunity> mainQuery = datedOpportunity.or(Lists.newArrayList(virtualOpportunity));
+        ParseQuery<VolunteerOpportunity> mainQuery = nonVirtualOpportunitiesQuery.or(Lists.newArrayList(virtualOpportunitiesQuery));
         mainQuery.findInBackground(new VolunteerOpportunityFindCallback() {
             @Override
             protected void doneOnce(List<VolunteerOpportunity> objects, ParseException e) {

@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -278,7 +279,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
             }
         });
 
-        Button navigateSkills = (Button) rootView.findViewById(R.id.go_to_skills);
+        ImageView navigateSkills = (ImageView) rootView.findViewById(R.id.go_to_skills);
         navigateSkills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -286,7 +287,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
             }
         });
 
-        Button submitProfileData = (Button) rootView.findViewById(R.id.submit_profile);
+        ImageView submitProfileData = (ImageView) rootView.findViewById(R.id.submit_profile);
         submitProfileData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

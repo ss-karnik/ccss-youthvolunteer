@@ -139,19 +139,20 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
 
         final float monthlyGoal = currentUser.getMonthlyGoal() == 0 ? DEFAULT_MONTHLY_GOAL : currentUser.getMonthlyGoal();
-        final List<UserCategoryStats> userCategoryStats = Lists.newArrayList();
+        final List<UserCategoryStats> userCategoryStatsForCurrentMonth = Lists.newArrayList();
         UserCategoryPoints.findCurrentUsersPointsForMonthYearInBackground(currentUser, null, true, new FindCallback<UserCategoryPoints>() {
             @Override
             public void done(List<UserCategoryPoints> list, ParseException e) {
                 if (e == null) {
                     for (UserCategoryPoints categoryItem : list) {
-                        userCategoryStats.add(new UserCategoryStats(categoryItem.getActionCategory().getCategoryName(),
+                        userCategoryStatsForCurrentMonth.add(
+                                new UserCategoryStats(categoryItem.getActionCategory().getCategoryName(),
                                 categoryItem.getActionCategory().getCategoryColor(),
                                 DateUtils.minutesAsHours(categoryItem.getCategoryMinutes()), categoryItem.getCategoryPoints()));
                     }
                 }
 
-                plotUserStats(userCategoryStats, monthlyGoal);
+                plotUserStats(userCategoryStatsForCurrentMonth, monthlyGoal);
             }
         });
 
@@ -179,11 +180,11 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
     }
 
-    private void plotUserStats(List<UserCategoryStats> userCategoryStats, float monthlyGoal) {
+    private void plotUserStats(List<UserCategoryStats> userCategoryStatsForCurrentMonth, float monthlyGoal) {
         TextView monthStats = (TextView) findViewById(R.id.main_month_points);
         double achievedHours = 0;
         Map<String, Double> userCategoryHours = Maps.newHashMap();
-        for (UserCategoryStats item : userCategoryStats) {
+        for (UserCategoryStats item : userCategoryStatsForCurrentMonth) {
             achievedHours += item.getHours();
             userCategoryHours.put(item.getCategory() + "|" + item.getCategoryColor(), item.getHours());
         }
@@ -497,6 +498,9 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     }
     //endregion
 
+    private void refreshStatsData(){
+        //TODO: Reload preferences file
+    }
 
     @Override
     public void onBackPressed() {
@@ -523,7 +527,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         switch (id) {
             case R.id.nav_view_volunteer:
-                startActivity(OpportunityListActivity.class);
+                startManageOpportunityActivity("", Constants.READ_MODE);
                 break;
 
             case R.id.nav_view_ranking:
@@ -571,25 +575,26 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
                 startManageResourceActivity(Constants.GROUP_RESOURCE, mUserOrganization);
                 break;
 
+            case R.id.nav_manage_action:
+                startManageResourceActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
+                break;
+
             case R.id.nav_manage_organization:
                 startManageResourceActivity(Constants.ORGANIZATION_RESOURCE, mUserOrganization);
                 break;
 
             case R.id.nav_manage_opportunity:
-                startManageResourceActivity(Constants.OPPORTUNITY_RESOURCE, mUserOrganization);
+                startManageOpportunityActivity("", Constants.WRITE_MODE);
                 break;
 
             //Organizer
             case R.id.nav_manage_organizer_opportunity:
-                startManageResourceActivity(Constants.OPPORTUNITY_RESOURCE, mUserOrganization);
+
+                startManageOpportunityActivity(mUserOrganization, Constants.WRITE_MODE);
                 break;
 
             case R.id.nav_manage_recognition:
                 startManageResourceActivity(Constants.RECOGNITION_RESOURCE, mUserOrganization);
-                break;
-
-            case R.id.nav_manage_action:
-                startManageOpportunityActivity(Constants.USER_ACTION_RESOURCE, mUserOrganization);
                 break;
 
             case R.id.nav_manage_organizer_action:

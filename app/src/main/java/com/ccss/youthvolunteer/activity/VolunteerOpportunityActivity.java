@@ -58,8 +58,7 @@ public class VolunteerOpportunityActivity extends BaseActivity {
         mCategoryList.setAdapter(dataAdapter);
 
         mCategoryList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //TODO: Select category
                 //mSelectedCategory = categories.get(arg2);
                 mCategoryActions = VolunteerOpportunity.getOpportunityForCategory(mSelectedCategory, true);

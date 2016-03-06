@@ -261,7 +261,7 @@ public class LogHoursActivity extends BaseActivity implements View.OnClickListen
                     "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
                     Toast.LENGTH_SHORT).show();
 
-            //volunteerOpportunity =
+            //volunteerOpportunity = VolunteerOpportunity.getOpportunityDetails()
         }
 
         @Override

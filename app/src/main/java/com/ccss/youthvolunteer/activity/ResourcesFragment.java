@@ -515,8 +515,9 @@ public class ResourcesFragment extends Fragment
                             SimpleDateFormat dateFormatter = new SimpleDateFormat(Constants.DATE_FORMAT);
 
                             mResources.add(new ResourceModel(Constants.USER_ACTION_RESOURCE, actionPerformer.getFullName(),
-                                    userAction.getAction().getTitle(), dateFormatter.format(userAction.getActionDate()), userAction.getObjectId(),
-                                    actionPerformer.getProfileImageUri(), true));
+                                    userAction.getAction().getTitle(), dateFormatter.format(userAction.getActionDate()), "",
+                                    userAction.getAction().getOrganizationName(), "", userAction.getObjectId(),
+                                    actionPerformer.getProfileImageUri(), true, false));
                         }
                     }
                 }
@@ -600,7 +601,6 @@ public class ResourcesFragment extends Fragment
 //                    }
 //                })
 //        );
-        setHasOptionsMenu(true);
         return layout;
     }
 
@@ -635,6 +635,12 @@ public class ResourcesFragment extends Fragment
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(scrollPosition);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

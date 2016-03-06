@@ -57,6 +57,12 @@ public class OpportunityDetailActivity extends BaseActivity {
     private boolean mReadonly;
     private boolean mIsCloneable;
 
+    /*
+    Intent should have
+      OBJECT_ID_KEY  (for determining add/edit)
+      USER_ORGANIZATION_KEY (blank for Admin)
+      ACCESS_MODE_KEY (read / write)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -278,13 +284,13 @@ public class OpportunityDetailActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.clone_opportunity) {
-            finish();
             String cloneObjectId = VolunteerOpportunity.cloneOpportunity(mOpportunity);
             Intent intent = new Intent(this, OpportunityDetailActivity.class);
             intent.putExtra(Constants.OBJECT_ID_KEY, cloneObjectId);
             intent.putExtra(Constants.USER_ORGANIZATION_KEY, mUserOrganization);
             intent.putExtra(Constants.ACCESS_MODE_KEY, Constants.WRITE_MODE);
-            startActivityForResult(intent, Constants.ADD_RESOURCE_REQUEST_CODE);
+            startActivity(intent);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -5,23 +5,91 @@
     android:layout_height="match_parent"
     android:id="@+id/opportunities_container">
 
-    <TextView
-        android:id="@+id/empty_opportunity_list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="16sp"
-        android:paddingTop="@dimen/image_size_small"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/opportunity_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/opportunities_org"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/com_parse_ui_schoolname_input_hint"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:visibility="gone" />
 
-    <ProgressBar
-        android:id="@+id/opportunity_list_progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/opportunities_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:prompt="@string/com_parse_ui_schoolname_input_hint"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/opportunities_type_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/physical_indicator"
+                android:id="@+id/physical_indicator"
+                android:paddingRight="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingEnd="@dimen/com_parse_ui_small_vertical_spacing" />
+
+            <Switch
+                android:id="@+id/typeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/com_parse_ui_small_horizontal_spacing"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/physical_indicator"
+                android:layout_toEndOf="@id/physical_indicator"
+                android:textOff=" "
+                android:textOn=" " />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+                android:paddingStart="@dimen/com_parse_ui_small_vertical_spacing"
+                android:text="@string/virtual_indicator"
+                android:id="@+id/virtual_indicator"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@id/typeSwitch"
+                android:layout_toEndOf="@id/typeSwitch" />
+        </RelativeLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/opportunity_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/empty_opportunity_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="16sp"
+            android:paddingTop="@dimen/image_size_small"
+            android:text="@string/no_opportunities_available"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/opportunity_list_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.design.widget.FloatingActionButton android:id="@+id/opportunity_add_fab"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_add_white" />
+
+    </LinearLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

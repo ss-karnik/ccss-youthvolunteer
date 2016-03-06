@@ -19,7 +19,7 @@
             android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
             android:layout_marginStart="@dimen/nav_header_vertical_spacing"
             android:src="@drawable/nav_prev"
-            android:contentDescription="@string/interests_navigation"
+            android:contentDescription="@string/skills_navigation_prev"
             android:background="@color/com_facebook_button_background_color"/>
 
         <TextView

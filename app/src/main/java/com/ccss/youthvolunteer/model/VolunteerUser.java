@@ -251,13 +251,14 @@ public class VolunteerUser extends ParseUser implements Serializable {
 
     public ResourceModel convertToResourceModel(){
         return new ResourceModel(Constants.VOLUNTEER_USER_RESOURCE, this.getFullName(), this.getEmail(),
-                "", this.getObjectId(), this.getProfileImageUri(), this.isActive());
+                "", "", this.getSchoolName(), "User points: " + this.getPointsAccrued(), this.getObjectId(), this.getProfileImageUri(), this.isActive(), false);
     }
 
     public static ResourceModel convertToResourceModel(ParseUser user){
         VolunteerUser volunteerUser = getVolunteerUser(user);
-        return new ResourceModel(Constants.VOLUNTEER_USER_RESOURCE, volunteerUser.getFullName(), volunteerUser.getEmail(),
-                "", volunteerUser.getObjectId(), volunteerUser.getProfileImageUri(), volunteerUser.isActive());
+        return new ResourceModel(Constants.VOLUNTEER_USER_RESOURCE, volunteerUser.getFullName(),
+                volunteerUser.getEmail(), "", "", volunteerUser.getSchoolName(), "", volunteerUser.getObjectId(),
+                volunteerUser.getProfileImageUri(), volunteerUser.isActive(), false);
     }
 
     public static int getTotalUserCount(){

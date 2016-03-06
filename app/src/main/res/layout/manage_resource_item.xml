@@ -11,17 +11,27 @@
     android:focusable="true" android:clickable="true">
 
     <RelativeLayout
+        android:id="@+id/resource_item_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:layout_height="120dp"
+        android:padding="@dimen/com_parse_ui_small_vertical_spacing">
+
+        <TextView
+            android:id="@+id/category_indicator"
+            android:layout_width="@dimen/com_parse_ui_small_vertical_spacing"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/white"/>
 
         <FrameLayout
             android:id="@+id/resource_item_image"
             android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"
             android:layout_width="@dimen/image_size_large"
             android:layout_height="@dimen/image_size_large"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_toRightOf="@id/category_indicator"
+            android:layout_toEndOf="@id/category_indicator"
+            android:layout_centerVertical="true" >
 
             <ImageView
                 android:layout_width="@dimen/image_size_large"
@@ -47,20 +57,9 @@
             android:id="@+id/resource_info_extra"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:text="Resource Info Extra"
             android:layout_alignParentTop="true"
             android:textSize="@dimen/list_row_content"/>
-
-        <!--<ImageButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/btn_edit_resource"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_below="@id/resource_info_extra"-->
-            <!--android:background="@drawable/messenger_button_white_bg_selector"-->
-            <!--android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"-->
-            <!--android:src="@android:drawable/ic_menu_edit"-->
-            <!--android:contentDescription="@string/view_edit_item" />-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,6 +70,8 @@
             android:layout_toLeftOf="@id/resource_info_extra"
             android:layout_toStartOf="@id/resource_info_extra"
             android:layout_alignParentTop="true"
+            android:paddingBottom="@dimen/appbar_padding_top"
+            android:text="Resource Title"
             android:textStyle="bold"
             android:textSize="@dimen/list_row_title"/>
 
@@ -81,9 +82,44 @@
             android:layout_toRightOf="@id/resource_item_image"
             android:layout_toEndOf="@id/resource_item_image"
             android:layout_below="@id/resource_title"
+            android:text="Resource Description long description "
+            android:paddingBottom="@dimen/appbar_padding_top"
             android:ellipsize="end"
             android:maxLines="3"
             android:textSize="@dimen/list_row_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resource_below_desc"
+            android:layout_toRightOf="@id/resource_item_image"
+            android:layout_toEndOf="@id/resource_item_image"
+            android:layout_below="@id/resource_description"
+            android:text="Resource below desc"
+            android:textSize="@dimen/list_row_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resource_bottom"
+            android:layout_toRightOf="@id/resource_item_image"
+            android:layout_toEndOf="@id/resource_item_image"
+            android:layout_below="@id/resource_below_desc"
+            android:layout_alignParentBottom="true"
+            android:text="Resource way below desc"
+            android:textSize="@dimen/list_row_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resc_starred"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+            android:src="@android:drawable/btn_star_big_off"
+            android:contentDescription="@string/express_interest" />
 
         <TextView
             android:id="@+id/resource_object_id"

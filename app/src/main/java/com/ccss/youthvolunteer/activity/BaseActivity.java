@@ -60,12 +60,12 @@ public class BaseActivity extends AppCompatActivity {
         startActivityForResult(intent, Constants.ADD_RESOURCE_REQUEST_CODE);
     }
 
-    protected void startVolunteerActivity(String mode, String organizationName) {
-        Intent intent = new Intent(this, VolunteerOpportunityActivity.class);
-        intent.putExtra(Constants.MANAGE_ITEM_KEY, mode);
-        intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
-        startActivityForResult(intent, Constants.VOLUNTEER_ACTIVITY_REQUEST_CODE);
-    }
+//    protected void startVolunteerActivity(String mode, String organizationName) {
+//        Intent intent = new Intent(this, VolunteerOpportunityActivity.class);
+//        intent.putExtra(Constants.MANAGE_ITEM_KEY, mode);
+//        intent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
+//        startActivityForResult(intent, Constants.VOLUNTEER_ACTIVITY_REQUEST_CODE);
+//    }
 
     protected void startManageResourceActivity(String resourceName, String organizationName){
         Intent manageIntent = new Intent(this, ManageResourceActivity.class);
@@ -74,10 +74,10 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(manageIntent);
     }
 
-    protected void startManageOpportunityActivity(String resourceName, String organizationName){
+    protected void startManageOpportunityActivity(String organizationName, String accessMode){
         Intent manageIntent = new Intent(this, OpportunityListActivity.class);
-        manageIntent.putExtra(Constants.MANAGE_ITEM_KEY, resourceName);
         manageIntent.putExtra(Constants.USER_ORGANIZATION_KEY, organizationName);
+        manageIntent.putExtra(Constants.ACCESS_MODE_KEY, accessMode);
         startActivity(manageIntent);
     }
 
@@ -289,18 +289,13 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             }
 
-            case R.id.nav_main_refresh:
-                finish();
-                startActivity(IntroActivity.class);
-                break;
-
             case R.id.nav_main_wall:
                 startActivity(WallActivity.class);
                 break;
 
             case R.id.nav_view_volunteer: {
                 if (!(this instanceof VolunteerOpportunityActivity)) {
-                    startVolunteerActivity(Constants.READ_MODE, "");
+                    startManageOpportunityActivity("", Constants.READ_MODE);
                 }
                 break;
             }

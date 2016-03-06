@@ -70,8 +70,8 @@ public class Organization extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(Constants.ORGANIZATION_RESOURCE, this.getOrganizationName(), "", "", this.getObjectId(),
-                this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive());
+        return new ResourceModel(Constants.ORGANIZATION_RESOURCE, this.getOrganizationName(), "", "", "", "", "",
+                this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive(), false);
     }
 
     /**

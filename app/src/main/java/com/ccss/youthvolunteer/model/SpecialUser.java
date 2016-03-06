@@ -160,8 +160,8 @@ public class SpecialUser extends ParseObject {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(Constants.USER_RESOURCE, this.getEmailId(), this.getOrganizationName(), this.getRole(),
-                this.getObjectId(), "", this.isActive());
+        return new ResourceModel(Constants.USER_RESOURCE, this.getEmailId(), this.getOrganizationName(),
+                "", this.getRole(), "", "", this.getObjectId(), "", this.isActive(), false);
     }
 
     public static void saveSpecialUser(SpecialUser userData, final SaveCallback onSave){

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -58,7 +59,7 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
      * @param newResourceData The item to add to the data set.
      * @param position The index of the item to add.
      */
-    public void addData(ResourceModel newResourceData, int position) {
+    public void addDataItem(ResourceModel newResourceData, int position) {
         mResources.add(position, newResourceData);
         notifyItemInserted(position);
     }
@@ -69,9 +70,15 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
      *
      * @param position The index of the item to remove.
      */
-    public void removeData(int position) {
+    public void removeDataItem(int position) {
         mResources.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final ResourceModel model = mResources.remove(fromPosition);
+        mResources.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     public void toggleSelection(int pos) {
@@ -81,6 +88,40 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
             selectedItems.put(pos, true);
         }
         notifyItemChanged(pos);
+    }
+
+    public void animateTo(List<ResourceModel> models) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+    }
+
+    private void applyAndAnimateRemovals(List<ResourceModel> newModels) {
+        for (int i = mResources.size() - 1; i >= 0; i--) {
+            final ResourceModel model = mResources.get(i);
+            if (!newModels.contains(model)) {
+                removeDataItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<ResourceModel> newModels) {
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final ResourceModel model = newModels.get(i);
+            if (!mResources.contains(model)) {
+                addDataItem(model, i);
+            }
+        }
+    }
+
+    private void applyAndAnimateMovedItems(List<ResourceModel> newModels) {
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final ResourceModel model = newModels.get(toPosition);
+            final int fromPosition = mResources.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
     }
 
     @Override
@@ -136,12 +177,20 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
 
         viewHolder.getTitleTextView().setText(currentResource.getTitle());
         viewHolder.getDescriptionTextView().setText(currentResource.getDescription());
-        if(Constants.CATEGORY_RESOURCE.equalsIgnoreCase(currentResource.getResourceType())){
-            viewHolder.getExtraInfoTextView().setBackgroundColor(Color.parseColor(currentResource.getExtraInformation()));
-            viewHolder.getExtraInfoTextView().setText(currentResource.getExtraInformation());
-        } else {
-            viewHolder.getExtraInfoTextView().setText(currentResource.getExtraInformation());
+        if(!currentResource.getBorderColor().isEmpty()){
+            viewHolder.getBorderColorTextView().setBackgroundColor(Color.parseColor(currentResource.getBorderColor()));
         }
+        viewHolder.getExtraInfoBottomTextView().setText(currentResource.getExtraInformationBottom());
+        viewHolder.getExtraInfoTopRightTextView().setText(currentResource.getExtraInformationTopRight());
+
+        if(Constants.OPPORTUNITY_RESOURCE.startsWith(currentResource.getResourceType())){
+            if( currentResource.isStarred()){
+                viewHolder.getStarredImageView().setImageResource(android.R.drawable.btn_star_big_on);
+            }
+        } else {
+            viewHolder.getStarredImageView().setVisibility(View.GONE);
+        }
+
         viewHolder.getObjectIdTextView().setText(currentResource.getObjectId());
         // provide support for selected state
         updateCheckedState(viewHolder, currentResource);
@@ -155,6 +204,14 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
                 }
             });
         }
+
+        viewHolder.getStarredImageView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentResource.setStarred(!currentResource.isStarred());
+                updateStarredState(viewHolder, currentResource);
+            }
+        });
 
         viewHolder.itemView.setActivated(selectedItems.get(position, false));
         if(!currentResource.isActive()){
@@ -183,8 +240,8 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
         }
         String firstChar = item.getTitle().substring(0, 1).toUpperCase();
         ColorGenerator generator = ColorGenerator.MATERIAL;
-        int alphabetColor = Constants.CATEGORY_RESOURCE.equalsIgnoreCase(item.getResourceType())
-                                    ? Color.parseColor(item.getExtraInformation())
+        int alphabetColor = !item.getBorderColor().isEmpty()
+                                    ? Color.parseColor(item.getBorderColor())
                                     : generator.getColor(firstChar);
         final TextDrawable drawable = TextDrawable.builder().buildRound(firstChar, alphabetColor);
 
@@ -205,6 +262,15 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
         }
     }
 
+    private void updateStarredState(ResourceViewHolder holder, ResourceModel item) {
+
+        if(item.isStarred()) {
+            holder.getStarredImageView().setImageResource(android.R.drawable.btn_star_big_on);
+        } else {
+            holder.getResourceImageView().setImageResource(android.R.drawable.btn_star_big_off);
+        }
+    }
+
     // Return the size of your list (invoked by the layout manager)
     @Override
     public int getItemCount() {
@@ -219,14 +285,18 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
      * Provide a reference to the type of views that are being used per row
      */
     public static class ResourceViewHolder extends RecyclerView.ViewHolder {
+        private final RelativeLayout mResourceItemContainer;
         private final FrameLayout mResourceImageItem;
         private final ImageView mResourceImage;
         private final ImageView mSelectedImage;
         private final TextView mResourceTitle;
         private final TextView mDescription;
-        private final TextView mExtraInfo;
+        private final TextView mExtraInfoTopRight;
+        private final TextView mExtraInfoBelowDesc;
+        private final TextView mExtraInfoBottom;
+        private final TextView mColorBorder;
         private final TextView mObjectId;
-        //private final ImageView mEditResource;
+        private final ImageView mStarred;
         private final TextView mResourceType;
         private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
 
@@ -241,16 +311,20 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
 //            });
 
             //v.setOnClickListener(this);
-
+            mResourceItemContainer = (RelativeLayout) v.findViewById(R.id.resource_item_container);
             mResourceImage = (ImageView) v.findViewById(R.id.row_item_image);
             mSelectedImage = (ImageView) v.findViewById(R.id.resource_selected_icon);
             mResourceImageItem = (FrameLayout) v.findViewById(R.id.resource_item_image);
             mResourceTitle = (TextView) v.findViewById(R.id.resource_title);
             mDescription = (TextView) v.findViewById(R.id.resource_description);
-            mExtraInfo = (TextView) v.findViewById(R.id.resource_info_extra);
+            mExtraInfoTopRight = (TextView) v.findViewById(R.id.resource_info_extra);
+            mExtraInfoBelowDesc = (TextView) v.findViewById(R.id.resource_below_desc);
+            mExtraInfoBottom = (TextView) v.findViewById(R.id.resource_bottom);
+            mColorBorder = (TextView) v.findViewById(R.id.category_indicator);
             mObjectId = (TextView) v.findViewById(R.id.resource_object_id);
-            //mEditResource = (ImageView) v.findViewById(R.id.btn_edit_resource);
+            mStarred = (ImageView) v.findViewById(R.id.resc_starred);
             mResourceType = (TextView) v.findViewById(R.id.resource_object_type);
+
             final String[] resourceType = {""};
 
 //            mEditResource.setOnClickListener(new View.OnClickListener() {
@@ -285,6 +359,10 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
             void resourceItemOnClick(String resourceId);
         }
 
+        public RelativeLayout getResourceItemContainer() {
+            return mResourceItemContainer;
+        }
+
         public FrameLayout getResourceImageLayoutView() {
             return mResourceImageItem;
         }
@@ -305,17 +383,29 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
             return mDescription;
         }
 
-        public TextView getExtraInfoTextView() {
-            return mExtraInfo;
+        public TextView getExtraInfoTopRightTextView() {
+            return mExtraInfoTopRight;
+        }
+
+        public TextView getExtraInfoBelowDescTextView() {
+            return mExtraInfoBelowDesc;
+        }
+
+        public TextView getExtraInfoBottomTextView() {
+            return mExtraInfoBottom;
+        }
+
+        public TextView getBorderColorTextView() {
+            return mColorBorder;
         }
 
         public TextView getObjectIdTextView() {
             return mObjectId;
         }
 
-//        public ImageView getEditImageView() {
-//            return mEditResource;
-//        }
+        public ImageView getStarredImageView() {
+            return mStarred;
+        }
 
         public TextView getResourceType() {
             return mResourceType;

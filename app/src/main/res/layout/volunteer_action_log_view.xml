@@ -36,12 +36,12 @@
         android:id="@+id/chart_indicator"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/viewSwitch"
-        android:layout_toEndOf="@+id/viewSwitch" />
+        android:layout_toRightOf="@id/viewSwitch"
+        android:layout_toEndOf="@id/viewSwitch" />
 
     <FrameLayout
         android:id="@+id/log_fragment_container"
-        android:layout_below="@+id/viewSwitch"
+        android:layout_below="@id/viewSwitch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"  />
 

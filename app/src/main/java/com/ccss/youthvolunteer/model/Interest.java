@@ -89,8 +89,8 @@ public class Interest extends ParseObject implements Serializable {
     }
 
     public ResourceModel convertToResourceModel() {
-        return new ResourceModel(Constants.INTEREST_RESOURCE, this.getInterestTitle(), this.getDescription(),
-                "", this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), true);
+        return new ResourceModel(Constants.INTEREST_RESOURCE, this.getInterestTitle(), this.getDescription(), "", "", "", "",
+                this.getObjectId(), this.getLogo() == null ? "" : this.getLogo().getUrl(), this.isActive(), false);
     }
 
 

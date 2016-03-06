@@ -107,6 +107,6 @@ public class Announcement extends ParseObject {
 
     public ResourceModel convertToResourceModel(){
         return new ResourceModel(Constants.ANNOUNCEMENT_RESOURCE, "", this.getAnnouncementText(),
-                "", this.getObjectId(), "", this.isActive());
+                "", "", "", "", this.getObjectId(), "", this.isActive(), false);
     }
 }
