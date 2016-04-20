@@ -388,7 +388,17 @@ public class VolunteerUser extends ParseUser implements Serializable {
         });
     }
 
-    public static void findUsersRanked(final FindCallback<VolunteerUser> callback){
+    public static List<VolunteerUser> findUsersRanked() throws ParseException {
+        ParseQuery<VolunteerUser> userQuery = createQuery();
+        userQuery.include("email");
+        userQuery.include("pointsAccrued");
+        //TODO: Exclude special users from ranking?
+        //userQuery.whereEqualTo("specialRole", null);
+
+        return userQuery.find();
+    }
+
+    public static void findInBackgroundUsersRanked(final FindCallback<VolunteerUser> callback) {
         ParseQuery<VolunteerUser> userQuery = createQuery();
         userQuery.include("lastName");
         userQuery.include("firstName");
@@ -396,7 +406,8 @@ public class VolunteerUser extends ParseUser implements Serializable {
         userQuery.include("profileImage");
         userQuery.include("schoolName");
         userQuery.include("userLevel");
-        userQuery.whereEqualTo("specialRole", null);
+        //TODO: Exclude special users from ranking?
+        //userQuery.whereEqualTo("specialRole", null);
 
         userQuery.findInBackground(new VolunteerUser.UsersFindCallback() {
             @Override

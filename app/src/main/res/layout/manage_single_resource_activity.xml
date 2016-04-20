@@ -17,8 +17,9 @@
         tools:context="com.ccss.youthvolunteer.activity.ManageSingleResourceActivity">
 
         <ProgressBar
-            android:id="@+id/manage_res_progress" style="?android:attr/progressBarStyleLarge"
+            android:id="@+id/manage_res_progress" style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:gravity = "center_vertical|center_horizontal"
             android:layout_marginBottom="8dp" android:visibility="gone" />
 
         <com.parse.ParseImageView

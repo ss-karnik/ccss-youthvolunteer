@@ -61,7 +61,7 @@ public class VolunteerOpportunityActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 //TODO: Select category
                 //mSelectedCategory = categories.get(arg2);
-                mCategoryActions = VolunteerOpportunity.getOpportunityForCategory(mSelectedCategory, true);
+                mCategoryActions = VolunteerOpportunity.getOpportunitiesForCategory(mSelectedCategory, true);
                 populateCategoryActions();
             }
 
@@ -79,9 +79,13 @@ public class VolunteerOpportunityActivity extends BaseActivity {
         mCategoryActionList.setAdapter(dataAdapter);
 
         mCategoryActionList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                mSelectedVolunteerOpportunity = VolunteerOpportunity.getOpportunityByNameAndCategory(mCategoryActions.get(arg2), mSelectedCategory);
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+                try {
+                    mSelectedVolunteerOpportunity = VolunteerOpportunity.getOpportunityByNameAndCategory(mCategoryActions.get(arg2), mSelectedCategory);
+                } catch (ParseException e) {
+                    mSelectedVolunteerOpportunity = new VolunteerOpportunity();
+                }
                 populateActionDetails();
             }
 

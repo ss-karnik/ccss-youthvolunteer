@@ -315,7 +315,7 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         return query;
     }
     
-    public static List<String> getOpportunityForCategory(Category category, boolean getAll) {
+    public static List<String> getOpportunitiesForCategory(Category category, boolean getAll) {
         ParseQuery<VolunteerOpportunity> actionQuery = ParseQuery.getQuery(VolunteerOpportunity.class);
         actionQuery.include("actionCategory");
         if(!getAll) {
@@ -334,23 +334,11 @@ public class VolunteerOpportunity extends ParseObject implements Comparable<Volu
         }
     }
 
-    public static VolunteerOpportunity getOpportunityByNameAndCategory(String actionName, Category category) {
-        final VolunteerOpportunity[] singleVolunteerOpportunity = new VolunteerOpportunity[1];
+    public static VolunteerOpportunity getOpportunityByNameAndCategory(String actionName, Category category) throws ParseException {
         ParseQuery<VolunteerOpportunity> actionQuery = createQuery(false);
         actionQuery.include("actionCategory");
         actionQuery.whereEqualTo("title", actionName).whereEqualTo("actionCategory", category);
-        actionQuery.getFirstInBackground(new GetCallback<VolunteerOpportunity>() {
-            @Override
-            public void done(VolunteerOpportunity volunteerOpportunity, ParseException e) {
-                if (e == null) {
-                    singleVolunteerOpportunity[0] = volunteerOpportunity;
-                } else {
-                    singleVolunteerOpportunity[0] = new VolunteerOpportunity();
-                }
-            }
-        });
-
-        return singleVolunteerOpportunity[0];
+        return actionQuery.getFirst();
     }
 
     public static void getOpportunitiesForOrganization(String organizationName,

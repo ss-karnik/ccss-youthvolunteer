@@ -1,7 +1,11 @@
 package com.ccss.youthvolunteer.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +23,7 @@ import com.ccss.youthvolunteer.model.Post;
 import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.util.Constants;
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.parse.ParseException;
@@ -56,6 +61,8 @@ public class OpportunityDetailActivity extends BaseActivity {
     private boolean mSaveToHistory;
     private boolean mReadonly;
     private boolean mIsCloneable;
+
+    private OpportunityDetailsFragment mDetailFragment;
 
     /*
     Intent should have
@@ -184,6 +191,7 @@ public class OpportunityDetailActivity extends BaseActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     showProgress(false, mOpportunityDetailsForm, mProgressBar);
+                    mDetailFragment.enableSubmitButton();
                     saveCompleteSuccess();
                 } else {
                     showToast(com.parse.ui.R.string.com_parse_ui_signup_failed_unknown_toast);
@@ -227,15 +235,16 @@ public class OpportunityDetailActivity extends BaseActivity {
           We use a {@link FragmentPagerAdapter} derivative, which will keep every loaded fragment in memory.
           If this becomes too memory intensive, switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
         */
-        ProfileSectionsPagerAdapter mSectionsPagerAdapter = new ProfileSectionsPagerAdapter(getSupportFragmentManager(), this);
-        mSectionsPagerAdapter.addFragment(OpportunityInterestsFragment.newInstance(0, mOpportunity.getRequiredInterests(), mReadonly), getString(R.string.interests_title));
-        mSectionsPagerAdapter.addFragment(OpportunitySkillsFragment.newInstance(1, mOpportunity.getRequiredSkills(), mReadonly), getString(R.string.skills_title));
-        mSectionsPagerAdapter.addFragment(OpportunityDetailsFragment.newInstance(2, mOpportunity, mReadonly, mUserOrganization, isNew), getString(R.string.personal_details_title));
+        ProfileSectionsPagerAdapter pagerAdapter = new ProfileSectionsPagerAdapter(getSupportFragmentManager(), this);
+        pagerAdapter.addFragment(OpportunityInterestsFragment.newInstance(0, mOpportunity.getRequiredInterests(), mReadonly), getString(R.string.interests_title));
+        pagerAdapter.addFragment(OpportunitySkillsFragment.newInstance(1, mOpportunity.getRequiredSkills(), mReadonly), getString(R.string.skills_title));
+        mDetailFragment = OpportunityDetailsFragment.newInstance(2, mOpportunity, mReadonly, mUserOrganization, isNew);
+        pagerAdapter.addFragment(mDetailFragment, getString(R.string.personal_details_title));
         if(!isNew) {
-            mSectionsPagerAdapter.addFragment(OpportunityInterestedUsersFragment.newInstance(3, mOpportunity.getInterestedUsers(), mReadonly), getString(R.string.personal_details_title));
-            mSectionsPagerAdapter.addFragment(OpportunityVolunteeredUsersFragment.newInstance(4, mOpportunity.getObjectId()), getString(R.string.personal_details_title));
+            pagerAdapter.addFragment(OpportunityInterestedUsersFragment.newInstance(3, mOpportunity.getInterestedUsers(), mReadonly), getString(R.string.personal_details_title));
+            pagerAdapter.addFragment(OpportunityVolunteeredUsersFragment.newInstance(4, mOpportunity.getObjectId()), getString(R.string.personal_details_title));
         }
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(0);
     }
 
@@ -294,5 +303,34 @@ public class OpportunityDetailActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void copySelectedEmailIds(List<String> emailIds) {
+        if(emailIds == null || emailIds.isEmpty()){
+            showError(R.string.no_email_selected);
+            return;
+        }
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Email Ids", Joiner.on(";").join(emailIds));
+        clipboard.setPrimaryClip(clip);
+        showToast(String.format(getString(R.string.emailIds_copied_message), emailIds.size()));
+    }
+
+    public void createEmailIntent(final List<String> addresses)
+    {
+        if(addresses == null || addresses.isEmpty()){
+            showError(getString(R.string.no_email_selected));
+            return;
+        }
+
+        Intent sendTo = new Intent(Intent.ACTION_SENDTO);
+        sendTo.setData(Uri.parse("mailto:")); // only email apps should handle this
+        sendTo.putExtra(Intent.EXTRA_EMAIL, addresses.toArray(new String[0]));
+        sendTo.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.volunteer_interest_subject));
+        sendTo.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.volunteer_interest_message), mOpportunity.getTitle()));
+
+        if (sendTo.resolveActivity(getPackageManager()) != null) {
+            startActivity(sendTo);
+        }
     }
 }

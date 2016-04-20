@@ -59,7 +59,7 @@ public class YouthVolunteerApplication extends Application {
         //VolunteerUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
         // Optionally enable public read access.
-        // defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
         ParseInstallation.getCurrentInstallation().saveInBackground();
         ParsePush.subscribeInBackground(Constants.OPPORTUNITY_BROADCAST_CHANNEL);

@@ -86,7 +86,7 @@ public class OpportunityInterestsFragment extends Fragment implements RecyclerVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean mReadOnly = getArguments().getBoolean(READ_ONLY_TAG);
-        mInterestsAdapter = new SelectableResourceListAdapter(mInterests, !mReadOnly);
+        mInterestsAdapter = new SelectableResourceListAdapter(mInterests, !mReadOnly, Constants.OPPORTUNITY_ITEM);
         List<Interest> oppInterests = (List<Interest>) getArguments().getSerializable(INTERESTS_TAG);
         if(oppInterests != null && !oppInterests.isEmpty()){
             for(Interest interest : oppInterests){

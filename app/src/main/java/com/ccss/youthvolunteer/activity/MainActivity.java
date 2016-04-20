@@ -1,6 +1,7 @@
 package com.ccss.youthvolunteer.activity;
 
 import android.animation.PropertyValuesHolder;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -27,6 +28,7 @@ import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.CheckNetworkConnection;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DateUtils;
+import com.ccss.youthvolunteer.util.CommonUtils;
 import com.ccss.youthvolunteer.util.TaskScheduler;
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;
@@ -37,8 +39,6 @@ import com.db.chart.view.HorizontalBarChartView;
 import com.db.chart.view.Tooltip;
 import com.db.chart.view.XController;
 import com.db.chart.view.animation.Animation;
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -52,11 +52,16 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity  implements NavigationView.OnNavigationItemSelectedListener {
+
+    private VolunteerUser mCurrentUser;
 
     private DecoView mDecoViewChart;
     private float mSeriesMax = 20f; //Maximum value for each data series. This can be different for each data series
@@ -86,7 +91,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final VolunteerUser currentUser = VolunteerUser.getCurrentUserInformationFromLocalStore();
+        mCurrentUser = VolunteerUser.getCurrentUserInformationFromLocalStore();
 
         //Profile is complete.. set up the Main screen
         setContentView(R.layout.activity_main);
@@ -98,32 +103,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.containsKey(Constants.INTENT_SENDER) && "intro".equals(bundle.getString(Constants.INTENT_SENDER))) {
-            showToastLong(getResources().getText(R.string.msg_welcome) + " " + currentUser.getFullName());
+            showToastLong(getResources().getText(R.string.msg_welcome) + " " + mCurrentUser.getFullName());
         }
 
-        SharedPreferences prefs = this.getSharedPreferences(Constants.PREF_FILE_NAME, MODE_PRIVATE);
-        String announcements = prefs.getString(Constants.ANNOUNCEMENTS_KEY, null);
-        if (announcements != null) {
-            Collections.addAll(mRotatingTextItems, announcements.split("\\|"));
-            mRotatingTextItems.add(prefs.getString(Constants.SG_STATS_KEY, null));
-            mRotatingTextItems.add(prefs.getString(Constants.POINTS_RANK_KEY, null));
-            mRotatingTextItems.add(prefs.getString(Constants.UPCOMING_KEY, null));
-            mDataAsOfText.setText(String.format(getString(R.string.main_data_as_of),
-                                                prefs.getString(Constants.STATS_LAST_UPDATE_DATE, null)));
-        }
-
-        final TextView rotatingBanner = (TextView) findViewById(R.id.main_rotating);
-        TaskScheduler timer = new TaskScheduler();
-        timer.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                if (!mRotatingTextItems.isEmpty()) {
-                    rotatingBanner.setText(mRotatingTextItems.get(index++));
-                    if (index == mRotatingTextItems.size())
-                        index = 0;
-                }
-            }
-        }, REFRESH_DATA_INTERVAL);
+        loadPrefData();
 
         FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab_main_search);
         FloatingActionButton fabAchievement = (FloatingActionButton) findViewById(R.id.fab_main_achievement);
@@ -131,24 +114,25 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
 
         if(bundle != null && bundle.containsKey(Constants.INTERNET_AVAILABLE) && bundle.getBoolean(Constants.INTERNET_AVAILABLE)
                 || CheckNetworkConnection.isInternetAvailable(this)){
-            initializeNavigationDrawer(currentUser, toolbar);
+            initializeNavigationDrawer(mCurrentUser, toolbar);
         } else {
             fabSearch.setVisibility(View.INVISIBLE);
             fabLogActivity.setVisibility(View.INVISIBLE);
         }
 
 
-        final float monthlyGoal = currentUser.getMonthlyGoal() == 0 ? DEFAULT_MONTHLY_GOAL : currentUser.getMonthlyGoal();
+        final float monthlyGoal = mCurrentUser.getMonthlyGoal() == 0 ? DEFAULT_MONTHLY_GOAL : mCurrentUser.getMonthlyGoal();
         final List<UserCategoryStats> userCategoryStatsForCurrentMonth = Lists.newArrayList();
-        UserCategoryPoints.findCurrentUsersPointsForMonthYearInBackground(currentUser, null, true, new FindCallback<UserCategoryPoints>() {
+        UserCategoryPoints.findCurrentUsersPointsForMonthYearInBackground(mCurrentUser, null, true, new FindCallback<UserCategoryPoints>() {
             @Override
             public void done(List<UserCategoryPoints> list, ParseException e) {
                 if (e == null) {
                     for (UserCategoryPoints categoryItem : list) {
                         userCategoryStatsForCurrentMonth.add(
                                 new UserCategoryStats(categoryItem.getActionCategory().getCategoryName(),
-                                categoryItem.getActionCategory().getCategoryColor(),
-                                DateUtils.minutesAsHours(categoryItem.getCategoryMinutes()), categoryItem.getCategoryPoints()));
+                                        categoryItem.getActionCategory().getCategoryColor(),
+                                        DateTime.now().toString(Constants.MONTH_YEAR_FORMAT),
+                                        DateUtils.minutesAsHours(categoryItem.getCategoryMinutes()), categoryItem.getCategoryPoints()));
                     }
                 }
 
@@ -178,6 +162,32 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             }
         });
 
+    }
+
+    private void loadPrefData() {
+        SharedPreferences prefs = this.getSharedPreferences(Constants.PREF_FILE_NAME, MODE_PRIVATE);
+        String announcements = prefs.getString(Constants.ANNOUNCEMENTS_KEY, null);
+        if (announcements != null) {
+            Collections.addAll(mRotatingTextItems, announcements.split("\\|"));
+            mRotatingTextItems.add(prefs.getString(Constants.SG_STATS_KEY, null));
+            mRotatingTextItems.add(prefs.getString(Constants.POINTS_RANK_KEY, null));
+            mRotatingTextItems.add(prefs.getString(Constants.UPCOMING_KEY, null));
+            mDataAsOfText.setText(String.format(getString(R.string.main_data_as_of),
+                                                prefs.getString(Constants.STATS_LAST_UPDATE_DATE, null)));
+        }
+
+        final TextView rotatingBanner = (TextView) findViewById(R.id.main_rotating);
+        TaskScheduler timer = new TaskScheduler();
+        timer.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                if (!mRotatingTextItems.isEmpty()) {
+                    rotatingBanner.setText(mRotatingTextItems.get(index++));
+                    if (index == mRotatingTextItems.size())
+                        index = 0;
+                }
+            }
+        }, REFRESH_DATA_INTERVAL);
     }
 
     private void plotUserStats(List<UserCategoryStats> userCategoryStatsForCurrentMonth, float monthlyGoal) {
@@ -498,8 +508,49 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     }
     //endregion
 
-    private void refreshStatsData(){
-        //TODO: Reload preferences file
+    private void refreshStatsData() {
+        //Overall with %s points and %s hours you are ranked %s out of %s volunteers!
+        final int[] userPoints = {0};
+        final int[] userHours = {0};
+        int userRank = 0;
+
+        int totalUsers = VolunteerUser.getTotalUserCount();
+        try {
+            UserCategoryPoints.unpinAll(Constants.CURRENT_USER_POINTS);
+
+            List<VolunteerUser> rankedUsers = VolunteerUser.findUsersRanked();
+            userRank = rankedUsers.indexOf(mCurrentUser);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String totalUserHours = DateUtils.minutesToHoursRepresentation(CommonUtils.sum(UserCategoryPoints.findMinutesForAllUsers(), 0));
+        UserCategoryPoints.findCurrentUserPointsInBackground(mCurrentUser, 0, new FindCallback<UserCategoryPoints>() {
+            @Override
+            public void done(List<UserCategoryPoints> list, ParseException e) {
+                if (e == null) {
+                    UserCategoryPoints.pinAllInBackground(Constants.CURRENT_USER_POINTS, list);
+                    for (UserCategoryPoints item : list) {
+                        userPoints[0] += item.getCategoryPoints();
+                        userHours[0] += item.getCategoryMinutes();
+                    }
+                } else {
+                    e.getMessage();
+                }
+            }
+        });
+
+        SharedPreferences sharedPref = this.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.POINTS_RANK_KEY, String.format(getString(R.string.main_points_rank),
+                userPoints[0], userHours[0], userRank, totalUsers));
+        //Our %s volunteers have put in %s hours!
+        editor.putString(Constants.SG_STATS_KEY, String.format(getString(R.string.total_sg_users_hours), totalUsers, totalUserHours));
+        editor.putString(Constants.STATS_LAST_UPDATE_DATE, DateUtils.formattedDateString(new LocalDate().toDate()).toString());
+        editor.commit();
+
+        loadPrefData();
     }
 
     @Override
@@ -517,6 +568,18 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_main_refresh) {
+            refreshStatsData();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -610,6 +673,7 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
     public class UserCategoryStats {
         String mCategory;
         String mCategoryColor;
+        String mMonthYear;
         double mHours;
         int mPoints;
 
@@ -621,6 +685,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             return mCategoryColor;
         }
 
+        public String getmMonthYear() {
+            return mMonthYear;
+        }
+
         public double getHours() {
             return mHours;
         }
@@ -629,9 +697,10 @@ public class MainActivity extends BaseActivity  implements NavigationView.OnNavi
             return mPoints;
         }
 
-        public UserCategoryStats(String category, String categoryColor, double hours, int points) {
+        public UserCategoryStats(String category, String categoryColor, String monthYr, double hours, int points) {
             mCategory = category;
             mCategoryColor = categoryColor;
+            mMonthYear = monthYr;
             mHours = hours;
             mPoints = points;
         }

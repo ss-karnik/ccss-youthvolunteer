@@ -125,9 +125,14 @@ public class Category extends ParseObject {
     /**
      * Retrieves the set of all Categories.
      */
-    public static void findInBackground(final FindCallback<Category> callback) {
+    public static void findInBackground(boolean activeOnly, boolean fromLocalStore, final FindCallback<Category> callback) {
         ParseQuery<Category> query = Category.createQuery();
-
+        if(activeOnly){
+            query.whereEqualTo("isActive", true);
+        }
+        if(fromLocalStore){
+            query.fromLocalDatastore();
+        }
         query.findInBackground(new CategoryFindCallback() {
             @Override
             protected void doneOnce(List<Category> objects, ParseException e) {
@@ -159,7 +164,8 @@ public class Category extends ParseObject {
     }
 
 
-    public static void saveCategory(Category categoryData, final SaveCallback onSave){
+    public static void saveCategory(Category categoryData, final SaveCallback onSave) throws ParseException {
+        categoryData.unpin(Constants.CATEGORY_RESOURCE);
         categoryData.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

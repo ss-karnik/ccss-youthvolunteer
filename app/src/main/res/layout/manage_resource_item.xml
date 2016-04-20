@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/resource_item_container"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="90dp"
         android:padding="@dimen/com_parse_ui_small_vertical_spacing">
 
         <TextView
@@ -22,11 +22,11 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:background="@color/white"/>
+            android:background="@color/transparent"/>
 
         <FrameLayout
             android:id="@+id/resource_item_image"
-            android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing"
+            android:layout_margin="@dimen/com_parse_ui_smallest_vertical_spacing"
             android:layout_width="@dimen/image_size_large"
             android:layout_height="@dimen/image_size_large"
             android:layout_toRightOf="@id/category_indicator"
@@ -56,8 +56,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/resource_info_extra"
             android:layout_alignParentRight="true"
+            android:text="Resource info extra"
             android:layout_alignParentEnd="true"
-            android:text="Resource Info Extra"
             android:layout_alignParentTop="true"
             android:textSize="@dimen/list_row_content"/>
 
@@ -65,13 +65,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/resource_title"
+            android:text="Resource info extra"
             android:layout_toRightOf="@id/resource_item_image"
             android:layout_toEndOf="@id/resource_item_image"
             android:layout_toLeftOf="@id/resource_info_extra"
             android:layout_toStartOf="@id/resource_info_extra"
             android:layout_alignParentTop="true"
             android:paddingBottom="@dimen/appbar_padding_top"
-            android:text="Resource Title"
             android:textStyle="bold"
             android:textSize="@dimen/list_row_title"/>
 
@@ -79,13 +79,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/resource_description"
+            android:text="Resource info extra Resource info extra Resource info extra Resource info extra Resource info extra"
             android:layout_toRightOf="@id/resource_item_image"
             android:layout_toEndOf="@id/resource_item_image"
             android:layout_below="@id/resource_title"
-            android:text="Resource Description long description "
             android:paddingBottom="@dimen/appbar_padding_top"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:maxLines="2"
             android:textSize="@dimen/list_row_content"/>
 
         <TextView
@@ -95,7 +95,6 @@
             android:layout_toRightOf="@id/resource_item_image"
             android:layout_toEndOf="@id/resource_item_image"
             android:layout_below="@id/resource_description"
-            android:text="Resource below desc"
             android:textSize="@dimen/list_row_content" />
 
         <TextView
@@ -106,7 +105,6 @@
             android:layout_toEndOf="@id/resource_item_image"
             android:layout_below="@id/resource_below_desc"
             android:layout_alignParentBottom="true"
-            android:text="Resource way below desc"
             android:textSize="@dimen/list_row_content" />
 
         <ImageView
@@ -118,6 +116,7 @@
             android:layout_alignParentBottom="true"
             android:background="@android:color/transparent"
             android:paddingLeft="@dimen/com_parse_ui_small_vertical_spacing"
+            android:visibility="gone"
             android:src="@android:drawable/btn_star_big_off"
             android:contentDescription="@string/express_interest" />
 

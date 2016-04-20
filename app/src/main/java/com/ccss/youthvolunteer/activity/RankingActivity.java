@@ -53,7 +53,7 @@ public class RankingActivity extends BaseActivity {
     }
 
     private void initializeData(){
-        VolunteerUser.findUsersRanked(new FindCallback<VolunteerUser>() {
+        VolunteerUser.findInBackgroundUsersRanked(new FindCallback<VolunteerUser>() {
             @Override
             public void done(List<VolunteerUser> objects, ParseException e) {
                 // for(int rank = 0; rank < objects.size(); rank++){

@@ -1,6 +1,11 @@
 package com.ccss.youthvolunteer.activity;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GestureDetectorCompat;
@@ -8,6 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +28,7 @@ import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.VolunteerUser;
+import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
@@ -27,6 +36,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -72,7 +82,7 @@ public class OpportunityInterestedUsersFragment extends Fragment implements Recy
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean mReadOnly = getArguments().getBoolean(READ_ONLY_TAG);
-        mUsersAdapter = new SelectableResourceListAdapter(mInterestedUsers, !mReadOnly);
+        mUsersAdapter = new SelectableResourceListAdapter(mInterestedUsers, !mReadOnly, Constants.VOLUNTEER_ITEM);
         List<ParseUser> users = (List<ParseUser>) getArguments().getSerializable(INTERESTED_USERS_TAG);
         if(users != null && !users.isEmpty()){
             for(ParseUser user : users){
@@ -114,6 +124,34 @@ public class OpportunityInterestedUsersFragment extends Fragment implements Recy
 
         setHasOptionsMenu(true);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_int_users, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.nav_copy_email:
+                copySelectedEmailId();
+                break;
+            case R.id.nav_send_email:
+                createEmailIntent();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void copySelectedEmailId() {
+        ((OpportunityDetailActivity) getActivity()).copySelectedEmailIds(mUsersAdapter.getSelectedItems());
+    }
+
+    private void createEmailIntent(){
+        ((OpportunityDetailActivity) getActivity()).createEmailIntent(mUsersAdapter.getSelectedItems());
     }
 
     /**

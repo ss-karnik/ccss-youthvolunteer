@@ -51,7 +51,7 @@ import java.util.List;
 /**
  * This lists the Resource for management screen
  */
-public class ResourcesFragment extends Fragment
+public class ManageResourcesFragment extends Fragment
         implements RecyclerView.OnItemTouchListener, View.OnClickListener, ActionMode.Callback{
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
@@ -113,6 +113,7 @@ public class ResourcesFragment extends Fragment
                     //TODO
 //                    removeItemFromList(currItem);
 //                    mAdapter.removeData(currItem);
+                    //saveAllInBackground()
                 }
                 actionMode.finish();
                 return true;
@@ -192,10 +193,10 @@ public class ResourcesFragment extends Fragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment ResourcesFragment.
+     * @return A new instance of fragment ManageResourcesFragment.
      */
-    public static ResourcesFragment newInstance(String resourceType) {
-        ResourcesFragment fragment = new ResourcesFragment();
+    public static ManageResourcesFragment newInstance(String resourceType) {
+        ManageResourcesFragment fragment = new ManageResourcesFragment();
         Bundle args = new Bundle();
         args.putString(Constants.MANAGE_ITEM_KEY, resourceType);
         fragment.setArguments(args);
@@ -203,8 +204,8 @@ public class ResourcesFragment extends Fragment
         return fragment;
     }
 
-    public static ResourcesFragment newInstance(String resourceType, String organizationName) {
-        ResourcesFragment fragment = new ResourcesFragment();
+    public static ManageResourcesFragment newInstance(String resourceType, String organizationName) {
+        ManageResourcesFragment fragment = new ManageResourcesFragment();
         Bundle args = new Bundle();
         args.putString(Constants.MANAGE_ITEM_KEY, resourceType);
         args.putString(Constants.USER_ORGANIZATION_KEY, organizationName);
@@ -213,7 +214,7 @@ public class ResourcesFragment extends Fragment
         return fragment;
     }
 
-    public ResourcesFragment() {
+    public ManageResourcesFragment() {
         // Required empty public constructor
     }
 
@@ -271,14 +272,13 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
 
             case Constants.CATEGORY_RESOURCE:
-                Category.findInBackground(new FindCallback<Category>() {
+                Category.findInBackground(false, false, new FindCallback<Category>() {
                     @Override
                     public void done(List<Category> objects, ParseException e) {
                         if (e == null) {
@@ -294,8 +294,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -317,8 +316,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -340,8 +338,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -362,8 +359,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -384,8 +380,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -406,8 +401,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -428,8 +422,7 @@ public class ResourcesFragment extends Fragment
                                 }
                             }
                         }
-                        mAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
+                        onDataLoadComplete();
                     }
                 });
                 break;
@@ -452,6 +445,9 @@ public class ResourcesFragment extends Fragment
                         }
                         mAdapter.notifyDataSetChanged();
                         mProgressBar.setVisibility(View.INVISIBLE);
+                        if(mSwipeRefreshLayout.isRefreshing()){
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 });
                 break;
@@ -521,10 +517,18 @@ public class ResourcesFragment extends Fragment
                         }
                     }
                 }
-                mAdapter.notifyDataSetChanged();
-                mProgressBar.setVisibility(View.GONE);
+                getActivity().invalidateOptionsMenu();
+                onDataLoadComplete();
             }
         };
+    }
+
+    private void onDataLoadComplete() {
+        mAdapter.notifyDataSetChanged();
+        mProgressBar.setVisibility(View.GONE);
+        if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -534,6 +538,10 @@ public class ResourcesFragment extends Fragment
         layout.setTag(TAG);
         mSwipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.resources_container);
         mSwipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
+//        mSwipeRefreshLayout.setColorSchemeColors(android.R.color.holo_blue_light,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -544,7 +552,10 @@ public class ResourcesFragment extends Fragment
         mRecyclerView = (RecyclerView) layout.findViewById(R.id.resource_list);
         mEmptyListMessage = (TextView) layout.findViewById(R.id.empty_resource_list);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        //TODO: Decide whether this Divider is needed
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
+
 //        HeaderDecoration headerDecoration = new HeaderDecoration(container, true, 10f, 1f, 1);
 //        mRecyclerView.addItemDecoration(headerDecoration);
 
@@ -615,8 +626,8 @@ public class ResourcesFragment extends Fragment
 
     private void refreshDataItems() {
         mResources.clear();
+        mAdapter.notifyDataSetChanged();
         loadDataItems();
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -641,6 +652,42 @@ public class ResourcesFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu){
+        if(Constants.USER_ACTION_RESOURCE.equals(mResourceType)){
+            menu.findItem(R.id.manage_action_approve).setVisible(true).setEnabled(true);
+            menu.findItem(R.id.manage_action_reject).setVisible(true).setEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.manage_action_approve) {
+            actionSelections(true);
+            return true;
+        }
+
+        if (id == R.id.manage_action_reject) {
+            actionSelections(false);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void actionSelections(boolean isApproved) {
+        List<String> selectedItemPositions = mAdapter.getSelectedItems();
+        String currItem;
+        for (int i = selectedItemPositions.size() - 1; i >= 0; i--) {
+            currItem = selectedItemPositions.get(i);
+            //TODO
+//                    removeItemFromList(currItem);
+//                    mAdapter.removeData(currItem);
+        }
     }
 
     @Override
@@ -669,7 +716,7 @@ public class ResourcesFragment extends Fragment
 //                return;
 //            }
             // Start the CAB using the ActionMode.Callback defined above
-            actionMode = getActivity().startActionMode(ResourcesFragment.this);
+            actionMode = getActivity().startActionMode(ManageResourcesFragment.this);
             int idx = mRecyclerView.getChildAdapterPosition(view);
             myToggleSelection(idx);
             super.onLongPress(e);

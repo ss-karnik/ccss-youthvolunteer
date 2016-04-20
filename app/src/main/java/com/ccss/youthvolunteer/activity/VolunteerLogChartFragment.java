@@ -11,14 +11,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ccss.youthvolunteer.R;
-import com.ccss.youthvolunteer.model.Theme;
+import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.UserCategoryPoints;
+import com.ccss.youthvolunteer.util.Constants;
 import com.db.chart.Tools;
 import com.db.chart.listener.OnEntryClickListener;
 import com.db.chart.model.BarSet;
@@ -37,8 +42,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.LocalDateTime;
 
 import java.util.List;
 
@@ -51,13 +55,16 @@ public class VolunteerLogChartFragment extends Fragment {
     public static final String LINECHART_BACK_COLOR = "#eef1f6";
     public static final String LINECHART_LABEL_COLOR = "#FF8E9196";
     public static final int MAX_DATA_LIMIT = 12;
-    private int mMonthlyGoal = 20;
     private static final int STACKED_CHART_INDEX = 1;
     private static final int LINE_CHART_INDEX = 2;
 
     private List<UserCategoryPoints> mUserPointsByCategory;
     private final String[] mChartMonthLabels = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
-    private final float [][] mChartDataValues = {  {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 6.4f, 0f},
+    private final float [][] mHoursChartValues = {  {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 6.4f, 0f},
+            {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2.3f, 0f},
+            {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.4f, 0f}};
+
+    private final float [][] mPointsChartValues = {  {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 6.4f, 0f},
             {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 2.3f, 0f},
             {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0.4f, 0f}};
 
@@ -66,6 +73,7 @@ public class VolunteerLogChartFragment extends Fragment {
     private int mAdvocacyCategoryIndicator;
     private ImageButton mRefreshCharts;
     private boolean mUpdateCharts;
+    private LocalDateTime mLastUpdate;
 
     /** Stacked chart */
     private StackBarChartView mStackedActivityChart;
@@ -75,6 +83,8 @@ public class VolunteerLogChartFragment extends Fragment {
 
     /** Line chart */
     private LineChartView mActivityLineChart;
+
+    private List<Category> mCategories = Lists.newArrayList();
 
     /**
      * Use this factory method to create a new instance of
@@ -95,13 +105,13 @@ public class VolunteerLogChartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UserCategoryPoints.findCurrentUserPointsInBackground(ParseUser.getCurrentUser(), MAX_DATA_LIMIT, new FindCallback<UserCategoryPoints>() {
+        setHasOptionsMenu(true);
+
+         Category.findInBackground(true, true, new FindCallback<Category>() {
             @Override
-            public void done(List<UserCategoryPoints> objects, ParseException e) {
-                if (e == null) {
-                    createMissingDataPoints(objects);
-                } else {
-                    mUserPointsByCategory = Lists.newArrayList();
+            public void done(List<Category> objects, ParseException e) {
+                if(e == null) {
+                    mCategories = objects;
                 }
             }
         });
@@ -157,6 +167,32 @@ public class VolunteerLogChartFragment extends Fragment {
         return layout;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        int currentYear = Integer.parseInt(DateTime.now().toString("YYYY"));
+        int startYear = Integer.parseInt(Constants.START_YEAR);
+        int counter = currentYear - startYear;
+        if(0 > counter){
+            menu.add(Menu.NONE, currentYear, 0, String.valueOf(currentYear));
+            while (counter > 0) {
+                currentYear--;
+                menu.add(Menu.NONE, currentYear, 0, String.valueOf(currentYear));
+                counter--;
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        filterStatsForYear(item.getItemId());
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void filterStatsForYear(int year) {
+
+    }
+
     private void showCharts() {
         showChart(STACKED_CHART_INDEX, mStackedActivityChart);
         showChart(LINE_CHART_INDEX, mActivityLineChart);
@@ -186,7 +222,32 @@ public class VolunteerLogChartFragment extends Fragment {
      * Update the values of a CardView chart
      */
     private void updateCharts(){
+        if(mLastUpdate != null && LocalDateTime.now().getMillisOfDay() - mLastUpdate.getMillisOfDay() < Constants.REFRESH_INTERVAL){
+            Toast.makeText(getActivity(), R.string.data_is_latest, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         dismissRefresh();
+
+        try {
+            UserCategoryPoints.unpinAll(Constants.CURRENT_USER_POINTS);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        UserCategoryPoints.findCurrentUserPointsInBackground(ParseUser.getCurrentUser(), 0, new FindCallback<UserCategoryPoints>() {
+            @Override
+            public void done(List<UserCategoryPoints> list, ParseException e) {
+                if (e == null) {
+                    UserCategoryPoints.pinAllInBackground(Constants.CURRENT_USER_POINTS, list);
+                    mLastUpdate = LocalDateTime.now();
+                    createMissingDataPoints(list);
+                } else {
+                    mUserPointsByCategory = Lists.newArrayList();
+                }
+            }
+        });
+
         updateChart(mStackedActivityChart);
         updateChart(mActivityLineChart);
     }
@@ -299,21 +360,22 @@ public class VolunteerLogChartFragment extends Fragment {
         thresholdPaint.setAntiAlias(true);
         thresholdPaint.setStrokeWidth(Tools.fromDpToPx(.75f));
 
-        BarSet stackBarSet = new BarSet(mChartMonthLabels, mChartDataValues[0]);
+        BarSet stackBarSet = new BarSet(mChartMonthLabels, mHoursChartValues[0]);
         stackBarSet.setColor(mDoGoodCategoryIndicator); //Color.parseColor("#a1d949"));
         stackedChart.addData(stackBarSet);
 
-        stackBarSet = new BarSet(mChartMonthLabels, mChartDataValues[1]);
+        stackBarSet = new BarSet(mChartMonthLabels, mHoursChartValues[1]);
         stackBarSet.setColor(mGreenCategoryIndicator); //Color.parseColor("#ffcc6a"));
         stackedChart.addData(stackBarSet);
 
-        stackBarSet = new BarSet(mChartMonthLabels, mChartDataValues[2]);
+        stackBarSet = new BarSet(mChartMonthLabels, mHoursChartValues[2]);
         stackBarSet.setColor(mAdvocacyCategoryIndicator); //Color.parseColor("#ff7a57"));
         stackedChart.addData(stackBarSet);
 
         stackedChart.setBarSpacing(Tools.fromDpToPx(15));
         stackedChart.setRoundCorners(Tools.fromDpToPx(1));
 
+        int mMonthlyGoal = Constants.MONTHLY_HOURS_GOAL;
         stackedChart.setXAxis(false)
                 .setXLabels(XController.LabelPosition.OUTSIDE)
                 .setYAxis(false)
@@ -330,9 +392,9 @@ public class VolunteerLogChartFragment extends Fragment {
 
     private void updateChart(ChartView chart){
     //This should refresh the data values. Re-issue the query
-        chart.updateValues(0, mChartDataValues[0]);
-        chart.updateValues(1, mChartDataValues[1]);
-        chart.updateValues(2, mChartDataValues[2]);
+        chart.updateValues(0, mHoursChartValues[0]);
+        chart.updateValues(1, mHoursChartValues[1]);
+        chart.updateValues(2, mHoursChartValues[2]);
         chart.notifyDataUpdate();
     }
 
@@ -362,21 +424,21 @@ public class VolunteerLogChartFragment extends Fragment {
 
         chart.setTooltips(tip);
 
-        LineSet dataset = new LineSet(mChartMonthLabels, mChartDataValues[0]);
+        LineSet dataset = new LineSet(mChartMonthLabels, mPointsChartValues[0]);
         dataset.setColor(mDoGoodCategoryIndicator)
                 .setDotsStrokeThickness(Tools.fromDpToPx(2))
                 .setDotsStrokeColor(mDoGoodCategoryIndicator)
                 .setDotsColor(Color.parseColor(LINECHART_BACK_COLOR));
         chart.addData(dataset);
 
-        dataset = new LineSet(mChartMonthLabels, mChartDataValues[1]);
+        dataset = new LineSet(mChartMonthLabels, mPointsChartValues[1]);
         dataset.setColor(mGreenCategoryIndicator)
                 .setDotsStrokeThickness(Tools.fromDpToPx(2))
                 .setDotsStrokeColor(mGreenCategoryIndicator)
                 .setDotsColor(Color.parseColor(LINECHART_BACK_COLOR));
         chart.addData(dataset);
 
-        dataset = new LineSet(mChartMonthLabels, mChartDataValues[2]);
+        dataset = new LineSet(mChartMonthLabels, mPointsChartValues[2]);
         dataset.setColor(mAdvocacyCategoryIndicator)
                 .setDotsStrokeThickness(Tools.fromDpToPx(2))
                 .setDotsStrokeColor(mAdvocacyCategoryIndicator)

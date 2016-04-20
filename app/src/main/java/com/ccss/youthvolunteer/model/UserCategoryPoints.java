@@ -169,6 +169,19 @@ public class UserCategoryPoints extends ParseObject {
         return Lists.newArrayList(0);
     }
 
+    public static void findAllUsersPointsForYearInBackground(String monthYear, final FindCallback<UserCategoryPoints> callback){
+        ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
+        userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString(Constants.MONTH_YEAR_FORMAT) : monthYear);
+        userPointsQuery.addDescendingOrder("createdAt");
+        userPointsQuery.include("category");
+        userPointsQuery.findInBackground(new VolunteerCategoryPointsFindCallback() {
+            @Override
+            protected void doneOnce(List<UserCategoryPoints> objects, ParseException e) {
+                callback.done(objects, e);
+            }
+        });
+    }
+
     public static void findAllUsersPointsForMonthYearInBackground(String monthYear, final FindCallback<UserCategoryPoints> callback){
         ParseQuery<UserCategoryPoints> userPointsQuery = ParseQuery.getQuery(UserCategoryPoints.class);
         userPointsQuery.whereEqualTo("monthYear", Strings.isNullOrEmpty(monthYear) ? DateTime.now().toString(Constants.MONTH_YEAR_FORMAT) : monthYear);

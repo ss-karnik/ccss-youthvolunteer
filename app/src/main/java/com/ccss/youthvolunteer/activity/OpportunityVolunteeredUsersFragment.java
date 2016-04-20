@@ -16,6 +16,7 @@ import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.UserAction;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
 import com.ccss.youthvolunteer.model.VolunteerUser;
+import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
@@ -60,7 +61,7 @@ public class OpportunityVolunteeredUsersFragment extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadVolunteerUsers(getArguments().getString(OPPORTUNITY_ID));
-        mUsersAdapter = new SelectableResourceListAdapter(mParticipatedUsers, true);
+        mUsersAdapter = new SelectableResourceListAdapter(mParticipatedUsers, true, Constants.GENERAL_ITEM);
     }
 
     private void loadVolunteerUsers(String opportunityId) {

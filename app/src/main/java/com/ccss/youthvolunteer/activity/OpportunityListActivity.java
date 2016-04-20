@@ -35,7 +35,6 @@ import com.ccss.youthvolunteer.model.Category;
 import com.ccss.youthvolunteer.model.Organization;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.VolunteerOpportunity;
-import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DateUtils;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
@@ -46,11 +45,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -146,7 +142,7 @@ public class OpportunityListActivity extends BaseActivity
         mProgressBar.setVisibility(View.VISIBLE);
         mCurrentLayoutManagerType = Constants.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
-        mAdapter = new SelectableResourceListAdapter(mDisplayedOpportunities, !mReadOnly);
+        mAdapter = new SelectableResourceListAdapter(mDisplayedOpportunities, !mReadOnly, Constants.OPPORTUNITY_ITEM);
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
             mCurrentLayoutManagerType = (Constants.LayoutManagerType) savedInstanceState.getSerializable(KEY_LAYOUT_MANAGER);
@@ -165,7 +161,7 @@ public class OpportunityListActivity extends BaseActivity
             VolunteerOpportunity.getOpportunitiesForOrganization(mUserOrganization, false, findOpportunitiesCallback());
         }
 
-        mAdapter.setOnItemClickListener(new ResourcesFragment.RecyclerItemClickListener() {
+        mAdapter.setOnItemClickListener(new ManageResourcesFragment.RecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, String resourceItemType, String resourceObjectId) {
                 startDetailActivity(resourceObjectId);
@@ -484,6 +480,9 @@ public class OpportunityListActivity extends BaseActivity
 
     @Override
     public void onClick(View view) {
+        if(view == null){
+            return;
+        }
         if (view.getId() == R.id.resource_view) {
             // item click
             int idx = mRecyclerView.getChildAdapterPosition(view);
@@ -554,7 +553,7 @@ public class OpportunityListActivity extends BaseActivity
 //                return;
 //            }
             // Start the CAB using the ActionMode.Callback defined above
-//            actionMode = getActivity().startActionMode(ResourcesFragment.this);
+//            actionMode = getActivity().startActionMode(ManageResourcesFragment.this);
 //            int idx = mRecyclerView.getChildAdapterPosition(view);
 //            myToggleSelection(idx);
             super.onLongPress(e);

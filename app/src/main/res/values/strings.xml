@@ -75,6 +75,10 @@
     <string name="no_opportunities_available">No Opportunities defined</string>
     <string name="no_pending_actions_available">No pending actions</string>
     <string name="no_users_available">No volunteers</string>
+    <string name="no_email_selected">Please select users to send the email</string>
+    <string name="emailIds_copied_message">Successfully copied %1$d email ids</string>
+    <string name="volunteer_interest_subject">Thank you for your interest</string>
+    <string name="volunteer_interest_message">Thank you for your interest in activity: %1$s</string>
 
     <string name="ok">OK</string>
     <string name="dialog_title_error">Error</string>
@@ -150,6 +154,7 @@
     <string name="main_line_trophies">WIN Trophies</string>
     <string name="main_latest_trophy">Your Latest Trophy</string>
     <string name="main_data_as_of">*data as of %1$s</string>
+    <string name="data_is_latest">No new updates</string>
 
     <!-- Maps activity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -181,6 +186,7 @@
     <string name="recog_type_hint">Recognition Type</string>
     <string name="recog_activity_hint">For Activity</string>
     <string name="prompt_points">Points</string>
+    <string name="email_ids_copied_message">Selected email ids copied</string>
 
     <string name="action_rankby_volunteer">Volunteer</string>
     <string name="action_rankby_school">School</string>
@@ -260,11 +266,14 @@
     <string name="interested">Interested</string>
     <string name="opportunity_added_post">New volunteer opportunity available!! %1$s for %2$s</string>
     <string name="resource_added_post">New %1$s \'%2$s\' added!!</string>
+    <string name="express_like">Like</string>
 
     <!-- Post -->
     <string name="whats_on_your_mind">What\'s on your mind?</string>
     <string name="no_comments">No comments</string>
     <string name="no_posts_available">Be the first to write on the wall!!</string>
+    <string name="post_title"><![CDATA[<b>%1$s</b> posted on <b>%2$s</b>]]></string>
+    <string name="comment_title"><![CDATA[<b>%1$s</b> commented on <b>%2$s</b>]]></string>
 
     <string name="okay_text">OK</string>
     <string name="cancel_text">Cancel</string>
@@ -277,6 +286,8 @@
     <string name="title_activity_profile">Manage Profile</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string name="title_copy_email">Copy Email Ids</string>
+    <string name="title_send_email">Send emails</string>
     <string name="collapse_expand">Collapse/Expand</string>
     <string name="action_approve">Approve</string>
     <string name="action_reject">Reject</string>

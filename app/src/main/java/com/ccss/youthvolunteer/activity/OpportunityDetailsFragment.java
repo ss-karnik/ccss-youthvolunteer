@@ -249,6 +249,7 @@ public class OpportunityDetailsFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 if(validate()) {
+                    mSubmitButton.setEnabled(false);
                     setOpportunityDataToSave();
                     ((OpportunityDetailActivity) getActivity()).onSubmitDetailsClick(mVolunteerOpportunity);
                 } else {
@@ -258,6 +259,10 @@ public class OpportunityDetailsFragment extends Fragment  {
         });
 
         return rootView;
+    }
+
+    public void enableSubmitButton(){
+        mSubmitButton.setEnabled(true);
     }
 
 //    @Override

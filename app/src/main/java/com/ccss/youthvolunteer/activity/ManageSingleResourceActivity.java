@@ -840,6 +840,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
             return;
         }
 
+        mSubmitButton.setEnabled(false);
         switch (mResourceType) {
             case Constants.ANNOUNCEMENT_RESOURCE:
                 mResourceObject = Strings.isNullOrEmpty(mResourceObjectId)
@@ -859,7 +860,12 @@ public class ManageSingleResourceActivity extends BaseActivity {
                 ((Category) mResourceObject).setCategoryColor(mColorHexText.getText().toString());
                 ((Category) mResourceObject).setIsActive(mActiveStatus.isChecked());
 
-                Category.saveCategory((Category) mResourceObject, onResourceSave());
+                try{
+                    Category.saveCategory((Category) mResourceObject, onResourceSave());
+                }catch (ParseException ex){
+
+                }
+
                 break;
 
             case Constants.RECOGNITION_RESOURCE:
@@ -985,8 +991,8 @@ public class ManageSingleResourceActivity extends BaseActivity {
             case Constants.RECOGNITION_RESOURCE:
                 //Validate Recognition
                 validateTitleAndDescription(errorMessages);
-                errorMessages.append("\n");
                 if(mRecogReqPtsText.getText().toString().isEmpty()){
+                    errorMessages.append("\n");
                     errorMessages.append(getResources().getString(R.string.no_points_hours));
                 }
 
@@ -1072,6 +1078,7 @@ public class ManageSingleResourceActivity extends BaseActivity {
                     snackbar = Snackbar.make(mSaveResourceForm, R.string.msg_data_failure, Snackbar.LENGTH_LONG);
                 }
                 snackbar.show();
+                mSubmitButton.setEnabled(true);
             }
         };
     }

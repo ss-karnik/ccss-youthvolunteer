@@ -19,6 +19,7 @@ import com.ccss.youthvolunteer.adapter.SelectableResourceListAdapter;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.model.Skill;
 import com.ccss.youthvolunteer.model.VolunteerUser;
+import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DividerItemDecoration;
 import com.google.common.collect.Lists;
 import com.parse.FindCallback;
@@ -87,7 +88,7 @@ public class OpportunitySkillsFragment extends Fragment implements RecyclerView.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean mReadOnly = getArguments().getBoolean(READ_ONLY_TAG);
-        mSkillsAdapter = new SelectableResourceListAdapter(mSkills, !mReadOnly);
+        mSkillsAdapter = new SelectableResourceListAdapter(mSkills, !mReadOnly, Constants.GENERAL_ITEM);
         List<Skill> userSkills = (List<Skill>) getArguments().getSerializable(SKILLS_TAG);
         if(userSkills != null && !userSkills.isEmpty()){
             for(Skill userSkill : userSkills){

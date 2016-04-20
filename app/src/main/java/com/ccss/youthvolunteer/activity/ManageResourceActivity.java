@@ -22,7 +22,7 @@ public class ManageResourceActivity extends BaseActivity {
         setContentView(R.layout.manage_resources_list_view);
 
         getSupportFragmentManager().beginTransaction()
-            .replace(R.id.resource_fragment_container, ResourcesFragment.newInstance(resourceValue, userOrganization))
+            .replace(R.id.resource_fragment_container, ManageResourcesFragment.newInstance(resourceValue, userOrganization))
             .commit();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.manage_res_toolbar);

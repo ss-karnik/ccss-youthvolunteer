@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.ccss.youthvolunteer.R;
-import com.ccss.youthvolunteer.activity.ResourcesFragment;
+import com.ccss.youthvolunteer.activity.ManageResourcesFragment;
 import com.ccss.youthvolunteer.model.ResourceModel;
 import com.ccss.youthvolunteer.util.Constants;
 import com.google.common.base.Predicate;
@@ -31,25 +31,28 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     private static final String TAG = "ResourceListAdapter";
     private List<ResourceModel> mResources;
     private Map<String, Boolean> mItemSelectionStates = Maps.newHashMap();
-    private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
+    private ManageResourcesFragment.RecyclerItemClickListener mItemClickListener;
     private SparseBooleanArray selectedItems;
     boolean mSelectable;
+    int mViewType;
 
     /**
      * Initialize the list of the Adapter.
      *
      * @param resources List containing the data to populate views to be used by RecyclerView.
      */
-    public SelectableResourceListAdapter(List<ResourceModel> resources, boolean isSelectable) {
+    public SelectableResourceListAdapter(List<ResourceModel> resources, boolean isSelectable, int viewType) {
         mResources = resources;
         selectedItems = new SparseBooleanArray();
         mSelectable = isSelectable;
+        mViewType = viewType;
     }
 
     public SelectableResourceListAdapter(List<ResourceModel> resources) {
         mResources = resources;
         selectedItems = new SparseBooleanArray();
         mSelectable = true;
+        mViewType = Constants.GENERAL_ITEM;
     }
 
     /**
@@ -127,6 +130,7 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     @Override
     public void onClick(final View v) {
         // Give some time to the ripple to finish the effect
+        //TODO: Identify the view
         if (mItemClickListener != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -152,10 +156,30 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     @Override
     public ResourceViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.manage_resource_item, viewGroup, false);
+        View v;
+        switch (viewType){
+            case Constants.OPPORTUNITY_ITEM:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.opportunity_list_item, viewGroup, false);
+                break;
+            case Constants.POST_ITEM:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.manage_resource_item, viewGroup, false);
+                break;
+            case Constants.VOLUNTEER_ITEM:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.volunteer_user_item, viewGroup, false);
+                break;
+            case Constants.COMMENT_ITEM:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.volunteer_user_item, viewGroup, false);
+                break;
+            default:
+                v = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.manage_resource_item, viewGroup, false);
+        }
 
-        return new ResourceViewHolder(v);
+        return new ResourceViewHolder(v, viewType);
     }
 
     public List<String> getSelectedItems(){
@@ -172,50 +196,62 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
     @Override
     public void onBindViewHolder(final ResourceViewHolder viewHolder, final int position) {
         // Get element from list at this position and replace the contents of the view with that element
+
         final ResourceModel currentResource = mResources.get(position);
-        viewHolder.getResourceType().setText(currentResource.getResourceType());
+        String resourceType = currentResource.getResourceType();
 
-        viewHolder.getTitleTextView().setText(currentResource.getTitle());
-        viewHolder.getDescriptionTextView().setText(currentResource.getDescription());
-        if(!currentResource.getBorderColor().isEmpty()){
-            viewHolder.getBorderColorTextView().setBackgroundColor(Color.parseColor(currentResource.getBorderColor()));
-        }
-        viewHolder.getExtraInfoBottomTextView().setText(currentResource.getExtraInformationBottom());
-        viewHolder.getExtraInfoTopRightTextView().setText(currentResource.getExtraInformationTopRight());
+        if(Constants.VOLUNTEER_USER_RESOURCE.equals(resourceType)) {
 
-        if(Constants.OPPORTUNITY_RESOURCE.startsWith(currentResource.getResourceType())){
-            if( currentResource.isStarred()){
-                viewHolder.getStarredImageView().setImageResource(android.R.drawable.btn_star_big_on);
-            }
+        } else if(Constants.USER_POST_RESOURCE.equals(resourceType)) {
+
+        } else if(Constants.USER_COMMENT_RESOURCE.equals(resourceType)) {
+
         } else {
-            viewHolder.getStarredImageView().setVisibility(View.GONE);
-        }
+            viewHolder.getResourceType().setText(resourceType);
 
-        viewHolder.getObjectIdTextView().setText(currentResource.getObjectId());
-        // provide support for selected state
-        updateCheckedState(viewHolder, currentResource);
+            viewHolder.getTitleTextView().setText(currentResource.getTitle());
+            viewHolder.getDescriptionTextView().setText(currentResource.getDescription());
 
-        if(mSelectable) {
-            viewHolder.getResourceImageLayoutView().setOnClickListener(new View.OnClickListener() {
+            if(!currentResource.getBorderColor().isEmpty()){
+                viewHolder.getBorderColorTextView().setBackgroundColor(Color.parseColor(currentResource.getBorderColor()));
+            }
+            viewHolder.getExtraInfoBottomTextView().setText(currentResource.getExtraInformationBottom());
+            viewHolder.getExtraInfoTopRightTextView().setText(currentResource.getExtraInformationTopRight());
+
+            if(Constants.OPPORTUNITY_RESOURCE.startsWith(resourceType)){
+                if( currentResource.isStarred()){
+                    viewHolder.getStarredImageView().setImageResource(android.R.drawable.btn_star_big_on);
+                }
+            } else {
+                viewHolder.getStarredImageView().setVisibility(View.GONE);
+            }
+
+            viewHolder.itemView.setActivated(selectedItems.get(position, false));
+            if(!currentResource.isActive()){
+                viewHolder.itemView.setAlpha(Constants.INACTIVE_ALPHA);
+            }
+
+            viewHolder.getObjectIdTextView().setText(currentResource.getObjectId());
+            // provide support for selected state
+            updateCheckedState(viewHolder, currentResource);
+
+            if(mSelectable) {
+                viewHolder.getResourceImageLayoutView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        currentResource.setSelected(!currentResource.isSelected());
+                        updateCheckedState(viewHolder, currentResource);
+                    }
+                });
+            }
+
+            viewHolder.getStarredImageView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    currentResource.setSelected(!currentResource.isSelected());
-                    updateCheckedState(viewHolder, currentResource);
+                    currentResource.setStarred(!currentResource.isStarred());
+                    updateStarredState(viewHolder, currentResource);
                 }
             });
-        }
-
-        viewHolder.getStarredImageView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentResource.setStarred(!currentResource.isStarred());
-                updateStarredState(viewHolder, currentResource);
-            }
-        });
-
-        viewHolder.itemView.setActivated(selectedItems.get(position, false));
-        if(!currentResource.isActive()){
-            viewHolder.itemView.setAlpha(Constants.INACTIVE_ALPHA);
         }
 
 //        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -277,7 +313,12 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
         return mResources.size();
     }
 
-    public void setOnItemClickListener(ResourcesFragment.RecyclerItemClickListener clickListener) {
+    @Override
+    public int getItemViewType(int position) {
+        return mViewType;
+    }
+
+    public void setOnItemClickListener(ManageResourcesFragment.RecyclerItemClickListener clickListener) {
         mItemClickListener = clickListener;
     }
 
@@ -285,22 +326,24 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
      * Provide a reference to the type of views that are being used per row
      */
     public static class ResourceViewHolder extends RecyclerView.ViewHolder {
-        private final RelativeLayout mResourceItemContainer;
-        private final FrameLayout mResourceImageItem;
-        private final ImageView mResourceImage;
-        private final ImageView mSelectedImage;
-        private final TextView mResourceTitle;
-        private final TextView mDescription;
-        private final TextView mExtraInfoTopRight;
-        private final TextView mExtraInfoBelowDesc;
-        private final TextView mExtraInfoBottom;
-        private final TextView mColorBorder;
-        private final TextView mObjectId;
-        private final ImageView mStarred;
-        private final TextView mResourceType;
-        private ResourcesFragment.RecyclerItemClickListener mItemClickListener;
+        private RelativeLayout mResourceItemContainer;
+        private FrameLayout mResourceImageItem;
+        private ImageView mResourceImage;
+        private ImageView mCommentImage;
+        private ImageView mLikeImage;
+        private ImageView mSelectedImage;
+        private TextView mResourceTitle;
+        private TextView mDescription;
+        private TextView mExtraInfoTopRight;
+        private TextView mExtraInfoBelowDesc;
+        private TextView mExtraInfoBottom;
+        private TextView mColorBorder;
+        private TextView mObjectId;
+        private ImageView mStarred;
+        private TextView mResourceType;
+        private ManageResourcesFragment.RecyclerItemClickListener mItemClickListener;
 
-        public ResourceViewHolder(View v) {
+        public ResourceViewHolder(View v, int viewType) {
             super(v);
 //            // Define click listener for the ViewHolder's View.
 //            v.setOnClickListener(new View.OnClickListener() {
@@ -311,19 +354,56 @@ public class SelectableResourceListAdapter extends RecyclerView.Adapter<Selectab
 //            });
 
             //v.setOnClickListener(this);
-            mResourceItemContainer = (RelativeLayout) v.findViewById(R.id.resource_item_container);
-            mResourceImage = (ImageView) v.findViewById(R.id.row_item_image);
-            mSelectedImage = (ImageView) v.findViewById(R.id.resource_selected_icon);
-            mResourceImageItem = (FrameLayout) v.findViewById(R.id.resource_item_image);
-            mResourceTitle = (TextView) v.findViewById(R.id.resource_title);
-            mDescription = (TextView) v.findViewById(R.id.resource_description);
-            mExtraInfoTopRight = (TextView) v.findViewById(R.id.resource_info_extra);
-            mExtraInfoBelowDesc = (TextView) v.findViewById(R.id.resource_below_desc);
-            mExtraInfoBottom = (TextView) v.findViewById(R.id.resource_bottom);
-            mColorBorder = (TextView) v.findViewById(R.id.category_indicator);
-            mObjectId = (TextView) v.findViewById(R.id.resource_object_id);
-            mStarred = (ImageView) v.findViewById(R.id.resc_starred);
-            mResourceType = (TextView) v.findViewById(R.id.resource_object_type);
+
+            switch (viewType){
+                case Constants.OPPORTUNITY_ITEM:
+                    mResourceItemContainer = (RelativeLayout) v.findViewById(R.id.opp_item_container);
+                    mResourceImage = (ImageView) v.findViewById(R.id.opp_row_item_image);
+                    mSelectedImage = (ImageView) v.findViewById(R.id.opp_selected_icon);
+                    mResourceImageItem = (FrameLayout) v.findViewById(R.id.opp_item_image);
+                    mResourceTitle = (TextView) v.findViewById(R.id.opp_title);
+                    mDescription = (TextView) v.findViewById(R.id.opp_description);
+                    mExtraInfoTopRight = (TextView) v.findViewById(R.id.opp_info_extra);
+                    mExtraInfoBelowDesc = (TextView) v.findViewById(R.id.opp_below_desc);
+                    mExtraInfoBottom = (TextView) v.findViewById(R.id.opp_bottom);
+                    mColorBorder = (TextView) v.findViewById(R.id.opp_category_indicator);
+                    mObjectId = (TextView) v.findViewById(R.id.opp_object_id);
+                    mStarred = (ImageView) v.findViewById(R.id.opp_starred);
+                    mResourceType = (TextView) v.findViewById(R.id.opp_object_type);
+                    break;
+                case Constants.POST_ITEM:
+                    mResourceItemContainer = (RelativeLayout) v.findViewById(R.id.post_container);
+                    mResourceImage = (ImageView) v.findViewById(R.id.post_person_photo);
+                    mResourceTitle = (TextView) v.findViewById(R.id.post_description);
+                    mDescription = (TextView) v.findViewById(R.id.post_content);
+                    mExtraInfoBelowDesc = (TextView) v.findViewById(R.id.post_comment);
+                    mCommentImage = (ImageView) v.findViewById(R.id.post_comment_action);
+                    mExtraInfoBottom = (TextView) v.findViewById(R.id.post_like);
+                    mLikeImage = (ImageView) v.findViewById(R.id.post_like_action);
+                    break;
+                case Constants.VOLUNTEER_ITEM:
+                    break;
+                default:
+                    mResourceItemContainer = (RelativeLayout) v.findViewById(R.id.resource_item_container);
+                    mResourceImage = (ImageView) v.findViewById(R.id.row_item_image);
+                    mSelectedImage = (ImageView) v.findViewById(R.id.resource_selected_icon);
+                    mResourceImageItem = (FrameLayout) v.findViewById(R.id.resource_item_image);
+                    mResourceTitle = (TextView) v.findViewById(R.id.resource_title);
+                    mDescription = (TextView) v.findViewById(R.id.resource_description);
+                    mExtraInfoTopRight = (TextView) v.findViewById(R.id.resource_info_extra);
+                    mExtraInfoBelowDesc = (TextView) v.findViewById(R.id.resource_below_desc);
+                    mExtraInfoBottom = (TextView) v.findViewById(R.id.resource_bottom);
+                    mColorBorder = (TextView) v.findViewById(R.id.category_indicator);
+                    mObjectId = (TextView) v.findViewById(R.id.resource_object_id);
+                    mStarred = (ImageView) v.findViewById(R.id.resc_starred);
+                    mResourceType = (TextView) v.findViewById(R.id.resource_object_type);
+                    break;
+
+            }
+
+
+
+            //mOppColorBorder = (TextView) v.findViewById(R.id.opp_category_indicator);
 
             final String[] resourceType = {""};
 

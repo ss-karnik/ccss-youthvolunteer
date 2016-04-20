@@ -14,6 +14,7 @@ import com.ccss.youthvolunteer.model.VolunteerUser;
 import com.ccss.youthvolunteer.util.CheckNetworkConnection;
 import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DateUtils;
+import com.ccss.youthvolunteer.util.CommonUtils;
 import com.google.common.base.Joiner;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -21,7 +22,6 @@ import com.parse.ParseUser;
 
 import org.joda.time.LocalDate;
 
-import java.util.Date;
 import java.util.List;
 
 public class IntroActivity extends BaseActivity {
@@ -29,10 +29,6 @@ public class IntroActivity extends BaseActivity {
     String mTotalUserHours;
     String mCurrentAnnouncements;
 
-    public static int sum(List<Integer> list, int start) {
-        if (start == list.size()) return 0;
-        return list.get(start) + sum(list, start + 1);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,17 +103,20 @@ public class IntroActivity extends BaseActivity {
 
             Category.pinAllInBackground(Constants.CATEGORY_RESOURCE, Category.getAllCategories(true));
 
-            //TODO: Load UserCategoryPoints/Hours
             mUserPoints = 0;
             mUserHours = 0;
-            mUserRank = 5; //Map<User, Points>?
+            mUserRank = 5;
 
             mCurrentAnnouncements = Joiner.on("|").join(Announcement.getAllAnnouncementText());
             mTotalUsers = VolunteerUser.getTotalUserCount();
-            mTotalUserHours = DateUtils.minutesToHoursRepresentation(sum(UserCategoryPoints.findMinutesForAllUsers(), 0));
+            mTotalUserHours = DateUtils.minutesToHoursRepresentation(CommonUtils.sum(UserCategoryPoints.findMinutesForAllUsers(), 0));
 
-
-//            final String[] userMonthStats = new String[0];
+            try {
+                List<VolunteerUser> rankedUsers = VolunteerUser.findUsersRanked();
+                mUserRank = rankedUsers.indexOf(currentUser);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             UserCategoryPoints.findCurrentUserPointsInBackground(currentParseUser, 0, new FindCallback<UserCategoryPoints>() {
                 @Override
                 public void done(List<UserCategoryPoints> list, ParseException e) {
@@ -140,6 +139,7 @@ public class IntroActivity extends BaseActivity {
     private void startMainActivity() {
         VolunteerOpportunity upcomingActivity = VolunteerOpportunity.getUpcomingOpportunity();
         SharedPreferences sharedPref = this.getSharedPreferences(Constants.PREF_FILE_NAME, Context.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(Constants.ANNOUNCEMENTS_KEY, mCurrentAnnouncements);
         //Overall with %s points and %s hours you are ranked %s out of %s volunteers!

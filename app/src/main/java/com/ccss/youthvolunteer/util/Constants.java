@@ -48,6 +48,8 @@ public class Constants {
     public static final String VOLUNTEER_USER_RESOURCE = "VolunteerUser";
     public static final String USER_ACTION_RESOURCE = "UserAction";
     public static final String USER_RECOGNITION_RESOURCE = "UserRecognition";
+    public static final String USER_POST_RESOURCE = "UserPost";
+    public static final String USER_COMMENT_RESOURCE = "UserComment";
 
     public static final String ERROR_ITEM_KEY = "ErrorItemKey";
     public static final String OBJECT_ID_KEY = "objectId";
@@ -72,7 +74,7 @@ public class Constants {
     public static final String CURRENT_USER_POINTS = "CurrentUserPoints";
 
 
-    public static final String PREF_FILE_NAME = "YouthVolunteer";
+    public static final String PREF_FILE_NAME = "csss.youthVolunteer";
 
     //Enter in lowercase only
     public static final String ACCESS_MODE_KEY = "mode";
@@ -81,8 +83,16 @@ public class Constants {
     public static final String EDIT_MODE = "edit";
     public static final String ADD_MODE = "add";
 
+    public static final int GENERAL_ITEM = 0;
+    public static final int OPPORTUNITY_ITEM = 1;
+    public static final int POST_ITEM = 2;
+    public static final int VOLUNTEER_ITEM = 3;
+    public static final int COMMENT_ITEM = 4;
+
+    public static final String START_YEAR = "2016";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final String MONTH_YEAR_FORMAT = "MMM-yyyy";
+    public static final int MONTHLY_HOURS_GOAL = 20;
     public static final int PROFILE_IMAGE_SIZE = 100;
     public static final int LIST_IMAGE_SIZE = 50;
     public static final float INACTIVE_ALPHA = 0.5f;
@@ -90,6 +100,8 @@ public class Constants {
     public static final String PENDING = "Pending";
     public static final String REJECT = "Reject";
     public static final String VIRTUAL = "Virtual";
+    public static final String LAST_POST_DATE = "LastPostDate";
+    public static final int REFRESH_INTERVAL = 600000;
 
     public enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,

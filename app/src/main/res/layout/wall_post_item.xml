@@ -1,6 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overall_post_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/common_action_bar_splitter">
+    <android.support.v7.widget.CardView
+        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/CardView"
+        cardview:cardUseCompatPadding="true"
+        android:id="@+id/post_view" >
+        <RelativeLayout
+            android:id="@+id/post_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/post_main_section"
+                android:padding="@dimen/com_parse_ui_small_vertical_spacing">
 
+                <ImageView
+                    android:layout_width="@dimen/image_size_large"
+                    android:layout_height="@dimen/image_size_large"
+                    android:maxWidth="@dimen/image_size_large"
+                    android:maxHeight="@dimen/image_size_large"
+                    android:id="@+id/post_person_photo"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/default_avatar_small_50"
+                    android:layout_marginRight="@dimen/com_parse_ui_small_vertical_spacing" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_description"
+                    android:layout_toRightOf="@id/post_person_photo"
+                    android:layout_toEndOf="@id/post_person_photo"
+                    android:text="Volunteer Number posted on Date"
+                    android:layout_alignParentTop="true"
+                    android:textSize="@dimen/list_row_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_content"
+                    android:paddingTop="@dimen/com_parse_ui_smallest_vertical_spacing"
+                    android:layout_toRightOf="@id/post_person_photo"
+                    android:layout_toEndOf="@id/post_person_photo"
+                    android:layout_below="@id/post_description"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:text="User comment that can be long upto 4 lines and will have.. at the end User comment that can be long upto 4 lines and will have.. at the end User comment that can be long upto 4 lines and will have.. at the end"
+                    android:textSize="@dimen/list_row_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/post_comment_section"
+                android:layout_below="@id/post_main_section">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:id="@+id/button_seperator"
+                    android:layout_marginTop="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:background="@color/common_action_bar_splitter"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_comment"
+                    android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:layout_below="@id/button_seperator"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/com_facebook_button_background_color"
+                    android:text="12 Comments"
+                    android:textSize="@dimen/list_row_content" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_comment_action"
+                    android:layout_below="@id/button_seperator"
+                    android:layout_toRightOf="@id/post_comment"
+                    android:layout_toEndOf="@id/post_comment"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_message"
+                    android:contentDescription="@string/express_interest" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_like"
+                    android:padding="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:layout_below="@id/button_seperator"
+                    android:layout_toLeftOf="@+id/post_like_action"
+                    android:layout_toStartOf="@+id/post_like_action"
+                    android:textColor="@color/com_facebook_button_background_color"
+                    android:text="5 Likes"
+                    android:textSize="@dimen/list_row_content" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_like_action"
+                    android:layout_below="@id/button_seperator"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:paddingRight="@dimen/com_parse_ui_small_vertical_spacing"
+                    android:src="@drawable/ic_like_border"
+                    android:contentDescription="@string/express_interest" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/resource_object_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/resource_object_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ranking_list_view"
+        android:layout_below="@id/post_view"
+        android:paddingTop="@dimen/com_parse_ui_small_vertical_spacing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

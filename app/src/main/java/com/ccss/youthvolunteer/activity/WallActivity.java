@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,7 +70,7 @@ public class WallActivity extends BaseActivity
         });
 
         mAdapter = new SelectableResourceListAdapter(mPosts);
-        mAdapter.setOnItemClickListener(new ResourcesFragment.RecyclerItemClickListener() {
+        mAdapter.setOnItemClickListener(new ManageResourcesFragment.RecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, String resourceItemType, String resourceObjectId) {
                 startPostActivity(resourceObjectId);

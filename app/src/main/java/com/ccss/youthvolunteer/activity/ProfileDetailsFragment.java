@@ -38,8 +38,10 @@ import com.ccss.youthvolunteer.util.Constants;
 import com.ccss.youthvolunteer.util.DateUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseImageView;
+import com.parse.ParseUser;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.joda.time.LocalDate;
@@ -219,7 +221,7 @@ public class ProfileDetailsFragment extends Fragment implements ProfileActivity.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadSchools();
-        mVolunteerUser = (VolunteerUser) getArguments().getSerializable(USER_TAG);
+        mVolunteerUser = VolunteerUser.getVolunteerUser(ParseUser.getCurrentUser());
     }
 
     @Override
